@@ -28,6 +28,7 @@ export default function RootLayout() {
         'Barlow-Medium': require('../assets/fonts/BarlowCondensed-Medium.ttf'),
         'Barlow-SemiBold': require('../assets/fonts/BarlowCondensed-SemiBold.ttf'),
         'Barlow-Bold': require('../assets/fonts/BarlowCondensed-Bold.ttf'),
+        
     });
 
     useEffect(() => {
