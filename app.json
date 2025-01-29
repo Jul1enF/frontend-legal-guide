@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "my-app-name",
-    "slug": "my-app-name",
-    "scheme": "my-app-name",
+    "name": "legal-guide",
+    "slug": "legal-guide",
+    "scheme": "legal-guide",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
