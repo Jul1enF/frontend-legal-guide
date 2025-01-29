@@ -63,7 +63,7 @@ export default function TopArticle(props) {
             </View>
 
 
-            <Text style={styles.date}>Posté {lastingTime}</Text>
+            <Text style={styles.date}>{lastingTime}</Text>
             <LinearGradient
                 colors={['#cb0000', '#230000']}
                 locations={[0.15, 1]}

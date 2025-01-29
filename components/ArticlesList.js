@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     gradientBtn1: {
-        height: RPW(8.5),
-        borderRadius: 10,
+        height: RPW(8.3),
+        borderRadius: 8,
         marginRight: RPW(2.3)
     },
     btn: {
@@ -276,13 +276,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#e7e7e7",
         margin: 0,
-        borderRadius: 10,
+        borderRadius: 8,
         paddingLeft: RPW(2),
         paddingRight: RPW(2),
     },
     btnText: {
         color: "white",
-        fontSize: RPW(4),
+        // fontSize: RPW(4.65),
+        fontSize : RPW(4),
         fontWeight: "500",
+        // fontFamily: "Barlow-SemiBold",
+        // letterSpacing: RPW(0.2),
     },
 })

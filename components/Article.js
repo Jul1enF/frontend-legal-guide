@@ -17,11 +17,9 @@ export default function Article(props) {
 
     return (
         <View style={styles.body}>
-            <View style={styles.row}>
+            <View style={styles.row1}>
                 <View style={styles.column1}>
                     <Text numberOfLines={5} style={styles.title}>{props.title}</Text>
-                    {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
-                    <Text style={styles.date}>Posté {lastingTime}</Text>
                 </View>
                 <View style={styles.column2}>
                     <View style={styles.imgContainer} >
@@ -38,10 +36,12 @@ export default function Article(props) {
                 </View>
             </View>
 
-            {/* <View style={styles.row}>
-                {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
-                <Text style={styles.date}>Posté {lastingTime}</Text>
-            </View> */}
+            <View style={styles.row2}>
+                <View style={styles.postInfos}>
+                    {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
+                    <Text style={styles.date}>{lastingTime}</Text>
+                </View>
+            </View>
 
 
             <LinearGradient
@@ -64,34 +64,46 @@ const styles = StyleSheet.create({
         paddingRight: RPW(3),
         paddingLeft: RPW(3),
     },
-    row: {
+    row1: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 14,
+        marginBottom: 13,
     },
     column1: {
-        width: RPW(51),
-        minHeight: RPH(12.5),
-        justifyContent: "space-evenly",
+        width: RPW(50),
+        minHeight: RPW(24.5),
+        justifyContent: "center",
     },
     title: {
         color: "#2a0000",
-        fontSize: RPW(5),
+        fontSize: RPW(5.2),
         fontWeight: "450",
-        marginBottom: 10,
         fontFamily: "Barlow-Medium",
         letterSpacing: RPW(-0.03),
     },
+    row2: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 13,
+    },
+    postInfos : {
+        flexDirection : "row",
+        alignItems : "center"
+    },
     subTitle: {
         color: "#2a0000",
-        fontSize: RPW(3.6),
+        fontSize: RPW(3.4),
         fontWeight: "400",
-        marginBottom: 10,
+        marginRight : RPW(3),
+        fontFamily : "Barlow-Regular",
+        letterSpacing : RPW(0.1),
     },
     date: {
         color: "#2a0000",
-        fontSize: RPW(3.2),
-        fontWeight: "300"
+        fontSize: RPW(3.4),
+        fontWeight: "300",
+        fontFamily : "Barlow-Light",
+        letterSpacing : RPW(0.12),
     },
     column2: {
         width: RPW(41),
@@ -104,7 +116,6 @@ const styles = StyleSheet.create({
         height: RPW(24.5),
         overflow: "hidden",
         justifyContent: "center",
-        backgroundColor: "yellow"
     },
     image: {
         height: RPW(1000),
