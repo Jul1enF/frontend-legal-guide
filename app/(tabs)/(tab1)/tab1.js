@@ -2,10 +2,12 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import {RPH, RPW} from '../../../modules/dimensions'
 
+import ArticlesList from '../../../components/ArticlesList';
+
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Tab 1 !</Text>
+      <ArticlesList category="tab1" />
     </View>
   );
 }
