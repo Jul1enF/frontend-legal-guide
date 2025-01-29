@@ -41,7 +41,7 @@ export default function Article(props) {
                                 width={RPW(41)}
                                 height={RPW(24)}
                                 videoId={props.video_id}
-                                initialPlayerParams={{modestbranding : false}}
+                                initialPlayerParams={{ modestbranding: false }}
                             />
                         </View>
                     }
@@ -49,8 +49,8 @@ export default function Article(props) {
                 </View>
             </View>
             <LinearGradient
-                colors={['#9dcb00', '#045400']}
-                locations={[0.05, 1]}
+                colors={['#cb0000', '#230000']}
+                locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.gradientLine2}
@@ -80,19 +80,19 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
     },
     title: {
-        color: "#19290a",
+        color: "#2a0000",
         fontSize: RPW(5.2),
         fontWeight: "450",
         marginBottom: 10
     },
     subTitle: {
-        color: "#19290a",
+        color: "#2a0000",
         fontSize: RPW(3.6),
         fontWeight: "400",
         marginBottom: 10,
     },
     date: {
-        color: "#19290a",
+        color: "#2a0000",
         fontSize: RPW(3.2),
         fontWeight: "300"
     },

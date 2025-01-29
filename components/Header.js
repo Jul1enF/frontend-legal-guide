@@ -4,7 +4,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Modal from "react-native-modal"
 
-import { useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../reducers/user";
 import { router, usePathname } from "expo-router";
@@ -90,8 +90,8 @@ export default function Header() {
         <View style={styles.body}>
             <StatusBar translucent={true} backgroundColor="transparent" barStyle="light" />
             <LinearGradient style={styles.header}
-                colors={['red', 'black']}
-                locations={[0, 0.75]}
+                colors={['#cb0000', '#230000']}
+                locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
             >
@@ -100,7 +100,7 @@ export default function Header() {
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
-                        APP NAME
+                        LEGAL GUIDE
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
@@ -120,8 +120,8 @@ export default function Header() {
                 onBackdropPress={() => setSearchVisible(!searchVisible)}
             >
                 <LinearGradient style={styles.searchContainer}
-                    colors={['red', 'black']}
-                    locations={[0, 0.9]}
+                    colors={['#cb0000', '#230000']}
+                    locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                 >
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     searchContainer: {
         position: "absolute",
         top: RPH(14) - statusHeight,
-        height: RPH(6),
+        height: RPW(16),
         width: RPW(100),
         flexDirection: "row",
         alignItems: "center",

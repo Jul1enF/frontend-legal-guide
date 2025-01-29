@@ -13,7 +13,7 @@ export default function TopArticle(props) {
     // État pour afficher un carré noir quand l'image n'a pas fini de charger
 
     const [imgLoaded, setImgLoaded] = useState(false)
-    
+
 
 
 
@@ -53,7 +53,7 @@ export default function TopArticle(props) {
                     width={RPW(100)}
                     height={RPW(57)}
                     videoId={props.video_id}
-                    initialPlayerParams={{modestbranding : false}}
+                    initialPlayerParams={{ modestbranding: false }}
                 />
             </ View>
             }
@@ -62,8 +62,8 @@ export default function TopArticle(props) {
             <View style={styles.textContainer}>
                 <Text style={styles.title}>{props.title}</Text>
                 <LinearGradient
-                    colors={['#9dcb00', '#045400']}
-                    locations={[0.05, 1]}
+                    colors={['#cb0000', '#230000']}
+                    locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                     style={styles.gradientLine}
@@ -76,8 +76,8 @@ export default function TopArticle(props) {
 
             <Text style={styles.date}>Posté {lastingTime}</Text>
             <LinearGradient
-                colors={['#9dcb00', '#045400']}
-                locations={[0.05, 1]}
+                colors={['#cb0000', '#230000']}
+                locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.gradientLine2}
@@ -111,10 +111,12 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     title: {
-        color: "#19290a",
-        fontSize: RPW(6.3),
+        color: "#2a0000",
+        fontSize: RPW(7.3),
         fontWeight: "450",
         marginBottom: 12,
+        fontFamily : "Barlow-Medium",
+        letterSpacing : RPW(-0.08),
     },
     gradientLine: {
         width: "90%",
@@ -123,16 +125,20 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     subTitle: {
-        color: "#19290a",
-        fontSize: RPW(3.6),
+        color: "#2a0000",
+        fontSize: RPW(4.2),
         fontWeight: "400",
+        fontFamily : "Barlow-Regular",
+        letterSpacing : RPW(0.14),
     },
     date: {
-        color: "#19290a",
-        fontSize: RPW(3.2),
+        color: "#2a0000",
+        fontSize: RPW(3.6),
         marginLeft: RPW(3),
         marginBottom: 18,
-        fontWeight: "300"
+        fontWeight: "300",
+        fontFamily : "Barlow-Light",
+        letterSpacing : RPW(0.12),
     },
     gradientLine2: {
         width: "100%",

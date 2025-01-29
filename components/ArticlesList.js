@@ -84,7 +84,7 @@ export default function ArticlesList(props) {
 
 
     // État pour définir l'appelation de la première sous catégorie avec tous les articles de cette catégorie
-    const [firstSubCategory, setFirstSubCategory]=useState("Tous les articles de cette catégorie")
+    const [firstSubCategory, setFirstSubCategory] = useState("Tous les articles de cette catégorie")
 
     //  Fonction pour charger les articles et trier les sous catégories
 
@@ -150,13 +150,13 @@ export default function ArticlesList(props) {
                         sortedSubcategories = [{ name: "Toutes les recettes" }]
                         setChosenSubcategory("Toutes les recettes")
                         setFirstSubCategory("Toutes les recettes")
-                      break;
+                        break;
                     case 'tab2':
-                      console.log('tab2');
-                      break;
-                  }
+                        console.log('tab2');
+                        break;
+                }
 
-                  categoryArticles.map(e => {
+                categoryArticles.map(e => {
                     if (e.sub_title && !sortedSubcategories.some(j => j.name === e.sub_title)) {
                         sortedSubcategories.push({ name: e.sub_title })
                     }
@@ -194,14 +194,14 @@ export default function ArticlesList(props) {
 
         return (
             <LinearGradient
-                colors={['#9dcb00', '#045400']}
-                locations={[0.05, 1]}
+                colors={['#cb0000', '#230000']}
+                locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.gradientBtn1}
             >
                 <TouchableOpacity style={[styles.btn, chosenSubcategory === props.name && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress(props.name)}>
-                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#19290a" }]}>{props.name}</Text>
+                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#2a0000" }]}>{props.name}</Text>
                 </TouchableOpacity>
             </LinearGradient>
         )
@@ -222,7 +222,7 @@ export default function ArticlesList(props) {
 
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#19290a"]} progressBackgroundColor={"white"} tintColor={"#19290a"} onRefresh={() => {
+    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"white"} tintColor={"#2a0000"} onRefresh={() => {
         setIsRefreshing(true)
         setTimeout(() => setIsRefreshing(false), 1000)
         loadArticles()
@@ -262,7 +262,7 @@ export default function ArticlesList(props) {
 
 const styles = StyleSheet.create({
     body: {
-        backgroundColor: "#f9fff4",
+        backgroundColor: "#fffcfc",
         flex: 1,
     },
     gradientBtn1: {
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#d3dec8",
+        backgroundColor: "#e7e7e7",
         margin: 0,
         borderRadius: 10,
         paddingLeft: RPW(2),
