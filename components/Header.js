@@ -96,7 +96,7 @@ export default function Header() {
                 end={{ x: 1, y: 0.5 }}
             >
                 <View style={styles.menuIconContainer}>
-                    <FontAwesome name="navicon" style={styles.icon} size={RPW(7)} onPress={() => setMenuVisible(!menuVisible)} />
+                    <FontAwesome name="navicon" style={styles.icon} size={RPW(5.5)} onPress={() => setMenuVisible(!menuVisible)} />
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
@@ -104,7 +104,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
-                    <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPW(6.5)} onPress={() => setSearchVisible(!searchVisible)} />
+                    <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPW(5)} onPress={() => setSearchVisible(!searchVisible)} />
                 </View>
             </LinearGradient>
             <View style={styles.headerLigne}></View>
@@ -189,12 +189,12 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     body: {
-        height: RPH(14),
+        height: RPH(13),
         width: RPW(100),
     },
     header: {
         flex: 1,
-        paddingTop: RPH(4) - (statusHeight / 2),
+        paddingTop: RPH(5.5) - (statusHeight / 2),
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
@@ -215,8 +215,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: RPW(9.3),
         color: "white",
-        letterSpacing: 1.5,
+        letterSpacing: RPW(0.6),
         fontWeight: "600",
+        fontFamily : "Barlow-SemiBold",
+        lineHeight : RPW(9.3)
     },
     searchIconContainer: {
         width: "15%",
@@ -234,8 +236,8 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         position: "absolute",
-        top: RPH(14) - statusHeight,
-        height: RPW(16),
+        top: RPH(13) - statusHeight,
+        height: RPW(12.5),
         width: RPW(100),
         flexDirection: "row",
         alignItems: "center",
@@ -266,11 +268,11 @@ const styles = StyleSheet.create({
         margin: 0,
     },
     modalBody: {
-        height: RPH(75.6),
+        height: RPH(77.6),
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
-        top: RPH(13.9) - statusHeight,
+        top: RPH(12.9) - statusHeight,
     },
     modalBody2: {
         height: RPH(69.5),

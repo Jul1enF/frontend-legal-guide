@@ -39,7 +39,7 @@ export default function TabsLayout() {
             style={{ height: 150 }}
           ></LinearGradient>
         ),
-        tabBarStyle: { height: RPH(10.5), paddingBottom: RPH(2), paddingTop: RPH(0.5), width: RPW(100) },
+        tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0), width: RPW(100) },
         // Build / KeyboardAwareScrollView
         // tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
         // Expo Go / KeyboardAvoidingView

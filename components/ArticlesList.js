@@ -237,7 +237,7 @@ export default function ArticlesList(props) {
             <FlatList
                 data={subcategoriesList}
                 horizontal={true}
-                style={{ minHeight: RPW(16), maxHeight: RPW(16), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
+                style={{ minHeight: RPW(12.5), maxHeight: RPW(12.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
                 renderItem={({ item }) => {
                     return <SubcategoryItem {...item} />
                 }}

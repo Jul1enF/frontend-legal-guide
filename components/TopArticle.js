@@ -48,17 +48,6 @@ export default function TopArticle(props) {
             </View>}
 
 
-            {!props.img_link && <View style={{ width: RPW(100), height: RPW(57) }} pointerEvents="none" >
-                <YoutubePlayer
-                    width={RPW(100)}
-                    height={RPW(57)}
-                    videoId={props.video_id}
-                    initialPlayerParams={{ modestbranding: false }}
-                />
-            </ View>
-            }
-
-
             <View style={styles.textContainer}>
                 <Text style={styles.title}>{props.title}</Text>
                 <LinearGradient
@@ -129,7 +118,7 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.2),
         fontWeight: "400",
         fontFamily : "Barlow-Regular",
-        letterSpacing : RPW(0.14),
+        letterSpacing : RPW(0.1),
     },
     date: {
         color: "#2a0000",

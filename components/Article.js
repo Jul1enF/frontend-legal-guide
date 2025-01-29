@@ -19,12 +19,12 @@ export default function Article(props) {
         <View style={styles.body}>
             <View style={styles.row}>
                 <View style={styles.column1}>
-                    <Text numberOfLines={4} style={styles.title}>{props.title}</Text>
+                    <Text numberOfLines={5} style={styles.title}>{props.title}</Text>
                     {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
                     <Text style={styles.date}>Posté {lastingTime}</Text>
                 </View>
                 <View style={styles.column2}>
-                    {props.img_link && <View style={styles.imgContainer} >
+                    <View style={styles.imgContainer} >
                         <Image
                             style={[styles.image, {
                                 width: RPW(41 * props.img_zoom),
@@ -33,21 +33,17 @@ export default function Article(props) {
                             }]}
                             source={{ uri: props.img_link, }}
                         />
-                    </View>}
-
-                    {!props.img_link &&
-                        <View style={{ width: RPW(41), height: RPH(12.5) }} pointerEvents="none" overflow="hidden" justifyContent="center" >
-                            <YoutubePlayer
-                                width={RPW(41)}
-                                height={RPW(24)}
-                                videoId={props.video_id}
-                                initialPlayerParams={{ modestbranding: false }}
-                            />
-                        </View>
-                    }
+                    </View>
 
                 </View>
             </View>
+
+            {/* <View style={styles.row}>
+                {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
+                <Text style={styles.date}>Posté {lastingTime}</Text>
+            </View> */}
+
+
             <LinearGradient
                 colors={['#cb0000', '#230000']}
                 locations={[0.15, 1]}
@@ -75,15 +71,16 @@ const styles = StyleSheet.create({
     },
     column1: {
         width: RPW(51),
-        maxHeight: RPH(17),
         minHeight: RPH(12.5),
         justifyContent: "space-evenly",
     },
     title: {
         color: "#2a0000",
-        fontSize: RPW(5.2),
+        fontSize: RPW(5),
         fontWeight: "450",
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: "Barlow-Medium",
+        letterSpacing: RPW(-0.03),
     },
     subTitle: {
         color: "#2a0000",
@@ -100,13 +97,14 @@ const styles = StyleSheet.create({
         width: RPW(41),
         height: "auto",
         alignItems: "center",
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     imgContainer: {
         width: RPW(41),
-        height: RPW(22.5),
+        height: RPW(24.5),
         overflow: "hidden",
         justifyContent: "center",
+        backgroundColor: "yellow"
     },
     image: {
         height: RPW(1000),
