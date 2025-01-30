@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBa
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Icon from '@expo/vector-icons/Octicons';
 import Modal from "react-native-modal"
 
 import { useState, useEffect } from 'react'
@@ -104,7 +105,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
-                    <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPW(4.8)} onPress={() => setSearchVisible(!searchVisible)} />
+                    <Icon name="alert" style={styles.icon} size={RPW(5.5)} onPress={() => setSearchVisible(!searchVisible)} />
                 </View>
             </LinearGradient>
             <View style={styles.headerLigne}></View>

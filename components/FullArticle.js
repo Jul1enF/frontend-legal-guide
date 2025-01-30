@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fffcfc",
     },
     header: {
-        height: RPW(10.5),
+        height: RPW(9),
         width: RPW(100),
         paddingLeft: RPW(4),
         paddingRight: RPW(4),
