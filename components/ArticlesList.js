@@ -185,9 +185,9 @@ export default function ArticlesList(props) {
         setChosenSubcategory(subcategory)
 
         horizontalFlatlistRef.current.scrollToIndex({
-            animated : true,
+            animated: true,
             index,
-            viewOffset : RPW(5)
+            viewOffset: RPW(5)
         })
 
         if (subcategory === firstSubCategory) {
@@ -207,17 +207,11 @@ export default function ArticlesList(props) {
     const SubcategoryItem = (props) => {
 
         return (
-            <LinearGradient
-                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
-                locations={[0.15, 1]}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={styles.gradientBtn1}
-            >
-                <TouchableOpacity style={chosenSubcategory === props.name ? styles.btn2 : styles.btn1} onPress={() => subcategoryPress(props.name, props.index)} activeOpacity={1}>
-                    <Text style={chosenSubcategory === props.name ? styles.btnText2 : styles.btnText1}>{props.name}</Text>
+            <View style={styles.btnContainer}>
+                <TouchableOpacity style={[styles.btn, chosenSubcategory === props.name && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress(props.name, props.index)}>
+                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#2a0000" }]}>{props.name}</Text>
                 </TouchableOpacity>
-            </LinearGradient>
+            </View>
         )
     }
 
@@ -253,7 +247,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlistRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={{ minHeight: RPW(11.5), maxHeight: RPW(11.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
+                style={{ minHeight: RPW(12.5), maxHeight: RPW(12.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem {...item} index={index} />
                 }}
@@ -281,38 +275,27 @@ const styles = StyleSheet.create({
         backgroundColor: "#fffcfc",
         flex: 1,
     },
-    gradientBtn1: {
-        height: RPW(11.5),
-        marginRight: RPW(4)
+    btnContainer: {
+        height: RPW(8.3),
+        borderRadius: 8,
+        marginRight: RPW(2.3),
+        backgroundColor: "rgb(185, 0, 0)",
     },
-    btn1: {
+    btn: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#fffcfc",
+        backgroundColor: "#e7e7e7",
         margin: 0,
+        borderRadius: 8,
+        paddingLeft: RPW(2),
+        paddingRight: RPW(2),
     },
-    btn2: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: "#fffcfc",
-        marginBottom: 6,
-        paddingTop: 6,
-    },
-    btnText1: {
-        color: "#2a0000",
+    btnText: {
+        color: "white",
         // fontSize: RPW(4.65),
-        fontSize: RPW(4),
+        fontSize : RPW(4),
         fontWeight: "500",
-        // fontFamily: "Barlow-SemiBold",
-        // letterSpacing: RPW(0.2),
-    },
-    btnText2: {
-        color: "#2a0000",
-        // fontSize: RPW(4.65),
-        fontSize: RPW(4.2),
-        fontWeight: "700",
         // fontFamily: "Barlow-SemiBold",
         // letterSpacing: RPW(0.2),
     },
