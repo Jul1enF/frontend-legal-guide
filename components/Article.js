@@ -77,9 +77,10 @@ const styles = StyleSheet.create({
     title: {
         color: "#2a0000",
         fontSize: RPW(5.2),
+        lineHeight : RPW(5.7),
         fontWeight: "450",
-        fontFamily: "Barlow-Medium",
-        letterSpacing: RPW(-0.03),
+        fontFamily: "Barlow-SemiBold",
+        letterSpacing: RPW(-0.05),
     },
     row2: {
         flexDirection: "row",
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         color: "#2a0000",
         fontSize: RPW(3.4),
         fontWeight: "400",
-        marginRight : RPW(3),
+        marginRight : RPW(3.5),
         fontFamily : "Barlow-Regular",
         letterSpacing : RPW(0.1),
     },

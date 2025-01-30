@@ -96,7 +96,7 @@ export default function Header() {
                 end={{ x: 1, y: 0.5 }}
             >
                 <View style={styles.menuIconContainer}>
-                    <FontAwesome name="navicon" style={styles.icon} size={RPW(5.5)} onPress={() => setMenuVisible(!menuVisible)} />
+                    <FontAwesome name="navicon" style={styles.icon} size={RPW(5.3)} onPress={() => setMenuVisible(!menuVisible)} />
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
@@ -104,7 +104,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
-                    <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPW(5)} onPress={() => setSearchVisible(!searchVisible)} />
+                    <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPW(4.8)} onPress={() => setSearchVisible(!searchVisible)} />
                 </View>
             </LinearGradient>
             <View style={styles.headerLigne}></View>
@@ -178,7 +178,7 @@ export default function Header() {
                             <Text style={styles.link}>Notifications</Text>
                         </TouchableOpacity>
                     } */}
-                    {user.token && <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => logoutPress()}>
+                    {user.jwtToken && <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => logoutPress()}>
                         <Text style={styles.link}>Se déconnecter</Text>
                     </TouchableOpacity>}
                 </View>

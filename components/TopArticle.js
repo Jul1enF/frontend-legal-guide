@@ -95,16 +95,16 @@ const styles = StyleSheet.create({
         paddingLeft: RPW(3),
         paddingTop: RPW(3),
         paddingRight: RPW(3),
-        maxHeight: 160,
         overflow: "hidden",
         marginBottom: 12,
     },
     title: {
         color: "#2a0000",
         fontSize: RPW(7.3),
+        lineHeight : RPW(7.3),
         fontWeight: "450",
         marginBottom: 12,
-        fontFamily : "Barlow-Medium",
+        fontFamily : "Barlow-SemiBold",
         letterSpacing : RPW(-0.08),
     },
     gradientLine: {

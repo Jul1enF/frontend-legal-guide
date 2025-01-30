@@ -59,9 +59,9 @@ export default function ArticlesList(props) {
     //     const state = await NetInfo.fetch()
 
     //     // Si utilisateur pas inscrit ou connecté
-    //     if (!user.token || !state.isConnected) { return }
+    //     if (!user.jwtToken || !state.isConnected) { return }
 
-    //     const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.token)
+    //     const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
 
     //     if (!pushTokenInfos) {
     //         dispatch(logout())
