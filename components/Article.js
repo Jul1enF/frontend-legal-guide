@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
         lineHeight : RPW(4.5),
         fontWeight: "400",
         marginRight : RPW(3.5),
-        fontFamily : "Barlow-Medium",
-        letterSpacing : RPW(0.12),
+        fontFamily : "Barlow-SemiBold",
+        letterSpacing : RPW(0.16),
     },
     date: {
         color: "#2a0000",

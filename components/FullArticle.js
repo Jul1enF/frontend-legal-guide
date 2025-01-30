@@ -272,7 +272,7 @@ export default function FullArticle(props) {
                     </LinearGradient>
                 </View> */}
 
-                {article.author && <Text style={[styles.date, {marginBottom : 30}]}>par {article.author}</Text>}
+                {article.author && <Text style={[styles.date, {marginBottom : RPW(7)}]}>par {article.author}</Text>}
 
                 {article.text && <Text style={styles.text}>{article.text}</Text>}
 
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(-0.05),
     },
     gradientLine: {
-        width: "10%",
+        width: "30%",
         height: 3.5,
         marginBottom: 15,
         marginLeft : RPW(1),
@@ -460,6 +460,7 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.2),
         fontWeight: "500",
         marginBottom: 25,
+        marginLeft : RPW(0),
         fontFamily: "Barlow-Medium",
         letterSpacing: RPW(0.1),
     },
