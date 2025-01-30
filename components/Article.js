@@ -92,16 +92,18 @@ const styles = StyleSheet.create({
         alignItems : "center"
     },
     subTitle: {
-        color: "#2a0000",
-        fontSize: RPW(3.4),
+        color: "rgb(185, 0, 0)",
+        fontSize: RPW(4),
+        lineHeight : RPW(4.5),
         fontWeight: "400",
         marginRight : RPW(3.5),
-        fontFamily : "Barlow-Regular",
-        letterSpacing : RPW(0.1),
+        fontFamily : "Barlow-Medium",
+        letterSpacing : RPW(0.12),
     },
     date: {
         color: "#2a0000",
         fontSize: RPW(3.4),
+        lineHeight : RPW(4.5),
         fontWeight: "300",
         fontFamily : "Barlow-Light",
         letterSpacing : RPW(0.12),

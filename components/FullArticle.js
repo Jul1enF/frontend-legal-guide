@@ -230,8 +230,12 @@ export default function FullArticle(props) {
 
             <ScrollView style={styles.body} contentContainerStyle={styles.contentBody}>
                 <Text style={styles.categoryTitle}>{props.categoryNameSingular}</Text>
+
+
+                <Text style={styles.subTitle}>{article.sub_title} </Text>
                 <Text style={styles.title}>{article.title}</Text>
-                {article.sub_title && <Text style={styles.subTitle}>{article.sub_title}</Text>}
+
+
                 <LinearGradient
                     colors={['#cb0000', '#230000']}
                     locations={[0.15, 1]}
@@ -240,7 +244,7 @@ export default function FullArticle(props) {
                     style={styles.gradientLine}
                 >
                 </LinearGradient>
-                <Text style={styles.date}>Posté le {date} à {hour}</Text>
+                <Text style={styles.date}>Publié le {date} à {hour}</Text>
 
                 {article.img_link &&
                     <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }]} >
@@ -256,7 +260,7 @@ export default function FullArticle(props) {
 
 
 
-                <View style={styles.lineContainer}>
+                {/* <View style={styles.lineContainer}>
                     {article.author && <Text style={styles.date}>par {article.author}</Text>}
                     <LinearGradient
                         colors={['#cb0000', '#230000']}
@@ -266,7 +270,9 @@ export default function FullArticle(props) {
                         style={styles.gradientLine2}
                     >
                     </LinearGradient>
-                </View>
+                </View> */}
+
+                {article.author && <Text style={[styles.date, {marginBottom : 30}]}>par {article.author}</Text>}
 
                 {article.text && <Text style={styles.text}>{article.text}</Text>}
 
@@ -367,41 +373,44 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.5)
     },
     contentBody: {
-        paddingTop: RPH(1),
+        paddingTop: RPH(2),
         paddingLeft: RPW(1),
         paddingRight: RPW(1),
         paddingBottom: 10,
     },
     categoryTitle: {
-        color: '#cb0000',
-        fontSize: RPW(7.5),
-        fontWeight: "600",
-        marginBottom: RPW(2.5),
-        // fontFamily : "Barlow-Bold",
-        // letterSpacing : RPW(0.2)
+        color: "#2a0000",
+        fontSize: RPW(5.5),
+        lineHeight: RPW(5.5),
+        fontWeight: "450",
+        marginBottom: 20,
+        fontFamily: "Barlow-Medium",
+        letterSpacing: RPW(-0.0),
+    },
+    subTitle: {
+        color: "rgb(185, 0, 0)",
+        fontSize: RPW(7.3),
+        lineHeight: RPW(7.5),
+        marginRight: RPW(3),
+        fontWeight: "400",
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
+        marginBottom: 8,
     },
     title: {
         color: "#2a0000",
-        fontSize: RPW(7.8),
-        lineHeight : RPW(9),
-        fontWeight: "600",
-        marginBottom: 18,
-        fontFamily : "Barlow-Bold",
-        letterSpacing : RPW(-0.08),
-        wordSpacing : 20
-    },
-    subTitle: {
-        color: "#2a0000",
-        fontSize: RPW(4.2),
-        fontWeight: "500",
+        fontSize: RPW(7.3),
+        lineHeight: RPW(7.5),
+        fontWeight: "450",
         marginBottom: 15,
-        fontFamily : "Barlow-SemiBold",
-        letterSpacing : RPW(0.08),
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(-0.05),
     },
     gradientLine: {
-        width: "83%",
-        height: 4.5,
-        marginBottom: 18,
+        width: "10%",
+        height: 3.5,
+        marginBottom: 15,
+        marginLeft : RPW(1),
         borderRadius: 15,
     },
     date: {
@@ -409,8 +418,8 @@ const styles = StyleSheet.create({
         fontSize: RPW(3.2),
         fontWeight: "450",
         marginBottom: 12,
-        fontFamily : "Barlow-Regular",
-        letterSpacing : RPW(0.15),
+        fontFamily: "Barlow-Regular",
+        letterSpacing: RPW(0.15),
     },
     imgContainer: {
         width: RPW(98),
@@ -438,8 +447,8 @@ const styles = StyleSheet.create({
         fontSize: RPW(3.2),
         fontWeight: "450",
         marginBottom: 15,
-        fontFamily : "Barlow-Regular",
-        letterSpacing : RPW(0.15),
+        fontFamily: "Barlow-Regular",
+        letterSpacing: RPW(0.15),
     },
     gradientLine2: {
         width: "83%",
@@ -451,8 +460,8 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.2),
         fontWeight: "500",
         marginBottom: 25,
-        fontFamily : "Barlow-Medium",
-        letterSpacing : RPW(0.1),
+        fontFamily: "Barlow-Medium",
+        letterSpacing: RPW(0.1),
     },
     btnContainer: {
         marginTop: 35,
