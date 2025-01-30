@@ -50,17 +50,19 @@ export default function TopArticle(props) {
 
             <View style={styles.textContainer}>
 
-                <Text style={styles.subTitle}>{props.sub_title}</Text>
-                <LinearGradient
-                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
+                <Text style={styles.titles}>
+                    <Text style={styles.subTitle}>{props.sub_title}  </Text>
+                    <Text style={styles.title}>{props.title}</Text>
+                </Text>
+
+                {/* <LinearGradient
+                    colors={['#cb0000', '#230000']}
                     locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                     style={styles.gradientLine}
                 >
-                </LinearGradient>
-
-                <Text style={styles.title}>{props.title}</Text>
+                </LinearGradient> */}
 
 
                 <Text style={styles.date}>Publié {lastingTime}</Text>
@@ -68,7 +70,7 @@ export default function TopArticle(props) {
 
 
             <LinearGradient
-                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
+                colors={['#cb0000', '#230000']}
                 locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
@@ -101,22 +103,8 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         marginBottom: 12,
     },
-    subTitle: {
-        color: "rgb(185, 0, 0)",
-        width: "auto",
-        fontSize: RPW(7.3),
-        lineHeight: RPW(7.3),
-        fontWeight: "400",
-        fontFamily: "Barlow-Bold",
-        letterSpacing: RPW(0.1),
-        marginBottom : 11,
-    },
-    gradientLine: {
-        width: "30%",
-        height: 3.5,
-        marginBottom: 10,
-        marginLeft: RPW(0),
-        borderRadius: 15,
+    titles : {
+        marginBottom : 10,
     },
     title: {
         color: "#2a0000",
@@ -126,6 +114,21 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
+    },
+    gradientLine: {
+        width: "90%",
+        height: 5,
+        marginBottom: 15,
+        borderRadius: 15,
+    },
+    subTitle: {
+        color: "rgb(185, 0, 0)",
+        fontSize: RPW(7.3),
+        lineHeight: RPW(7.3),
+        marginRight: RPW(3),
+        fontWeight: "400",
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
     },
     date: {
         color: "#2a0000",
