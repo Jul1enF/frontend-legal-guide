@@ -90,7 +90,7 @@ export default function Header() {
         <View style={styles.body}>
             <StatusBar translucent={true} backgroundColor="transparent" barStyle="light" />
             <LinearGradient style={styles.header}
-                colors={['#cb0000', '#230000']}
+                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                 locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
@@ -120,7 +120,7 @@ export default function Header() {
                 onBackdropPress={() => setSearchVisible(!searchVisible)}
             >
                 <LinearGradient style={styles.searchContainer}
-                    colors={['#cb0000', '#230000']}
+                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                     locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}

@@ -174,7 +174,7 @@ export default function FullArticle(props) {
         modifications = (
             <View style={styles.btnContainer}>
                 <LinearGradient
-                    colors={['#cb0000', '#230000']}
+                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                     locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
@@ -185,7 +185,7 @@ export default function FullArticle(props) {
                     </TouchableOpacity>
                 </LinearGradient>
                 <LinearGradient
-                    colors={['#cb0000', '#230000']}
+                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                     locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
@@ -210,7 +210,7 @@ export default function FullArticle(props) {
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
             <LinearGradient
-                colors={['#cb0000', '#230000']}
+                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                 locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
@@ -237,7 +237,7 @@ export default function FullArticle(props) {
 
 
                 <LinearGradient
-                    colors={['#cb0000', '#230000']}
+                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                     locations={[0.15, 1]}
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
@@ -306,7 +306,7 @@ export default function FullArticle(props) {
                     <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cet article ?</Text>
                     <View style={styles.btnContainer}>
                         <LinearGradient
-                            colors={['#cb0000', '#230000']}
+                            colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                             locations={[0.15, 1]}
                             start={{ x: 0, y: 0.5 }}
                             end={{ x: 1, y: 0.5 }}
@@ -317,7 +317,7 @@ export default function FullArticle(props) {
                             </TouchableOpacity>
                         </LinearGradient>
                         <LinearGradient
-                            colors={['#cb0000', '#230000']}
+                            colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
                             locations={[0.15, 1]}
                             start={{ x: 0, y: 0.5 }}
                             end={{ x: 1, y: 0.5 }}
