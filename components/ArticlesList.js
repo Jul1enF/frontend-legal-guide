@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar } from 'react-native'
 // import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, useRef } from 'react'
 
 import { RPW, RPH } from "../modules/dimensions"
 
@@ -173,10 +173,22 @@ export default function ArticlesList(props) {
 
 
 
+
+    // Useref pour le scroll de la Flatlist horizontale avec les sous catégories
+    const horizontalFlatlistRef = useRef(null)
+
+
+
     // Fonction appelée au click sur une sous catégorie
 
-    const subcategoryPress = (subcategory) => {
+    const subcategoryPress = (subcategory, index) => {
         setChosenSubcategory(subcategory)
+
+        horizontalFlatlistRef.current.scrollToIndex({
+            animated : true,
+            index,
+            viewOffset : RPW(5)
+        })
 
         if (subcategory === firstSubCategory) {
             setArticlesToDisplay(thisCategoryArticles)
@@ -185,6 +197,8 @@ export default function ArticlesList(props) {
             setArticlesToDisplay(thisCategoryArticles.filter(e => e.sub_title == subcategory))
         }
     }
+
+
 
 
 
@@ -200,8 +214,8 @@ export default function ArticlesList(props) {
                 end={{ x: 1, y: 0.5 }}
                 style={styles.gradientBtn1}
             >
-                <TouchableOpacity style={[styles.btn, chosenSubcategory === props.name && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress(props.name)}>
-                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#2a0000" }]}>{props.name}</Text>
+                <TouchableOpacity style={chosenSubcategory === props.name ? styles.btn2 : styles.btn1} onPress={() => subcategoryPress(props.name, props.index)} activeOpacity={1}>
+                    <Text style={chosenSubcategory === props.name ? styles.btnText2 : styles.btnText1}>{props.name}</Text>
                 </TouchableOpacity>
             </LinearGradient>
         )
@@ -236,10 +250,12 @@ export default function ArticlesList(props) {
             <StatusBar translucent={true} barStyle="light" />
             <FlatList
                 data={subcategoriesList}
+                ref={horizontalFlatlistRef}
                 horizontal={true}
+                showsHorizontalScrollIndicator={false}
                 style={{ minHeight: RPW(12.5), maxHeight: RPW(12.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
-                renderItem={({ item }) => {
-                    return <SubcategoryItem {...item} />
+                renderItem={({ item, index }) => {
+                    return <SubcategoryItem {...item} index={index} />
                 }}
                 contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2) }}
             />
@@ -266,25 +282,37 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     gradientBtn1: {
-        height: RPW(8.3),
-        borderRadius: 8,
-        marginRight: RPW(2.3)
+        height: RPW(12.5),
+        marginRight: RPW(4)
     },
-    btn: {
+    btn1: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#e7e7e7",
+        backgroundColor: "#fffcfc",
         margin: 0,
-        borderRadius: 8,
-        paddingLeft: RPW(2),
-        paddingRight: RPW(2),
     },
-    btnText: {
-        color: "white",
+    btn2: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "#fffcfc",
+        marginBottom: 6,
+        paddingTop: 6,
+    },
+    btnText1: {
+        color: "#2a0000",
         // fontSize: RPW(4.65),
-        fontSize : RPW(4),
+        fontSize: RPW(4),
         fontWeight: "500",
+        // fontFamily: "Barlow-SemiBold",
+        // letterSpacing: RPW(0.2),
+    },
+    btnText2: {
+        color: "#2a0000",
+        // fontSize: RPW(4.65),
+        fontSize: RPW(4.2),
+        fontWeight: "700",
         // fontFamily: "Barlow-SemiBold",
         // letterSpacing: RPW(0.2),
     },
