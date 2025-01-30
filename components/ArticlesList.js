@@ -253,7 +253,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlistRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={{ minHeight: RPW(12.5), maxHeight: RPW(12.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
+                style={{ minHeight: RPW(11.5), maxHeight: RPW(11.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem {...item} index={index} />
                 }}
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     gradientBtn1: {
-        height: RPW(12.5),
+        height: RPW(11.5),
         marginRight: RPW(4)
     },
     btn1: {
