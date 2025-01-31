@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
         height: RPW(8.3),
         borderRadius: 8,
         marginRight: RPW(2.3),
-        backgroundColor: "rgb(185, 0, 0)",
+        backgroundColor: "#0c0000",
     },
     btn: {
         flex: 1,

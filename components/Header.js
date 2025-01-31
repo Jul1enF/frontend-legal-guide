@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBa
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Icon from '@expo/vector-icons/Octicons';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import Modal from "react-native-modal"
 
 import { useState, useEffect } from 'react'
@@ -91,7 +91,7 @@ export default function Header() {
         <View style={styles.body}>
             <StatusBar translucent={true} backgroundColor="transparent" barStyle="light" />
             <LinearGradient style={styles.header}
-                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
+                colors={["#0c0000", "#0c0000"]}
                 locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
@@ -105,7 +105,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
-                    <Icon name="alert" style={styles.icon} size={RPW(5.5)} onPress={() => setSearchVisible(!searchVisible)} />
+                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => setSearchVisible(!searchVisible)} />
                 </View>
             </LinearGradient>
             <View style={styles.headerLigne}></View>

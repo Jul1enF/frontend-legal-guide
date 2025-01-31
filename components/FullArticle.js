@@ -210,7 +210,7 @@ export default function FullArticle(props) {
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
             <LinearGradient
-                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
+                colors={["#0c0000", "#0c0000"]}
                 locations={[0.15, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
