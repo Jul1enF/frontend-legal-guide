@@ -6,8 +6,11 @@ export default function RootLayout() {
             headerShown: false,
           
         }}>
-            <Stack.Screen name="tab2" options={{
-                title : "Tab 2",
+            <Stack.Screen name="advices-article/[_id]" options={{
+                title : "Conseil",
+            }} />
+            <Stack.Screen name="advices" options={{
+                title : "Conseils",
             }} />
         </Stack>
     )

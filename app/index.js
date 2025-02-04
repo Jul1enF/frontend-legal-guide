@@ -8,7 +8,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Index !</Text>
-      <TouchableOpacity onPress={()=>router.push('/tab1')}>
+      <TouchableOpacity onPress={()=>router.push('/advices')}>
         <Text>Go to Tabs</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />

@@ -7,7 +7,7 @@ import ArticlesList from '../../../components/ArticlesList';
 export default function App() {
   return (
     <View style={styles.container}>
-      <ArticlesList category="tab1" />
+      <ArticlesList category="advices" />
     </View>
   );
 }

@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <FullArticle category="tab1" categoryName="Tab 1" categoryNameSingular="Tab 1" _id={_id}/>
+      <FullArticle category="advices" categoryName="Conseils" categoryNameSingular="Conseil" _id={_id}/>
     </View>
   );
 }

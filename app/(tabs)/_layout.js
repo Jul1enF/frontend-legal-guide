@@ -17,9 +17,9 @@ export default function TabsLayout() {
           let color = ""
           color = focused ? 'white' : "grey"
 
-          if (route.name === '(tab1)') {
+          if (route.name === '(advices)') {
             iconName = 'square-outline';
-          } else if (route.name === '(tab2)') {
+          } else if (route.name === '(press)') {
             iconName = 'triangle-outline';
           }
 
@@ -47,11 +47,11 @@ export default function TabsLayout() {
         header: (props) => <Header {...props} />,
       })}
     >
-      <Tabs.Screen name="(tab1)" options={{
-        title: "Tab 1"
+      <Tabs.Screen name="(advices)" options={{
+        title: "Conseils"
       }} />
-      <Tabs.Screen name="(tab2)" options={{
-        title: "Tab 2",
+      <Tabs.Screen name="(press)" options={{
+        title: "Presse",
       }} />
       <Tabs.Screen name="(pages)" options={{
         tabBarItemStyle: { display: "none" },

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar, Image } from 'react-native'
 // import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
 import { useCallback, useState, useEffect, useRef } from 'react'
 
@@ -15,6 +15,8 @@ import { logout, changePushToken } from '../reducers/user'
 import { fillWithArticles } from '../reducers/articles'
 
 import NetInfo from '@react-native-community/netinfo'
+
+import { WebView } from 'react-native-webview';
 
 
 
@@ -146,19 +148,21 @@ export default function ArticlesList(props) {
                 let sortedSubcategories
 
                 switch (props.category) {
-                    case 'tab1':
-                        sortedSubcategories = [{ name: "Toutes les recettes" }]
-                        setChosenSubcategory("Toutes les recettes")
-                        setFirstSubCategory("Toutes les recettes")
+                    case 'advices':
+                        sortedSubcategories = [{ name: "Tous les conseils" }]
+                        setChosenSubcategory("Tous les conseils")
+                        setFirstSubCategory("Tous les conseils")
                         break;
-                    case 'tab2':
-                        console.log('tab2');
+                    case 'press':
+                        sortedSubcategories = [{ name: "Tous les articles" }]
+                        setChosenSubcategory("Tous les articles")
+                        setFirstSubCategory("Tous les articles");
                         break;
                 }
 
                 categoryArticles.map(e => {
-                    if (e.sub_title && !sortedSubcategories.some(j => j.name === e.sub_title)) {
-                        sortedSubcategories.push({ name: e.sub_title })
+                    if (e.sub_category && !sortedSubcategories.some(j => j.name === e.sub_category)) {
+                        sortedSubcategories.push({ name: e.sub_category })
                     }
                 })
                 setSubcategoriesList(sortedSubcategories)
@@ -194,7 +198,7 @@ export default function ArticlesList(props) {
             setArticlesToDisplay(thisCategoryArticles)
         }
         else {
-            setArticlesToDisplay(thisCategoryArticles.filter(e => e.sub_title == subcategory))
+            setArticlesToDisplay(thisCategoryArticles.filter(e => e.sub_category == subcategory))
         }
     }
 
@@ -238,7 +242,6 @@ export default function ArticlesList(props) {
 
 
 
-
     return (
         <View style={styles.body} >
             <StatusBar translucent={true} barStyle="light" />
@@ -247,7 +250,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlistRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={{ minHeight: RPW(12.5), maxHeight: RPW(12.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
+                style={{ minHeight: RPW(11.5), maxHeight: RPW(11.5), minWidth: RPW(100), borderBottomColor: "#878787", borderBottomWidth: 0.5 }}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem {...item} index={index} />
                 }}
@@ -258,7 +261,7 @@ export default function ArticlesList(props) {
                 refreshControl={refreshComponent}
                 renderItem={({ item, index }) => {
                     if (index === 0 || Number.isInteger((index) / 3)) {
-                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} /></TouchableOpacity>
+                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} index={index} /></TouchableOpacity>
                     }
                     else {
                         return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><Article {...item} /></TouchableOpacity>
@@ -285,7 +288,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#e7e7e7",
+        backgroundColor: "#dfdfdf",
         margin: 0,
         borderRadius: 8,
         paddingLeft: RPW(2),
@@ -294,7 +297,7 @@ const styles = StyleSheet.create({
     btnText: {
         color: "white",
         // fontSize: RPW(4.65),
-        fontSize : RPW(4),
+        fontSize: RPW(4),
         fontWeight: "500",
         // fontFamily: "Barlow-SemiBold",
         // letterSpacing: RPW(0.2),

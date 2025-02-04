@@ -16,12 +16,13 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import YoutubePlayer from "react-native-youtube-iframe";
 import moment from 'moment/min/moment-with-locales'
 
+import requires from "../modules/imageRequires";
+
 
 export default function FullArticle(props) {
 
     const { category } = props
     const { _id } = props
-    console.log(_id)
 
     const dispatch = useDispatch()
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
@@ -53,7 +54,7 @@ export default function FullArticle(props) {
 
 
 
-    // useFocusEffect pour vérifier si l'article est en favoris, naviguer vers recette si l'article test a été supprimé ou si un nouveau a été mis en test
+    // useFocusEffect pour vérifier si l'article est en favoris, naviguer vers la liste d'articles si l'article test a été supprimé ou si un nouveau a été mis en test
 
     useFocusEffect(useCallback(() => {
         // Si utilisateur pas connecté
@@ -122,7 +123,7 @@ export default function FullArticle(props) {
 
         dispatch(addTestArticle({
             title: article.title,
-            sub_title: article.sub_title,
+            sub_category: article.sub_category,
             text: article.text,
             video_id: article.video_id,
             category: article.category,
@@ -206,6 +207,36 @@ export default function FullArticle(props) {
 
     if (!article) { return <View></View> }
 
+
+
+
+    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
+
+    const onlineImage = article.img_link.includes('https') ? true : false
+
+    let image
+    if (onlineImage) {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(100 * article.img_zoom),
+                marginTop: RPW(article.img_margin_top * 1),
+                marginLeft: RPW(article.img_margin_left * 1)
+            }]}
+            source={{ uri: article.img_link }}
+        />
+    } else {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(100 * article.img_zoom),
+                marginTop: RPW(article.img_margin_top * 1),
+                marginLeft: RPW(article.img_margin_left * 1)
+            }]}
+            source={requires[article.img_link]}
+        />
+    }
+
+
+
     return (
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
@@ -232,7 +263,7 @@ export default function FullArticle(props) {
                 <Text style={styles.categoryTitle}>{props.categoryNameSingular}</Text>
 
 
-                <Text style={styles.subTitle}>{article.sub_title} </Text>
+                <Text style={styles.subTitle}>{article.sub_category} </Text>
                 <Text style={styles.title}>{article.title}</Text>
 
 
@@ -247,15 +278,8 @@ export default function FullArticle(props) {
                 <Text style={styles.date}>Publié le {date} à {hour}</Text>
 
                 {article.img_link &&
-                    <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }]} >
-                        <Image
-                            style={[styles.image, {
-                                width: RPW(98 * article.img_zoom),
-                                marginTop: RPW(article.img_margin_top * 0.98),
-                                marginLeft: RPW(article.img_margin_left * 0.98)
-                            }]}
-                            source={{ uri: article.img_link }}
-                        />
+                    <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }, {height : RPW(100 * article.img_ratio)}]} >
+                      {image}
                     </View>}
 
 
@@ -272,9 +296,11 @@ export default function FullArticle(props) {
                     </LinearGradient>
                 </View> */}
 
-                {article.author && <Text style={[styles.date, {marginBottom : RPW(7)}]}>par {article.author}</Text>}
+                {article.author && <Text style={[styles.date, { marginBottom: RPW(7) }]}>par {article.author}</Text>}
 
-                {article.text && <Text style={styles.text}>{article.text}</Text>}
+                {article.text1 && <Text style={styles.text1}>{article.text1}</Text>}
+
+                {article.text2 && <Text style={styles.text2}>{article.text2}</Text>}
 
                 {article.video_id &&
                     <View style={[styles.youtubeContainer, !article.author && { marginBottom: 25 }]}>
@@ -410,7 +436,7 @@ const styles = StyleSheet.create({
         width: "30%",
         height: 3.5,
         marginBottom: 15,
-        marginLeft : RPW(1),
+        marginLeft: RPW(1),
         borderRadius: 15,
     },
     date: {
@@ -422,11 +448,11 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.15),
     },
     imgContainer: {
-        width: RPW(98),
-        height: RPW(54),
+        width: RPW(100),
         overflow: "hidden",
         justifyContent: "center",
         marginBottom: 12,
+        marginLeft : RPW(-1)
     },
     image: {
         height: RPW(1000),
@@ -455,12 +481,21 @@ const styles = StyleSheet.create({
         height: 4,
         borderRadius: 15,
     },
-    text: {
+    text1: {
+        color: "#2a0000",
+        fontSize: RPW(4.8),
+        fontWeight: "500",
+        marginBottom: 25,
+        marginLeft: RPW(0),
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
+    },
+    text2: {
         color: "#2a0000",
         fontSize: RPW(4.2),
         fontWeight: "500",
         marginBottom: 25,
-        marginLeft : RPW(0),
+        marginLeft: RPW(0),
         fontFamily: "Barlow-Medium",
         letterSpacing: RPW(0.1),
     },

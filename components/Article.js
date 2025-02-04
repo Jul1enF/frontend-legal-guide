@@ -6,9 +6,36 @@ import { useState, useEffect } from "react";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 import moment from 'moment/min/moment-with-locales'
+import requires from '../modules/imageRequires';
 
 
 export default function Article(props) {
+
+    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
+
+    const onlineImage = props.img_link.includes('https') ? true : false
+
+
+    let image
+    if (onlineImage) {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(41 * props.img_zoom),
+                marginTop: RPW(props.img_margin_top * 0.41),
+                marginLeft: RPW(props.img_margin_left * 0.41)
+            }]}
+            source={{ uri: props.img_link, }}
+        />
+    } else {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(41 * props.img_zoom),
+                marginTop: RPW(props.img_margin_top * 0.41),
+                marginLeft: RPW(props.img_margin_left * 0.41)
+            }]}
+            source={requires[props.img_link]}
+        />
+    }
 
 
 
@@ -19,18 +46,11 @@ export default function Article(props) {
         <View style={styles.body}>
             <View style={styles.row1}>
                 <View style={styles.column1}>
-                    <Text numberOfLines={5} style={styles.title}>{props.title}</Text>
+                    <Text style={styles.title}>{props.title}</Text>
                 </View>
                 <View style={styles.column2}>
-                    <View style={styles.imgContainer} >
-                        <Image
-                            style={[styles.image, {
-                                width: RPW(41 * props.img_zoom),
-                                marginTop: RPW(props.img_margin_top * 0.41),
-                                marginLeft: RPW(props.img_margin_left * 0.41)
-                            }]}
-                            source={{ uri: props.img_link, }}
-                        />
+                    <View style={[styles.imgContainer, {height : RPW(41 * props.img_ratio)}]} >
+                    {image}
                     </View>
 
                 </View>
@@ -38,7 +58,7 @@ export default function Article(props) {
 
             <View style={styles.row2}>
                 <View style={styles.postInfos}>
-                    {props.sub_title && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_title}</Text>}
+                    {props.sub_category && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_category}</Text>}
                     <Text style={styles.date}>{lastingTime}</Text>
                 </View>
             </View>
@@ -59,8 +79,8 @@ export default function Article(props) {
 const styles = StyleSheet.create({
     body: {
         width: RPW(100),
-        paddingTop: 4,
-        marginBottom: 10,
+        paddingTop: 8,
+        marginBottom: 0,
         paddingRight: RPW(3),
         paddingLeft: RPW(3),
     },
@@ -71,13 +91,13 @@ const styles = StyleSheet.create({
     },
     column1: {
         width: RPW(50),
-        minHeight: RPW(24.5),
+        minHeight: RPW(14.5),
         justifyContent: "center",
     },
     title: {
         color: "#2a0000",
-        fontSize: RPW(5.2),
-        lineHeight : RPW(5.7),
+        fontSize: RPW(5.8),
+        lineHeight: RPW(5.7),
         fontWeight: "450",
         fontFamily: "Barlow-SemiBold",
         letterSpacing: RPW(-0.05),
@@ -87,26 +107,26 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 13,
     },
-    postInfos : {
-        flexDirection : "row",
-        alignItems : "center"
+    postInfos: {
+        flexDirection: "row",
+        alignItems: "center"
     },
     subTitle: {
         color: "rgb(185, 0, 0)",
-        fontSize: RPW(4),
-        lineHeight : RPW(4.5),
+        fontSize: RPW(4.2),
+        lineHeight: RPW(4.5),
         fontWeight: "400",
-        marginRight : RPW(3.5),
-        fontFamily : "Barlow-SemiBold",
-        letterSpacing : RPW(0.16),
+        marginRight: RPW(3.5),
+        fontFamily: "Barlow-SemiBold",
+        letterSpacing: RPW(0.16),
     },
     date: {
         color: "#2a0000",
-        fontSize: RPW(3.4),
-        lineHeight : RPW(4.5),
+        fontSize: RPW(3.6),
+        lineHeight: RPW(4.5),
         fontWeight: "300",
-        fontFamily : "Barlow-Light",
-        letterSpacing : RPW(0.12),
+        fontFamily: "Barlow-Light",
+        letterSpacing: RPW(0.12),
     },
     column2: {
         width: RPW(41),
@@ -116,7 +136,6 @@ const styles = StyleSheet.create({
     },
     imgContainer: {
         width: RPW(41),
-        height: RPW(24.5),
         overflow: "hidden",
         justifyContent: "center",
     },

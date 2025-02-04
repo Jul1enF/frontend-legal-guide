@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import YoutubePlayer from "react-native-youtube-iframe";
 
 import moment from 'moment/min/moment-with-locales'
+import requires from '../modules/imageRequires';
 
 
 export default function TopArticle(props) {
@@ -15,11 +16,38 @@ export default function TopArticle(props) {
     const [imgLoaded, setImgLoaded] = useState(false)
 
 
+    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
+
+    const onlineImage = props.img_link.includes('https') ? true : false
+
+
+    let image
+    if (onlineImage) {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(100 * props.img_zoom),
+                marginTop: RPW(props.img_margin_top),
+                marginLeft: RPW(props.img_margin_left)
+            },]}
+            source={{ uri: props.img_link, }}
+            onLoadEnd={() => setImgLoaded(true)}
+        />
+    }else {
+        image =     <Image
+        style={[styles.image, {
+            width: RPW(100 * props.img_zoom),
+            marginTop: RPW(props.img_margin_top),
+            marginLeft: RPW(props.img_margin_left)
+        },]}
+        source={requires[props.img_link]}
+        onLoadEnd={() => setImgLoaded(true)}
+    />
+    }
 
 
     // Si pas de sous catégorie / Sous titre, affichage du début du texte
     let optionnalSubTitle = ""
-    if (!props.sub_title && props.text) {
+    if (!props.sub_category && props.text) {
         optionnalSubTitle = <Text numberOfLines={3} style={styles.subTitle}>{props.text}</Text>
     }
 
@@ -27,31 +55,21 @@ export default function TopArticle(props) {
     const lastingTime = moment(props.createdAt).fromNow()
 
     return (
-        <View style={styles.body}>
+        <View style={[styles.body, props.index === 0 && {paddingTop : 0}]}>
 
-            {props.img_link && <View style={styles.imgContainer} >
+            {props.img_link && <View style={[styles.imgContainer, { height: RPW(100*props.img_ratio)}]} >
 
                 {
                     !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#f9fff4" }]}></View>
                 }
-
-                <Image
-                    style={[styles.image, {
-                        width: RPW(100 * props.img_zoom),
-                        marginTop: RPW(props.img_margin_top),
-                        marginLeft: RPW(props.img_margin_left)
-                    },]}
-                    source={{ uri: props.img_link, }}
-                    // onLoadStart={() => setImgLoaded(false)}
-                    onLoadEnd={() => setImgLoaded(true)}
-                />
+                {image}
             </View>}
 
 
             <View style={styles.textContainer}>
 
                 <Text style={styles.titles}>
-                    <Text style={styles.subTitle}>{props.sub_title}  </Text>
+                    <Text style={styles.subTitle}>{props.sub_category}  </Text>
                     <Text style={styles.title}>{props.title}</Text>
                 </Text>
 
@@ -84,16 +102,15 @@ export default function TopArticle(props) {
 const styles = StyleSheet.create({
     body: {
         width: RPW(100),
-        marginBottom: 14,
+        marginBottom: 0,
+        paddingTop : 4,
     },
     imgContainer: {
         width: RPW(100),
-        height: RPW(55),
         overflow: "hidden",
         justifyContent: "center"
     },
     image: {
-        height: RPW(1000),
         resizeMode: "contain",
     },
     textContainer: {
@@ -103,8 +120,8 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         marginBottom: 12,
     },
-    titles : {
-        marginBottom : 10,
+    titles: {
+        marginBottom: 10,
     },
     title: {
         color: "#2a0000",
