@@ -101,7 +101,7 @@ export default function Header() {
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
-                        LEGAL GUIDE
+                        Me Baudelin
                     </Text>
                 </View>
                 <View style={styles.searchIconContainer}>
@@ -163,14 +163,14 @@ export default function Header() {
                         <Text style={styles.link}>Accueil</Text>
                     </TouchableOpacity> */}
                     {informationsOrConnexion}
-                    {user.is_admin &&
+                    
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
                             router.push('/redaction')
                         }}>
                             <Text style={styles.link}>Écrire / Modifier un article</Text>
                         </TouchableOpacity>
-                    }
+                    
                     {/* {user.is_admin &&
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
@@ -276,11 +276,11 @@ const styles = StyleSheet.create({
         top: RPH(12.9) - statusHeight,
     },
     modalBody2: {
-        height: RPH(69.5),
+        height: RPH(77.6)- RPW(10),
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
-        top: RPH(20) - RPW(12.5) - statusHeight,
+        top: RPH(12.9) + RPW(10) - statusHeight,
     },
     linkContainer: {
         height: RPH(11.5),

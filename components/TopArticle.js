@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, Image, Platform, StatusBar } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
 import { RPH, RPW } from "../modules/dimensions"
 import { useState, useEffect } from 'react';
 
@@ -44,12 +43,7 @@ export default function TopArticle(props) {
     />
     }
 
-
-    // Si pas de sous catégorie / Sous titre, affichage du début du texte
-    let optionnalSubTitle = ""
-    if (!props.sub_category && props.text) {
-        optionnalSubTitle = <Text numberOfLines={3} style={styles.subTitle}>{props.text}</Text>
-    }
+    
 
     moment.locale('fr')
     const lastingTime = moment(props.createdAt).fromNow()
@@ -73,28 +67,14 @@ export default function TopArticle(props) {
                     <Text style={styles.title}>{props.title}</Text>
                 </Text>
 
-                {/* <LinearGradient
-                    colors={['#cb0000', '#230000']}
-                    locations={[0.15, 1]}
-                    start={{ x: 0, y: 0.5 }}
-                    end={{ x: 1, y: 0.5 }}
-                    style={styles.gradientLine}
-                >
-                </LinearGradient> */}
 
 
                 <Text style={styles.date}>Publié {lastingTime}</Text>
             </View>
 
 
-            <LinearGradient
-                colors={['#cb0000', '#230000']}
-                locations={[0.15, 1]}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={styles.gradientLine2}
-            >
-            </LinearGradient>
+            <View style={styles.line2}>
+            </View>
         </View>
     )
 }
@@ -157,7 +137,8 @@ const styles = StyleSheet.create({
         fontFamily: "Barlow-Light",
         letterSpacing: RPW(0.12),
     },
-    gradientLine2: {
+    line2: {
+        backgroundColor : "rgb(185, 0, 0)",
         width: "100%",
         height: 1,
         borderRadius: 15,

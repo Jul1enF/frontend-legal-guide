@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Dimensions, Image, StatusBar, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { RPH, RPW } from "../modules/dimensions"
-import { useState, useEffect } from "react";
 
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -64,14 +63,8 @@ export default function Article(props) {
             </View>
 
 
-            <LinearGradient
-                colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
-                locations={[0.15, 1]}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={styles.gradientLine2}
-            >
-            </LinearGradient>
+            <View style={styles.line} >
+            </View>
         </View>
     )
 }
@@ -79,7 +72,7 @@ export default function Article(props) {
 const styles = StyleSheet.create({
     body: {
         width: RPW(100),
-        paddingTop: 8,
+        paddingTop: 11,
         marginBottom: 0,
         paddingRight: RPW(3),
         paddingLeft: RPW(3),
@@ -96,10 +89,10 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "#2a0000",
-        fontSize: RPW(5.8),
-        lineHeight: RPW(5.7),
+        fontSize: RPW(6.8),
+        lineHeight: RPW(8.2),
         fontWeight: "450",
-        fontFamily: "Barlow-SemiBold",
+        fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
     },
     row2: {
@@ -143,7 +136,8 @@ const styles = StyleSheet.create({
         height: RPW(1000),
         resizeMode: "contain",
     },
-    gradientLine2: {
+    line: {
+        backgroundColor : "rgb(185, 0, 0)",
         width: RPW(100),
         marginLeft: RPW(-3),
         height: 1,

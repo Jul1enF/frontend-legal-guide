@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "legal-guide",
-    "slug": "legal-guide",
-    "scheme": "legal-guide",
+    "name": "Me Baudelin",
+    "slug": "me-baudelin",
+    "scheme": "me-baudelin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

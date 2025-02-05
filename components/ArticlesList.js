@@ -8,7 +8,6 @@ import TopArticle from './TopArticle'
 import Article from './Article'
 
 import { router, useFocusEffect } from 'expo-router'
-import { LinearGradient } from 'expo-linear-gradient'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, changePushToken } from '../reducers/user'
