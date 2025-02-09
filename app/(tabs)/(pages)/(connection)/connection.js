@@ -15,7 +15,7 @@ export default function Connection() {
                 <TouchableOpacity style={styles.iconContainer}
                   onPress={() => router.push('/signin')}
                 >
-                    <FontAwesome5 name="user-edit" style={styles.icon} size={RPH(4.5)} />
+                    <FontAwesome5 name="user-edit" style={styles.icon} size={RPH(4.5)> 30 ? 30 : RPH(4.5)} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn}  onPress={() => router.push('/signin')}>
                     <Text style={styles.signText}>Se connecter</Text>
@@ -51,11 +51,13 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         width: RPH(13),
+        maxWidth : 90,
+        maxHeight : 90,
         height: RPH(13),
         borderRadius: RPH(7),
         justifyContent: "center",
         alignItems: "center",
-        paddingLeft: RPH(1.5),
+        paddingLeft: RPH(13)>90 ? 11 : RPH(1.5),
         backgroundColor : "#0c0000",
     },
     icon: {

@@ -1,14 +1,87 @@
 import { View, Text, StyleSheet, Image, Platform, StatusBar } from 'react-native'
 import { RPH, RPW } from "../modules/dimensions"
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from 'expo-router';
 
-import YoutubePlayer from "react-native-youtube-iframe";
+import { addBookmark, removeBookmark } from '../reducers/user';
+
+import Icon from "@expo/vector-icons/MaterialCommunityIcons"
 
 import moment from 'moment/min/moment-with-locales'
 import requires from '../modules/imageRequires';
 
 
 export default function TopArticle(props) {
+
+    const user = useSelector((state) => state.user.value)
+    const dispatch = useDispatch()
+    const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
+
+    const [isBookmarked, setIsBookmarked] = useState(false)
+
+
+    // useFocusEffect pour vérifier si l'article est en favoris
+
+    useFocusEffect(useCallback(() => {
+        // Si utilisateur pas connecté
+        if (!user.jwtToken) { return }
+
+        user.bookmarks.includes(props._id) ? setIsBookmarked(true) : setIsBookmarked(false)
+    }, [user]))
+
+
+
+
+    // Fonction appelée en cliquant sur l'icone favoris
+        const bookmarkPress = async () => {
+            if (props._id === "testArticleId" || props.test) {
+                return
+            }
+            if (!isBookmarked) {
+                const response = await fetch(`${url}/userModifications/addBookmark`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jwtToken: user.jwtToken,
+                        _id : props._id,
+                    })
+                })
+                const data = await response.json()
+    
+                if (!data.result) {
+                    return
+                }
+                else {
+                    setIsBookmarked(true)
+                    dispatch(addBookmark(props._id))
+                }
+            }
+            else {
+                const response = await fetch(`${url}/userModifications/removeBookmark`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        jwtToken: user.jwtToken,
+                        _id : props._id,
+                    })
+                })
+                const data = await response.json()
+    
+                if (!data.result) {
+                   return
+                }
+                else {
+                    setIsBookmarked(false)
+                    dispatch(removeBookmark(props._id))   
+                }
+            }
+        }
+
+
+
+
+
 
     // État pour afficher un carré noir quand l'image n'a pas fini de charger
 
@@ -30,31 +103,31 @@ export default function TopArticle(props) {
             source={{ uri: props.img_link, }}
             onLoadEnd={() => setImgLoaded(true)}
         />
-    }else {
-        image =     <Image
-        style={[styles.image, {
-            width: RPW(100 * props.img_zoom),
-            marginTop: RPW(props.img_margin_top),
-            marginLeft: RPW(props.img_margin_left)
-        },]}
-        source={requires[props.img_link]}
-        onLoadEnd={() => setImgLoaded(true)}
-    />
+    } else {
+        image = <Image
+            style={[styles.image, {
+                width: RPW(100 * props.img_zoom),
+                marginTop: RPW(props.img_margin_top),
+                marginLeft: RPW(props.img_margin_left)
+            },]}
+            source={requires[props.img_link]}
+            onLoadEnd={() => setImgLoaded(true)}
+        />
     }
 
-   
+
 
     moment.locale('fr')
     const lastingTime = moment(props.createdAt).fromNow()
 
     return (
-        <View style={[styles.body, props.index === 0 && {paddingTop : 0}]}>
+        <View style={[styles.body, props.index === 0 && { paddingTop: 0 }]}>
 
-            {props.img_link && <View style={[styles.imgContainer, { height: RPW(100*props.img_ratio)}]} >
-            {
-        !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#fffcfc" }]}></View>
-    }
-         
+            {props.img_link && <View style={[styles.imgContainer, { height: RPW(100 * props.img_ratio) }]} >
+                {
+                    !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#fffcfc" }]}></View>
+                }
+
                 {image}
             </View>}
 
@@ -67,8 +140,12 @@ export default function TopArticle(props) {
                 </Text>
 
 
+                <View style={styles.row}>
+                    <Text style={styles.date}>Publié {lastingTime}</Text>
 
-                <Text style={styles.date}>Publié {lastingTime}</Text>
+                    {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#2a0000"} onPress={()=>bookmarkPress()}/>}
+                </View>
+
             </View>
 
 
@@ -82,7 +159,7 @@ const styles = StyleSheet.create({
     body: {
         width: RPW(100),
         marginBottom: 0,
-        paddingTop : 4,
+        paddingTop: 4,
     },
     imgContainer: {
         width: RPW(100),
@@ -127,6 +204,11 @@ const styles = StyleSheet.create({
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
     },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
     date: {
         color: "#2a0000",
         fontSize: RPW(3.6),
@@ -138,7 +220,7 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.12),
     },
     line2: {
-        backgroundColor : "rgb(185, 0, 0)",
+        backgroundColor: "rgb(185, 0, 0)",
         width: "100%",
         height: 1,
         borderRadius: 15,

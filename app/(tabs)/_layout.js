@@ -21,6 +21,8 @@ export default function TabsLayout() {
             iconName = 'square-outline';
           } else if (route.name === '(press)') {
             iconName = 'triangle-outline';
+          }else if (route.name === '(bookmarks)') {
+            iconName = 'square-outline';
           }
 
           return <MaterialCommunityIcons name={iconName} size={RPH(3.8)} color={color} />;
@@ -52,6 +54,9 @@ export default function TabsLayout() {
       }} />
       <Tabs.Screen name="(press)" options={{
         title: "Presse",
+      }} />
+       <Tabs.Screen name="(bookmarks)" options={{
+        title: "Favoris",
       }} />
       <Tabs.Screen name="(pages)" options={{
         tabBarItemStyle: { display: "none" },

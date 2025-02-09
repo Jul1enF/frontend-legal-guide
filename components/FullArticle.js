@@ -108,6 +108,9 @@ export default function FullArticle(props) {
             else {
                 setIsBookmarked(false)
                 dispatch(removeBookmark(_id))
+                if(props.category === "bookmarks"){
+                    router.back("/bookmarks")
+                }
             }
         }
     }
@@ -230,7 +233,7 @@ export default function FullArticle(props) {
                 </TouchableOpacity>
                 {user.jwtToken && <TouchableOpacity style={styles.headerSection2} onPress={() => bookmarkPress()}>
                     <Text style={styles.headerText} >{isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}</Text>
-                    <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPH(2.9)} color={isBookmarked ? "#ff00e8" : "white"} style={styles.icon2} />
+                    <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPH(2.9)} color={isBookmarked ? "rgb(185, 0, 0)" : "white"} style={styles.icon2} />
                 </TouchableOpacity>}
             </View>
 

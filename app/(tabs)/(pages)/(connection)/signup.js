@@ -269,6 +269,7 @@ const styles = StyleSheet.create({
         marginBottom: RPH(3.5),
         width: "90%",
         height: RPH(6),
+        maxHeight : 44,
         borderRadius: RPH(1),
         flexDirection: "row",
         justifyContent: "space-between",
@@ -280,20 +281,21 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: RPW(4),
         color: "white",
-        fontSize: RPH(2.9)
+        fontSize: 20
     },
     password: {
         width: "85%",
         height: "100%",
         paddingLeft: RPW(4),
         color: "white",
-        fontSize: RPH(2.9)
+        fontSize: 20
     },
     registerBtn: {
         width: "90%",
-        height: RPH(6),
+        height: RPH(6.5),
+        maxHeight : 46,
         borderRadius: RPH(1),
-        marginTop: RPH(3),
+        marginTop: RPH(2.5),
         backgroundColor: "#e6eedd",
         justifyContent: "center",
         alignItems: "center",
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
     },
     registerSentence: {
         color: "#fffcfc",
-        fontSize: RPH(3.2)
+        fontSize: 24,
     },
     error: {
         color: "red",

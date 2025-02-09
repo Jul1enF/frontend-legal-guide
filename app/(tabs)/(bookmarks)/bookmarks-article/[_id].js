@@ -16,7 +16,7 @@ export default function App() {
 
     articles.map(e=>{
         if (e._id === _id){
-            e.category === "press" ? thisCategoryNameSingular = Presse : thisCategoryNameSingular = Conseil
+            e.category === "press" ? thisCategoryNameSingular = "Presse" : thisCategoryNameSingular = "Conseil"
         }
     })
 

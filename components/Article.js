@@ -1,14 +1,90 @@
 import { View, Text, StyleSheet, Dimensions, Image, StatusBar, Platform } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { RPH, RPW } from "../modules/dimensions"
 
-import YoutubePlayer from "react-native-youtube-iframe";
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from 'expo-router';
+
+import { addBookmark, removeBookmark } from '../reducers/user';
+
+import Icon from "@expo/vector-icons/MaterialCommunityIcons"
+
+
 
 import moment from 'moment/min/moment-with-locales'
 import requires from '../modules/imageRequires';
 
 
 export default function Article(props) {
+
+
+    const user = useSelector((state) => state.user.value)
+    const dispatch = useDispatch()
+    const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
+
+    const [isBookmarked, setIsBookmarked] = useState(false)
+
+
+    // useFocusEffect pour vérifier si l'article est en favoris
+
+    useFocusEffect(useCallback(() => {
+        // Si utilisateur pas connecté
+        if (!user.jwtToken) { return }
+
+        user.bookmarks.includes(props._id) ? setIsBookmarked(true) : setIsBookmarked(false)
+    }, [user]))
+
+
+
+
+    // Fonction appelée en cliquant sur l'icone favoris
+    const bookmarkPress = async () => {
+        if (props._id === "testArticleId" || props.test) {
+            return
+        }
+        if (!isBookmarked) {
+            const response = await fetch(`${url}/userModifications/addBookmark`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jwtToken: user.jwtToken,
+                    _id: props._id,
+                })
+            })
+            const data = await response.json()
+
+            if (!data.result) {
+                return
+            }
+            else {
+                setIsBookmarked(true)
+                dispatch(addBookmark(props._id))
+            }
+        }
+        else {
+            const response = await fetch(`${url}/userModifications/removeBookmark`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jwtToken: user.jwtToken,
+                    _id: props._id,
+                })
+            })
+            const data = await response.json()
+
+            if (!data.result) {
+                return
+            }
+            else {
+                setIsBookmarked(false)
+                dispatch(removeBookmark(props._id))
+            }
+        }
+    }
+
+
+
+
 
     // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
 
@@ -48,18 +124,21 @@ export default function Article(props) {
                     <Text style={styles.title}>{props.title}</Text>
                 </View>
                 <View style={styles.column2}>
-                    <View style={[styles.imgContainer, {height : RPW(41 * props.img_ratio)}]} >
-                    {image}
+                    <View style={[styles.imgContainer, { height: RPW(41 * props.img_ratio) }]} >
+                        {image}
                     </View>
 
                 </View>
             </View>
 
             <View style={styles.row2}>
+
                 <View style={styles.postInfos}>
                     {props.sub_category && <Text numberOfLines={3} style={styles.subTitle}>{props.sub_category}</Text>}
                     <Text style={styles.date}>{lastingTime}</Text>
                 </View>
+
+                {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#2a0000"} onPress={()=>bookmarkPress()}/>}
             </View>
 
 
@@ -137,7 +216,7 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
     line: {
-        backgroundColor : "rgb(185, 0, 0)",
+        backgroundColor: "rgb(185, 0, 0)",
         width: RPW(100),
         marginLeft: RPW(-3),
         height: 1,
