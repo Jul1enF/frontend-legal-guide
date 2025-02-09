@@ -13,11 +13,11 @@ export default function Connection() {
         <View style={styles.body}>
             <View style={styles.signContainer}>
                 <TouchableOpacity style={styles.iconContainer}
-                // onPress={() => }
+                  onPress={() => router.push('/signin')}
                 >
                     <FontAwesome5 name="user-edit" style={styles.icon} size={RPH(4.5)} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => setModal1VIsible(true)}>
+                <TouchableOpacity style={styles.btn}  onPress={() => router.push('/signin')}>
                     <Text style={styles.signText}>Se connecter</Text>
                 </TouchableOpacity>
             </View>

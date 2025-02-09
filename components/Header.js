@@ -22,7 +22,6 @@ export default function Header() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
 
 
-
     // useEffect et variables pour ajuster la taille de la modal si l'on est sur une page avec un second header
     const [articlePage, setArticlePage] = useState(false)
     const pathName = usePathname()

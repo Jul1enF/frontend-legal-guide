@@ -123,10 +123,12 @@ export default function Signup() {
                    > */}
 
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(15)}  >
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(12)}  >
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
                 keyboardShouldPersistTaps="handled"
                 stickyHeaderIndices={[0]}>
+
+
                 <StickyHeader />
 
 
@@ -207,7 +209,7 @@ export default function Signup() {
                             setError('')
                         }}
                         value={phone}
-                        placeholder="Téléphone (facultatif, pour les appels d'urgence)"
+                        placeholder="Téléphone (facultatif)"
                         placeholderTextColor="#fbfff790"
                     >
                     </TextInput>
@@ -264,10 +266,10 @@ const styles = StyleSheet.create({
         letterSpacing : RPW(0.1)
     },
     inputContainer: {
-        marginBottom: RPW(7.5),
+        marginBottom: RPH(3.5),
         width: "90%",
-        height: RPW(12),
-        borderRadius: RPW(2.5),
+        height: RPH(6),
+        borderRadius: RPH(1),
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -278,20 +280,20 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: RPW(4),
         color: "white",
-        fontSize: RPW(5)
+        fontSize: RPH(2.9)
     },
     password: {
         width: "85%",
         height: "100%",
         paddingLeft: RPW(4),
         color: "white",
-        fontSize: RPW(5)
+        fontSize: RPH(2.9)
     },
     registerBtn: {
         width: "90%",
-        height: RPW(12),
-        borderRadius: RPW(2.5),
-        marginTop: RPW(7),
+        height: RPH(6),
+        borderRadius: RPH(1),
+        marginTop: RPH(3),
         backgroundColor: "#e6eedd",
         justifyContent: "center",
         alignItems: "center",
@@ -299,12 +301,12 @@ const styles = StyleSheet.create({
     },
     registerSentence: {
         color: "#fffcfc",
-        fontSize: RPW(5.7)
+        fontSize: RPH(3.2)
     },
     error: {
         color: "red",
         fontSize: RPW(4),
         fontWeight: "600",
-        marginBottom: RPH(2)
+        marginTop: RPH(1)
     }
 })
