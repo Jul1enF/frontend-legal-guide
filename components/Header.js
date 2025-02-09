@@ -27,7 +27,7 @@ export default function Header() {
     const pathName = usePathname()
 
     useEffect(() => {
-        if (pathName.includes('-article') || pathName.includes('notification-page')) {
+        if (pathName.includes('-article')) {
             setArticlePage(true)
         }
         else {
