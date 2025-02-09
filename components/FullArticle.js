@@ -198,7 +198,7 @@ export default function FullArticle(props) {
 
     // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
 
-    const onlineImage = article.img_link.includes('https') ? true : false
+    const onlineImage = article.img_link.includes('https')
 
     let image
     if (onlineImage) {

@@ -173,12 +173,12 @@ export default function Redaction() {
 
     // Récupération de l'id de la vidéo Youtube grâce au lien
 
-    let video_id
+    let video_id = ""
 
     if (videoLink) {
         if (videoLink.includes("youtu.be/")) {
             video_id = videoLink.slice(17, 28)
-        } else {
+        } else if (videoLink !== ""){
             video_id = videoLink.slice(30, 41)
         }
     }
@@ -317,7 +317,7 @@ export default function Redaction() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 _id,
-                createdAt : date,
+                createdAt: date,
                 articleData,
             })
         })
@@ -379,9 +379,6 @@ export default function Redaction() {
             source={requires[pictureUri]}
         />
     }
-
-
-console.log("IMAGE RATIO :", typeof imgRatio)
 
 
 
@@ -544,10 +541,10 @@ console.log("IMAGE RATIO :", typeof imgRatio)
                         </View>
                     </View>
 
-                    <Text style={{ color: 'red', fontSize : 18, fontWeight : 600 }}>{error}</Text>
+                    <Text style={{ color: 'red', fontSize: 18, fontWeight: 600 }}>{error}</Text>
 
 
-                    <View style={[styles.row, {marginTop : 8}]}>
+                    <View style={[styles.row, { marginTop: 8 }]}>
                         <View style={styles.btnContainer3}>
                             <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
                                 <Text style={styles.btnText}>Tester</Text>
@@ -586,7 +583,7 @@ console.log("IMAGE RATIO :", typeof imgRatio)
                                     <Text style={styles.modalText2}>Annuler</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => publishPress()}>
-                                        <Text style={styles.modalText2}>Publier</Text>
+                                    <Text style={styles.modalText2}>Publier</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -645,7 +642,7 @@ const styles = StyleSheet.create({
         color: "white",
         width: RPW(90),
         // height: RPW(40),
-        height : RPW(100),
+        height: RPW(100),
         borderRadius: RPW(3),
         paddingLeft: RPW(2),
         // fontSize: 19,

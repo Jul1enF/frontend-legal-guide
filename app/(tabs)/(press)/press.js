@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import {RPH, RPW} from '../../../modules/dimensions'
+import { RPH, RPW } from '../../../modules/dimensions'
+
+import ArticlesList from '../../../components/ArticlesList';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Tab 2 !</Text>
+      <ArticlesList category="press" />
     </View>
   );
 }

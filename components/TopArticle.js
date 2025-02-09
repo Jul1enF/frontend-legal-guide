@@ -17,16 +17,15 @@ export default function TopArticle(props) {
 
     // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
 
-    const onlineImage = props.img_link.includes('https') ? true : false
-
+    const onlineImage = props.img_link.includes('https')
 
     let image
     if (onlineImage) {
         image = <Image
             style={[styles.image, {
                 width: RPW(100 * props.img_zoom),
-                marginTop: RPW(props.img_margin_top),
-                marginLeft: RPW(props.img_margin_left)
+                marginTop: RPW(props.img_margin_top * 1),
+                marginLeft: RPW(props.img_margin_left * 1)
             },]}
             source={{ uri: props.img_link, }}
             onLoadEnd={() => setImgLoaded(true)}
@@ -43,7 +42,9 @@ export default function TopArticle(props) {
     />
     }
 
-    
+    // {
+    //     !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#f9fff4" }]}></View>
+    // }
 
     moment.locale('fr')
     const lastingTime = moment(props.createdAt).fromNow()
@@ -53,9 +54,7 @@ export default function TopArticle(props) {
 
             {props.img_link && <View style={[styles.imgContainer, { height: RPW(100*props.img_ratio)}]} >
 
-                {
-                    !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#f9fff4" }]}></View>
-                }
+         
                 {image}
             </View>}
 
@@ -92,6 +91,7 @@ const styles = StyleSheet.create({
     },
     image: {
         resizeMode: "contain",
+        height: RPW(1000),
     },
     textContainer: {
         paddingLeft: RPW(3),

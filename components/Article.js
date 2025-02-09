@@ -12,7 +12,7 @@ export default function Article(props) {
 
     // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
 
-    const onlineImage = props.img_link.includes('https') ? true : false
+    const onlineImage = props.img_link.includes('https')
 
 
     let image
