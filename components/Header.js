@@ -67,20 +67,19 @@ export default function Header() {
 
     // Affichage conditionnel de la page paramètres ou d'un renvoie vers la page de connexion
 
-    let informationsOrConnexion
+    let logoutOrConnection
 
     if (user.jwtToken) {
-        informationsOrConnexion = <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
-            setMenuVisible(false)
-            router.navigate('/settings')
+        logoutOrConnection = <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
+           logoutPress()
         }}>
-            <Text style={styles.link}>Settings</Text>
+            <Text style={styles.link}>Se déconnecter</Text>
         </TouchableOpacity>
     }
     else {
-        informationsOrConnexion = <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
+        logoutOrConnection = <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
             setMenuVisible(false)
-            router.navigate('/')
+            router.push('/connection')
         }}>
             <Text style={styles.link}>Se connecter / S'inscrire</Text>
         </TouchableOpacity>
@@ -90,12 +89,7 @@ export default function Header() {
     return (
         <View style={styles.body}>
             <StatusBar translucent={true} backgroundColor="transparent" barStyle="light" />
-            <LinearGradient style={styles.header}
-                colors={["#0c0000", "#0c0000"]}
-                locations={[0.15, 1]}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-            >
+            <View style={styles.header}>
                 <View style={styles.menuIconContainer}>
                     <FontAwesome name="navicon" style={styles.icon} size={RPW(5.3)} onPress={() => setMenuVisible(!menuVisible)} />
                 </View>
@@ -107,7 +101,7 @@ export default function Header() {
                 <View style={styles.searchIconContainer}>
                     <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => setSearchVisible(!searchVisible)} />
                 </View>
-            </LinearGradient>
+            </View>
             <View style={styles.headerLigne}></View>
 
 
@@ -162,7 +156,7 @@ export default function Header() {
                     }}>
                         <Text style={styles.link}>Accueil</Text>
                     </TouchableOpacity>
-                    {informationsOrConnexion}
+                    {logoutOrConnection}
                     
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
@@ -179,9 +173,6 @@ export default function Header() {
                             <Text style={styles.link}>Notifications</Text>
                         </TouchableOpacity>
                     } */}
-                    {user.jwtToken && <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => logoutPress()}>
-                        <Text style={styles.link}>Se déconnecter</Text>
-                    </TouchableOpacity>}
                 </View>
             </Modal>
         </View>
@@ -199,6 +190,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
+        backgroundColor : "#0c0000",
     },
     menuIconContainer: {
         width: "15%",
