@@ -15,7 +15,7 @@ export default function Connection() {
                 <TouchableOpacity style={styles.iconContainer}
                   onPress={() => router.push('/signin')}
                 >
-                    <FontAwesome5 name="user-edit" style={styles.icon} size={RPH(4.5)> 30 ? 30 : RPH(4.5)} />
+                    <FontAwesome5 name="user-edit" style={styles.icon} size={RPW(8)} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn}  onPress={() => router.push('/signin')}>
                     <Text style={styles.signText}>Se connecter</Text>
@@ -47,35 +47,32 @@ const styles = StyleSheet.create({
     signContainer: {
         alignItems: "center",
         justifyContent: "space-between",
-        height: RPH(21.5),
+        height: RPW(40),
     },
     iconContainer: {
-        width: RPH(13),
-        maxWidth : 90,
-        maxHeight : 90,
-        height: RPH(13),
+        width: RPW(23),
+        height: RPW(23),
         borderRadius: RPH(7),
         justifyContent: "center",
         alignItems: "center",
-        paddingLeft: RPH(13)>90 ? 11 : RPH(1.5),
+        paddingLeft: RPW(2.5),
         backgroundColor : "#0c0000",
     },
     icon: {
         color: "#fffcfc",
     },
     btn: {
-        width: RPH(26),
-        height: RPH(6.5),
+        width: RPW(58),
+        height: RPW(12),
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor : "#0c0000",
-        margin: 2,
         borderRadius: 10,
     },
     signText: {
         color: "#fffcfc",
-        fontSize: RPH(2.5),
+        fontSize: RPW(5),
         fontWeight: "500",
         letterSpacing: 1,
     },

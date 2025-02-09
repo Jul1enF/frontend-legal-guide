@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         width: RPW(100),
         paddingLeft: RPW(4),
         paddingRight: RPW(4),
-        marginBottom : RPH(4),
+        marginBottom : RPH(4) > 27 ? RPH(6) : RPH(4),
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
