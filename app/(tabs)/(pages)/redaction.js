@@ -321,6 +321,7 @@ export default function Redaction() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 _id,
+                jwtToken : user.jwtToken,
                 createdAt: date,
                 articleData,
             })

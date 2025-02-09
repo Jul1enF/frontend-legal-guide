@@ -157,12 +157,12 @@ export default function Header() {
                     </TouchableOpacity>
                     {logoutOrConnection}
                     
-                        <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
+                     { user.is_admin &&  <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
                             router.push('/redaction')
                         }}>
                             <Text style={styles.link}>Écrire / Modifier un article</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
                     
                     {/* {user.is_admin &&
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {

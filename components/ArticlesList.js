@@ -480,7 +480,7 @@ export default function ArticlesList(props) {
             <FlatList
                 data={articlesToDisplay}
                 refreshControl={refreshComponent}
-                keyExtractor={(item) => item._id} 
+                keyExtractor={(item, index) => item.test ? index : item._id} 
                 renderItem={({ item, index }) => {
                     if (index === 0 || Number.isInteger((index) / 3)) {
                         return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} index={index}/></TouchableOpacity>

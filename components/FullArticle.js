@@ -172,8 +172,8 @@ export default function FullArticle(props) {
     // Boutons pour modifications si l'utilsateur est admin
 
     let modifications
-    // user.is_admin &&
-    if (_id !== "testArticleId") {
+ 
+    if (user.is_admin && _id !== "testArticleId") {
         modifications = (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.btn} onPress={() => modifyPress()}>
