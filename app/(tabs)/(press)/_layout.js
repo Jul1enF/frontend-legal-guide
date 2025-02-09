@@ -9,6 +9,9 @@ export default function RootLayout() {
             <Stack.Screen name="press" options={{
                 title : "Presse",
             }} />
+             <Stack.Screen name="press-article/[_id]" options={{
+                title: "Article de presse",
+            }} />
         </Stack>
     )
 }

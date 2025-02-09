@@ -4,7 +4,7 @@ import {RPH, RPW} from '../../../modules/dimensions'
 
 import ArticlesList from '../../../components/ArticlesList';
 
-export default function App() {
+export default function Advices() {
   return (
     <View style={styles.container}>
       <ArticlesList category="advices" />

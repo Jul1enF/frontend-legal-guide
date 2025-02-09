@@ -1,13 +1,14 @@
+import { RPH, RPW } from '../../../modules/dimensions'
+// import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
+
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native";
 import { useEffect, useState, useCallback } from 'react'
-import { useFocusEffect } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
-import { addBookmark, removeBookmark } from "../reducers/user";
-import { addTestArticle } from "../reducers/testArticle";
-import { deleteOneArticle } from "../reducers/articles"
-import { RPH, RPW } from "../modules/dimensions"
+import { logout, changePushToken } from "../../../reducers/user";
+import { addTestArticle } from "../../../reducers/testArticle";
+import { deleteOneArticle, fillWithArticles } from "../../../reducers/articles"
 
-import { router, Link } from "expo-router";
+import { router, Link, useFocusEffect } from "expo-router";
 
 import Modal from "react-native-modal"
 import Icon from "@expo/vector-icons/MaterialCommunityIcons"
@@ -15,13 +16,12 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import YoutubePlayer from "react-native-youtube-iframe";
 import moment from 'moment/min/moment-with-locales'
 
-import requires from "../modules/imageRequires";
+import NetInfo from '@react-native-community/netinfo'
+
+import requires from "../../../modules/imageRequires";
 
 
-export default function FullArticle(props) {
-
-    const { category } = props
-    const { _id } = props
+export default function FullArticle() {
 
     const dispatch = useDispatch()
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
@@ -31,86 +31,120 @@ export default function FullArticle(props) {
     const user = useSelector((state) => state.user.value)
 
     const [article, setArticle] = useState('')
-    const [isBookmarked, setIsBookmarked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
 
     const [error, setError] = useState('')
 
 
 
-    // useEffect pour charger les infos de l'article
-    useEffect(() => {
-        if (_id === "testArticleId" ) {
+    // Fonction pour gérer les potentiels changement de push token
+
+    // const checkPushTokenChanges = async () => {
+    //     const state = await NetInfo.fetch()
+
+    //     // Si utilisateur pas inscrit ou connecté
+    //     if (!user.jwtToken || !state.isConnected) { return }
+
+    //     const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
+
+    //     if (!pushTokenInfos) {
+    //         dispatch(logout())
+    //         router.navigate('/')
+    //     }
+    //     if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
+    //         dispatch(changePushToken(pushTokenInfos.change))
+    //     }
+    // }
+
+
+    // useFocusEffect pour vérifier si les notifs sont toujours autorisées
+
+    // useFocusEffect(useCallback(() => {
+    //     checkPushTokenChanges()
+    // }, [user]))
+
+
+
+
+
+    //  Fonction pour charger les articles
+
+    const loadArticles = async () => {
+        // S'il y a un article test, chargement de celui ci
+        if (testArticle[0]?.category === "home") {
             setArticle(testArticle[0])
-        } else {
-            articles.map(e => {
-                e._id === _id && setArticle(e)
-            })
+        }
+        // Sinon fetch des articles en bdd
+
+        else {
+            // Le chargement du reducer avec les articles téléchargés ne sera effectif qu'au prochain refresh. Utilisation d'une variable pour setter les articles avec ceux téléchargés plutôt que le reducer pas encore actualisé.
+            let downloadedArticles
+
+            const state = await NetInfo.fetch()
+
+            if (state.isConnected) {
+
+                const response = await fetch(`${url}/articles/getArticles`)
+
+                const data = await response.json()
+             
+
+
+                if (data.result) {
+                    dispatch(fillWithArticles(data.articles))
+                    downloadedArticles = data.articles
+                }
+                else if (data.err) {
+                    dispatch(logout())
+                    router.push('/')
+                    return
+                }
+                else {
+                    dispatch(logout())
+                    router.push('/')
+                    return
+                }
+
+            }
+            if (downloadedArticles) {
+                downloadedArticles.map(e => {
+                    e.category === "home" && setArticle(e)
+                })
+            }
+            else if (articles.length !== 0) {
+                articles.map(e => {
+                    e.category === "home" && setArticle(e)
+                })
+            }
+
+
         }
 
-    }, [user])
+    }
 
-    // useFocusEffect pour vérifier si l'article est en favoris, naviguer vers la liste d'articles si l'article test a été supprimé ou si un nouveau a été mis en test
+
+
+    // useEffect pour charger les infos de l'article
+    useEffect(() => {
+        loadArticles()
+    }, [testArticle])
+
+
+
+
+    // useFocusEffect pour naviguer vers la liste d'articles si l'article test a été supprimé ou si un nouveau a été mis en test
 
     useFocusEffect(useCallback(() => {
         // Si utilisateur pas connecté
         if (!user.jwtToken) { return }
-        user.bookmarks.includes(_id) ? setIsBookmarked(true) : setIsBookmarked(false)
 
-        if (_id === "testArticleId" && testArticle.length === 0) { router.back(`/${category}`) }
+        if (article._id === "testArticleId" && testArticle.length === 0) { router.push(`/`) }
 
-        if (testArticle.length > 0 && testArticle[0].category === category && _id !== "testArticleId") { router.back(`/${category}`) }
+        if (article.test && testArticle.length === 0) { router.push(`/`) }
+
+        if (testArticle.length > 0 && testArticle[0].category === category && article._id !== "testArticleId") { router.push(`/`) }
     }, [user, testArticle]))
 
-
-
-
-    // Fonction appelée en cliquant sur l'icone favoris
-    const bookmarkPress = async () => {
-        if (_id === "testArticleId" || article.test) {
-            return
-        }
-        if (!isBookmarked) {
-            const response = await fetch(`${url}/userModifications/addBookmark`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jwtToken: user.jwtToken,
-                    _id,
-                })
-            })
-            const data = await response.json()
-
-            if (!data.result) {
-                setError(data.error)
-                setTimeout(() => setError(''), 4000)
-            }
-            else {
-                setIsBookmarked(true)
-                dispatch(addBookmark(_id))
-            }
-        }
-        else {
-            const response = await fetch(`${url}/userModifications/removeBookmark`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jwtToken: user.jwtToken,
-                    _id,
-                })
-            })
-            const data = await response.json()
-
-            if (!data.result) {
-                setError(data.error)
-                setTimeout(() => setError(''), 4000)
-            }
-            else {
-                setIsBookmarked(false)
-                dispatch(removeBookmark(_id))
-            }
-        }
-    }
 
 
     // Fonction appelée en cliquant sur modifier
@@ -170,7 +204,7 @@ export default function FullArticle(props) {
 
     let modifications
     // user.is_admin &&
-    if (_id !== "testArticleId") {
+    if (article._id !== "testArticleId" && !article.test) {
         modifications = (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.btn} onPress={() => modifyPress()}>
@@ -223,7 +257,7 @@ export default function FullArticle(props) {
     return (
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
-            <View style={styles.header} >
+            {/* <View style={styles.header} >
                 <TouchableOpacity style={styles.headerSection} onPress={() => router.back(`/${category}`)}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>{props.categoryName}</Text>
@@ -232,12 +266,11 @@ export default function FullArticle(props) {
                     <Text style={styles.headerText} >{isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}</Text>
                     <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPH(2.9)} color={isBookmarked ? "#ff00e8" : "white"} style={styles.icon2} />
                 </TouchableOpacity>}
-            </View>
+            </View> */}
 
             <Text style={[{ color: 'red' }, !error && { display: "none" }]}>{error}</Text>
 
             <ScrollView style={styles.body} contentContainerStyle={styles.contentBody}>
-                <Text style={styles.categoryTitle}>{props.categoryNameSingular}</Text>
 
 
                 <Text style={styles.subTitle}>{article.sub_category} </Text>
@@ -246,7 +279,6 @@ export default function FullArticle(props) {
 
                 <View style={styles.line} >
                 </View>
-                <Text style={styles.date}>Publié le {date} à {hour}</Text>
 
                 {article.img_link &&
                     <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }, { height: RPW(100 * article.img_ratio) }]} >
@@ -254,7 +286,7 @@ export default function FullArticle(props) {
                     </View>}
 
 
-                {article.author && <Text style={[styles.date, { marginBottom: RPW(7) }]}>par {article.author}</Text>}
+                {article.author && <Text style={[styles.date, { marginBottom: RPW(6) }]}>{article.author}</Text>}
 
                 {article.text1 && <Text style={styles.text1}>{article.text1}</Text>}
 
@@ -362,13 +394,13 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         color: "rgb(185, 0, 0)",
-        fontSize: RPW(7.3),
-        lineHeight: RPW(7.5),
+        fontSize: RPW(8),
+        lineHeight: RPW(8),
         marginRight: RPW(3),
         fontWeight: "400",
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
-        marginBottom: 8,
+        marginBottom: 20,
     },
     title: {
         color: "#2a0000",

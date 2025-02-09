@@ -42,9 +42,7 @@ export default function TopArticle(props) {
     />
     }
 
-    // {
-    //     !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#f9fff4" }]}></View>
-    // }
+   
 
     moment.locale('fr')
     const lastingTime = moment(props.createdAt).fromNow()
@@ -53,7 +51,9 @@ export default function TopArticle(props) {
         <View style={[styles.body, props.index === 0 && {paddingTop : 0}]}>
 
             {props.img_link && <View style={[styles.imgContainer, { height: RPW(100*props.img_ratio)}]} >
-
+            {
+        !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#fffcfc" }]}></View>
+    }
          
                 {image}
             </View>}

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar, Image } from 'react-native'
-// import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
+// import { registerForPushNotificationsAsync } from "../modules/registerForPushNotificationsAsync"
 import { useCallback, useState, useEffect, useRef } from 'react'
 
 import { RPW, RPH } from "../modules/dimensions"
@@ -15,7 +15,6 @@ import { fillWithArticles } from '../reducers/articles'
 
 import NetInfo from '@react-native-community/netinfo'
 
-import { WebView } from 'react-native-webview';
 
 
 
@@ -92,7 +91,7 @@ export default function ArticlesList(props) {
     const loadArticles = async () => {
 
         // S'il y a un article test, chargement de celui ci
-        if (user?.is_admin && testArticle[0]?.category === props.category) {
+        if (testArticle[0]?.category === props.category) {
             setArticlesToDisplay(testArticle)
         }
         // Sinon fetch des articles en bdd
@@ -136,7 +135,7 @@ export default function ArticlesList(props) {
             if (articles.length !== 0 || downloadedArticles) {
                 let categoryArticles = downloadedArticles ? downloadedArticles.filter(e => e.category === props.category) : articles.filter(e => e.category === props.category)
 
-                categoryArticles.reverse()
+                categoryArticles.sort((a, b)=> new Date(b.createdAt) - new Date(a.createdAt))
 
 
                 setThisCategoryArticles(categoryArticles)
@@ -148,22 +147,32 @@ export default function ArticlesList(props) {
 
                 switch (props.category) {
                     case 'advices':
-                        sortedSubcategories = [{ name: "Tous les conseils" }]
+                        sortedSubcategories = [{ name: "Tous les conseils", count : 1000000 }]
                         setChosenSubcategory("Tous les conseils")
                         setFirstSubCategory("Tous les conseils")
                         break;
                     case 'press':
-                        sortedSubcategories = [{ name: "Tous les articles" }]
+                        sortedSubcategories = [{ name: "Tous les articles", count : 1000000 }]
                         setChosenSubcategory("Tous les articles")
                         setFirstSubCategory("Tous les articles");
                         break;
                 }
 
                 categoryArticles.map(e => {
-                    if (e.sub_category && !sortedSubcategories.some(j => j.name === e.sub_category)) {
-                        sortedSubcategories.push({ name: e.sub_category })
-                    }
+                    let itemPresence = false
+
+                    sortedSubcategories.map(j =>{
+                        if (j.name === e.sub_category){
+                            j.count++
+                            itemPresence = true
+                        }
+                    })
+
+                    !itemPresence && sortedSubcategories.push({ name: e.sub_category, count : 1 })
                 })
+
+                sortedSubcategories.sort((a, b)=> b.count - a.count)
+
                 setSubcategoriesList(sortedSubcategories)
             }
         }

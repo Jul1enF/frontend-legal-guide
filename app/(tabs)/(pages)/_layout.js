@@ -7,6 +7,9 @@ export default function RootLayout() {
         }}>
             <Stack.Screen name="settings" />
             <Stack.Screen name="redaction" />
+            <Stack.Screen name="index" options={{
+                title : "Accueil"
+            }}/>
         </Stack>
     )
 }

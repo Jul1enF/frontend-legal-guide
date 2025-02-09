@@ -227,7 +227,11 @@ export default function Redaction() {
         }))
 
         setResizing(false)
-        router.push(`/${category}`)
+        if (category !== "home"){
+            router.push(`/${category}`)
+        }else {
+            router.push('/')
+        }
     }
 
 
@@ -334,9 +338,14 @@ export default function Redaction() {
             }
 
             setModalVisible(false)
-            router.back(`/${category}`)
             cancelPress()
             publishRef.current = true
+
+            if (category !== "home"){
+                router.push(`/${category}`)
+            }else {
+                router.push('/')
+            }
         }
         else if (data.error) {
             setModalVisible(false)

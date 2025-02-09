@@ -4,13 +4,13 @@ export default function RootLayout() {
     return (
         <Stack screenOptions={{
             headerShown: false,
-          
+
         }}>
-            <Stack.Screen name="advices-article/[_id]" options={{
-                title : "Conseil",
-            }} />
             <Stack.Screen name="advices" options={{
-                title : "Conseils",
+                title: "Conseils",
+            }} />
+            <Stack.Screen name="advices-article/[_id]" options={{
+                title: "Conseil",
             }} />
         </Stack>
     )
