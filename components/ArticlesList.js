@@ -130,6 +130,34 @@ export default function ArticlesList(props) {
 
 
 
+    // Ref pour définir le type de recherche
+    const searchMethodRef = useRef("occurence")
+
+    // Fonction pour trouver les articles liés à la recherche
+    const selectSearchedArticles = () => {
+        const regex = new RegExp(props.searchedText, "i")
+        const searchMethod = searchMethodRef.current
+        let searchedArticles
+
+        if (searchMethod === "occurence") {
+            searchedArticles = articles.filter(e =>
+                regex.test(e.title) || regex.test(e.sub_category) || regex.test(e.text1) || regex.test(e.text2) || e.tags.some(f => regex.test(f))
+            )
+        } else if (searchMethod === "tags") {
+            searchedArticles = articles.filter(e =>
+                regex.test(e.sub_category) || e.tags.some(f => regex.test(f))
+            )
+        } else if (searchMethod === "title") {
+            searchedArticles = articles.filter(e =>
+                regex.test(e.title)
+            )
+        }
+
+        return searchedArticles
+    }
+
+
+
     //  Fonction pour charger les articles et trier les sous catégories
 
     const loadArticles = async () => {
@@ -149,7 +177,7 @@ export default function ArticlesList(props) {
 
             const state = await NetInfo.fetch()
 
-            if (state.isConnected) {
+            if (state.isConnected && props.category !== "bookmarks" && props.category !== "searches") {
                 setIsOnline(true)
 
                 const response = await fetch(`${url}/articles/getArticles`)
@@ -194,6 +222,10 @@ export default function ArticlesList(props) {
                     }
                     concernedArticles = [...bookmarkedArticles]
                 }
+                // Articles de recherche
+                else if (props.category === "searches") {
+                    concernedArticles = selectSearchedArticles()
+                }
                 // Articles presse et conseil
                 else {
                     concernedArticles = downloadedArticles ? downloadedArticles.filter(e => e.category === props.category) : articles.filter(e => e.category === props.category)
@@ -224,6 +256,11 @@ export default function ArticlesList(props) {
                         sortedSubcategories = [{ name: "Tous les favoris", count: 1000000 }]
                         setChosenSubcategory("Tous les favoris")
                         setFirstSubCategory("Tous les favoris");
+                        break;
+                    case 'searches':
+                        sortedSubcategories = [{ name: "Tous les articles", count: 1000000 }]
+                        setChosenSubcategory("Tous les articles")
+                        setFirstSubCategory("Tous les articles");
                         break;
                 }
 
@@ -261,8 +298,16 @@ export default function ArticlesList(props) {
     }
 
     useEffect(() => {
+        // Reset de la méthode de recherche quand le composant est monté à nouveau
+        searchMethodRef.current = "occurence"
+
+        horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
+            offset : 0,
+            animated: true,
+        })
+
         loadArticles()
-    }, [testArticle, user])
+    }, [testArticle, user, props.searchedText])
 
 
 
@@ -270,6 +315,7 @@ export default function ArticlesList(props) {
 
 
     // Useref pour le scroll de la ou les Flatlist horizontale avec les sous catégories
+    const horizontalFlatlist0Ref = useRef(null)
     const horizontalFlatlistRef = useRef(null)
     const horizontalFlatlist2Ref = useRef(null)
 
@@ -338,6 +384,8 @@ export default function ArticlesList(props) {
 
 
 
+
+
     // Fonction appelée en cas de click sur une sous catégorie de la deuxième liste (celle de bookmarks)
 
     const subcategoryPress2 = (subcategory, index) => {
@@ -358,6 +406,8 @@ export default function ArticlesList(props) {
             setArticlesToDisplay(allConcernedArticles.filter(e => e.sub_category == subcategory && e.category === englishTranslation(chosenSubcategory)))
         }
     }
+
+
 
 
 
@@ -396,8 +446,67 @@ export default function ArticlesList(props) {
     // Fonction appelée en cliquant sur un article
 
     const articlePress = (_id, test) => {
-        test ? router.push(`/${props.category}-article/testArticleId`) : router.push(`/${props.category}-article/${_id}`)
+        if (test) {
+            router.push(`/${props.category}-article/testArticleId`)
+        } else if (props.category === "searches") {
+            router.push(`/${props.category}-article/${_id}/${props.searchedText}`)
+        } else {
+            router.push(`/${props.category}-article/${_id}`)
+        }
     }
+
+
+
+
+
+    // Composants, data et fonction pour la flatlist affichée en recherche
+
+    const headerFlatlist0 = (
+        <View style={styles.btnContainer2}>
+            <Text style={styles.btnText2}>Rechercher :</Text>
+        </View>
+    )
+
+
+    const flatlist0Data = [{name : "Par occurences", search : "occurence"}, {name : "Par catégories / tags", search : "tags"}, {name : "Par titre", search : "title"}]
+
+    const subcategoryPress0 = (search, index) => {
+        horizontalFlatlist0Ref.current.scrollToIndex({
+            animated: true,
+            index,
+            viewOffset: RPW(5)
+        })
+        searchMethodRef.current = search
+        loadArticles()
+    }
+
+    const SubcategoryItem0 = (props) => {
+
+        return (
+            <View style={styles.btnContainer}>
+                <TouchableOpacity style={[styles.btn, searchMethodRef.current === props.search && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress0(props.search, props.index)}>
+                    <Text style={[styles.btnText, searchMethodRef.current !== props.search && { color: "#2a0000" }]}>{props.name}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+
+
+    // Header pour la flatlist verticale s'il s'agit d'une recherche
+
+    const headerVerticalFlatlist = () => {
+        if (props.category === "searches"){
+            return (<>
+              <Text style={styles.title2}>Résultats pour votre recherche « {props.searchedText} » :</Text>
+                <View style={styles.line2}>
+                </View>
+            </>)
+        }
+    }
+
+
+
 
 
 
@@ -411,6 +520,7 @@ export default function ArticlesList(props) {
         setTimeout(() => setIsRefreshing(false), 1000)
         loadArticles()
     }} />
+
 
 
 
@@ -452,6 +562,22 @@ export default function ArticlesList(props) {
     return (
         <View style={styles.body} >
             <StatusBar translucent={true} barStyle="light" />
+
+            {props.category === "searches" &&
+             <FlatList
+             data={flatlist0Data}
+             ref={horizontalFlatlist0Ref}
+             horizontal={true}
+             ListHeaderComponent={headerFlatlist0}
+             showsHorizontalScrollIndicator={false}
+             style={styles.flatlist0}
+             renderItem={({ item, index }) => {
+                 return <SubcategoryItem0 {...item} index={index} />
+             }}
+             contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2) }}
+         />}
+
+
             <FlatList
                 data={subcategoriesList}
                 ref={horizontalFlatlistRef}
@@ -474,19 +600,23 @@ export default function ArticlesList(props) {
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem2 {...item} index={index} />
                 }}
-                contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2), paddingBottom : RPW(1) }}
+                contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2), paddingBottom: RPW(1) }}
             />
+
+
+
 
             <FlatList
                 data={articlesToDisplay}
                 refreshControl={refreshComponent}
-                keyExtractor={(item, index) => item.test ? index : item._id} 
+                ListHeaderComponent={headerVerticalFlatlist}
+                keyExtractor={(item, index) => item.test ? index : item._id}
                 renderItem={({ item, index }) => {
-                    if (index === 0 || Number.isInteger((index) / 3)) {
-                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} index={index}/></TouchableOpacity>
+                    if ((index === 0 || Number.isInteger((index) / 3)) && props.category !== "searches") {
+                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} index={index} /></TouchableOpacity>
                     }
                     else {
-                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><Article {...item}/></TouchableOpacity>
+                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><Article {...item} /></TouchableOpacity>
                     }
                 }}
                 contentContainerStyle={{ alignItems: 'center' }}
@@ -526,6 +656,25 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: "rgb(185, 0, 0)",
     },
+    title2: {
+        color: "#2a0000",
+        fontSize: RPW(7.3),
+        lineHeight: RPW(8),
+        fontWeight: "450",
+        margin: RPW(2),
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(-0.05),
+        textAlign: "center"
+    },
+    line2: {
+        width: RPW(25),
+        height: 3.5,
+        marginBottom: RPW(2),
+        marginTop: RPW(1),
+        alignSelf: "center",
+        borderRadius: 15,
+        backgroundColor: "rgb(185, 0, 0)",
+    },
     btnContainer: {
         height: RPW(8.3),
         borderRadius: 8,
@@ -542,13 +691,27 @@ const styles = StyleSheet.create({
         paddingLeft: RPW(2),
         paddingRight: RPW(2),
     },
+    btnContainer2: {
+        height: RPW(8),
+        borderBottomWidth : 2,
+        marginRight: RPW(3.5),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     btnText: {
         color: "white",
-        // fontSize: RPW(4.65),
         fontSize: RPW(4),
         fontWeight: "500",
-        // fontFamily: "Barlow-SemiBold",
-        // letterSpacing: RPW(0.2),
+    },
+    btnText2: {
+       color: "#2a0000",
+        fontSize: RPW(4.3),
+        fontWeight: "700",
+    },
+    flatlist0: {
+        minHeight: RPW(11),
+        maxHeight: RPW(11),
+        minWidth: RPW(100),
     },
     flatlist: {
         minHeight: RPW(11.5),

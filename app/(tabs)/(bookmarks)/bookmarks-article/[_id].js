@@ -7,7 +7,7 @@ import FullArticle from '../../../../components/FullArticle';
 
 import {useLocalSearchParams} from "expo-router"
 
-export default function App() {
+export default function BookmarksArticle() {
     const {_id} = useLocalSearchParams()
 
     const articles = useSelector((state)=>state.articles.value)

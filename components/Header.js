@@ -39,7 +39,6 @@ export default function Header() {
 
     // États pour l'affichage et l'enregistrement de la recherche
 
-    const [searchVisible, setSearchVisible] = useState(false)
     const [searchText, setSearchText] = useState('')
 
 
@@ -60,7 +59,7 @@ export default function Header() {
     const submitSearch = () => {
         router.push(`/searches/${searchText}`)
         setSearchText('')
-        setSearchVisible(false)
+        setMenuVisible(false)
     }
 
 
@@ -97,46 +96,12 @@ export default function Header() {
                         Me Baudelin
                     </Text>
                 </View>
-                <View style={styles.searchIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => setSearchVisible(!searchVisible)} />
+                <View style={styles.emergencyIconContainer}>
+                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => {}} />
                 </View>
             </View>
             <View style={styles.headerLigne}></View>
 
-
-            <Modal
-                isVisible={searchVisible}
-                style={styles.modal}
-                backdropColor="transparent"
-                animationIn="fadeInDown"
-                animationOut="fadeOutUp"
-                onBackButtonPress={() => setSearchVisible(!searchVisible)}
-                onBackdropPress={() => setSearchVisible(!searchVisible)}
-            >
-                <LinearGradient style={styles.searchContainer}
-                    colors={["rgb(185, 0, 0)", "rgb(185, 0, 0)"]}
-                    locations={[0.15, 1]}
-                    start={{ x: 0, y: 0.5 }}
-                    end={{ x: 1, y: 0.5 }}
-                >
-                    <View style={styles.searchInputContainer}>
-                        <TextInput
-                            style={styles.search}
-                            placeholder="Rechercher..."
-                            onChangeText={(e) => setSearchText(e)}
-                            value={searchText}
-                            returnKeyType="send"
-                            placeholderTextColor={"rgba(255,255,255,0.85)"}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onSubmitEditing={() => submitSearch()}
-                        ></TextInput>
-                        <FontAwesome6 name="magnifying-glass" style={styles.icon} size={RPH(1.9)} onPress={() => submitSearch()} />
-                    </View>
-                    <FontAwesome6 name="chevron-up" style={styles.icon} size={RPH(2.8)} onPress={() => setSearchVisible(!searchVisible)} />
-
-                </LinearGradient>
-            </Modal>
 
 
             <Modal
@@ -149,6 +114,23 @@ export default function Header() {
                 onBackdropPress={() => setMenuVisible(!menuVisible)}
             >
                 <View style={!articlePage ? styles.modalBody : styles.modalBody2}>
+
+                    <View style={styles.searchContainer}>
+                    <TextInput
+                            style={styles.search}
+                            placeholder="Rechercher..."
+                            onChangeText={(e) => setSearchText(e)}
+                            value={searchText}
+                            returnKeyType="send"
+                            placeholderTextColor={"rgba(63, 63, 63, 0.66)"}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onSubmitEditing={() => submitSearch()}
+                        ></TextInput>
+                        <FontAwesome6 name="magnifying-glass" style={styles.icon2} size={RPH(1.9)} onPress={() => submitSearch()} />
+                    </View>
+
+
                     <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
                         setMenuVisible(false)
                         router.push('/')
@@ -206,13 +188,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: RPW(9.3),
-        color: "white",
+        color: "#fffcfc",
         letterSpacing: RPW(0.6),
         fontWeight: "600",
         fontFamily : "Barlow-SemiBold",
         lineHeight : RPW(9.3)
     },
-    searchIconContainer: {
+    emergencyIconContainer: {
         width: "15%",
         height: "100%",
         alignItems: "flex-end",
@@ -220,39 +202,11 @@ const styles = StyleSheet.create({
         paddingRight: RPW(4),
     },
     icon: {
-        color: "white",
+        color: "#fffcfc",
     },
     headerLigne: {
         borderBottomColor: "#878787",
         borderBottomWidth: RPH(0.2)
-    },
-    searchContainer: {
-        position: "absolute",
-        top: RPH(13) - statusHeight,
-        height: RPW(12.5),
-        width: RPW(100),
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingLeft: RPW(4),
-        paddingRight: RPW(4),
-    },
-    searchInputContainer: {
-        borderBottomColor: "white",
-        borderBottomWidth: 0.5,
-        width: RPW(50),
-        paddingBottom: RPH(1),
-        paddingRight: RPW(1),
-        marginTop: RPH(0.5),
-        flexDirection: 'row',
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    search: {
-        color: "white",
-        fontSize: RPH(2.3),
-        fontWeight: "500",
-        width: "90%",
     },
     modal: {
         alignItems: "flex-start",
@@ -280,9 +234,30 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    searchContainer : {
+        height: RPH(11.5),
+        borderTopWidth: 0.5,
+        paddingLeft : RPW(4),
+        paddingRight : RPW(4),
+        flexDirection : "row",
+        borderTopColor: "#19290a",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
     link: {
-        color: "#19290a",
-        fontSize: RPW(6.3),
-        fontWeight: "300"
+        color: "#2a0000",
+        fontSize: RPW(7.8),
+        letterSpacing : RPW(0.1),
+        fontFamily : "Barlow-Light",
+    },
+    search: {
+        color: "#2a0000",
+        fontSize: RPW(7.8),
+        letterSpacing : RPW(0.1),
+        fontFamily : "Barlow-Light",
+        width: "90%",
+    },
+    icon2: {
+        color: "#2a0000",
     },
 })

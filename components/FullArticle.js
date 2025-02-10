@@ -227,7 +227,7 @@ export default function FullArticle(props) {
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
             <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => router.back(`/${category}`)}>
+                <TouchableOpacity style={styles.headerSection} onPress={() => category !== "searches" ? router.back(`/${category}`) : router.back(`/${category}/${props.searchedText}`)}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>{props.categoryName}</Text>
                 </TouchableOpacity>

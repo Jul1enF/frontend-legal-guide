@@ -455,7 +455,7 @@ export default function Redaction() {
                     <TextInput multiline={true}
                         textAlignVertical="top"
                         style={styles.mediumInput}
-                        placeholder="Tags (sans '#', à séparer par une virgule et un espace)"
+                        placeholder="Tags : sans '#', à séparer par une virgule et un espace"
                         onChangeText={(e) => setTags(e)}
                         value={tags}
                         placeholderTextColor="#fbfff792"
