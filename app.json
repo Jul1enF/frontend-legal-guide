@@ -27,10 +27,33 @@
     },
     "plugins": [
       "expo-router",
-      ["expo-font",
-      {
-        "fonts": ["./assets/fonts/BarlowCondensed-Bold.ttf", "./assets/fonts/BarlowCondensed-ExtraLight.ttf", "./assets/fonts/BarlowCondensed-Light.ttf", "./assets/fonts/BarlowCondensed-Medium.ttf", "./assets/fonts/BarlowCondensed-Regular.ttf",  "./assets/fonts/BarlowCondensed-SemiBold.ttf"]
-      }]
-    ]
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/BarlowCondensed-Bold.ttf",
+            "./assets/fonts/BarlowCondensed-ExtraLight.ttf",
+            "./assets/fonts/BarlowCondensed-Light.ttf",
+            "./assets/fonts/BarlowCondensed-Medium.ttf",
+            "./assets/fonts/BarlowCondensed-Regular.ttf",
+            "./assets/fonts/BarlowCondensed-SemiBold.ttf"
+          ]
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2055d350-bea2-4475-9e4a-97c33f2a88c5"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2055d350-bea2-4475-9e4a-97c33f2a88c5"
+    }
   }
 }

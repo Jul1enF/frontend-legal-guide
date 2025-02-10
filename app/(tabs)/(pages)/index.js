@@ -1,7 +1,7 @@
 import { RPH, RPW } from '../../../modules/dimensions'
 // import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
 
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, RefreshControl } from "react-native";
 import { useEffect, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { logout, changePushToken } from "../../../reducers/user";
@@ -87,7 +87,7 @@ export default function FullArticle() {
                 const response = await fetch(`${url}/articles/getArticles`)
 
                 const data = await response.json()
-             
+
 
 
                 if (data.result) {
@@ -200,11 +200,13 @@ export default function FullArticle() {
     }
 
 
+
+
     // Boutons pour modifications si l'utilsateur est admin
 
     let modifications
-    // user.is_admin &&
-    if (article._id !== "testArticleId" && !article.test) {
+
+    if (user.is_admin && article._id !== "testArticleId" && !article.test) {
         modifications = (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.btn} onPress={() => modifyPress()}>
@@ -220,6 +222,25 @@ export default function FullArticle() {
     moment.locale('fr')
     const date = moment(article.createdAt).format('LL')
     const hour = moment(article.createdAt).format('LT')
+
+
+
+    
+
+    // Composant pour rafraichir la page
+
+    const [isRefreshing, setIsRefreshing] = useState(false)
+
+    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#2a0000"} onRefresh={() => {
+        setIsRefreshing(true)
+        setTimeout(() => setIsRefreshing(false), 1000)
+        loadArticles()
+    }} />
+
+
+
+
+
 
 
     if (!article) { return <View></View> }
@@ -254,23 +275,18 @@ export default function FullArticle() {
 
 
 
+
+
+
+
     return (
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
-            {/* <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => router.back(`/${category}`)}>
-                    <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
-                    <Text style={styles.headerText}>{props.categoryName}</Text>
-                </TouchableOpacity>
-                {user.jwtToken && <TouchableOpacity style={styles.headerSection2} onPress={() => bookmarkPress()}>
-                    <Text style={styles.headerText} >{isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}</Text>
-                    <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPH(2.9)} color={isBookmarked ? "#ff00e8" : "white"} style={styles.icon2} />
-                </TouchableOpacity>}
-            </View> */}
 
-            <Text style={[{ color: 'red' }, !error && { display: "none" }]}>{error}</Text>
+            <ScrollView style={styles.body} contentContainerStyle={styles.contentBody}
+                refreshControl={refreshComponent}>
 
-            <ScrollView style={styles.body} contentContainerStyle={styles.contentBody}>
+                <Text style={[{ color: 'red' }, !error && { display: "none" }]}>{error}</Text>
 
 
                 <Text style={styles.subTitle}>{article.sub_category} </Text>

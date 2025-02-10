@@ -406,7 +406,7 @@ export default function ArticlesList(props) {
 
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"white"} tintColor={"#2a0000"} onRefresh={() => {
+    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#2a0000"} onRefresh={() => {
         setIsRefreshing(true)
         setTimeout(() => setIsRefreshing(false), 1000)
         loadArticles()
@@ -457,7 +457,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlistRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={[styles.flatlist, subcategoriesList2 && { borderBottomWidth: 0 }]}
+                style={[styles.flatlist, subcategoriesList2 && { borderBottomWidth: 0 }, !subcategoriesList && { display: "none" }]}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem {...item} index={index} />
                 }}
