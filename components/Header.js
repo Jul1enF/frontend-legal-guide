@@ -69,7 +69,7 @@ export default function Header() {
 
     if (user.jwtToken) {
         logoutOrConnection = <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
-           logoutPress()
+            logoutPress()
         }}>
             <Text style={styles.link}>Se déconnecter</Text>
         </TouchableOpacity>
@@ -82,6 +82,10 @@ export default function Header() {
             <Text style={styles.link}>Se connecter / S'inscrire</Text>
         </TouchableOpacity>
     }
+
+
+
+
 
 
     return (
@@ -97,7 +101,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.emergencyIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => {}} />
+                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => { }} />
                 </View>
             </View>
             <View style={styles.headerLigne}></View>
@@ -116,18 +120,22 @@ export default function Header() {
                 <View style={!articlePage ? styles.modalBody : styles.modalBody2}>
 
                     <View style={styles.searchContainer}>
-                    <TextInput
-                            style={styles.search}
-                            placeholder="Rechercher..."
-                            onChangeText={(e) => setSearchText(e)}
-                            value={searchText}
-                            returnKeyType="send"
-                            placeholderTextColor={"rgba(63, 63, 63, 0.66)"}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onSubmitEditing={() => submitSearch()}
-                        ></TextInput>
-                        <FontAwesome6 name="magnifying-glass" style={styles.icon2} size={RPH(1.9)} onPress={() => submitSearch()} />
+
+                        <View style={styles.inputAndIconContainer}>
+                            <TextInput
+                                style={styles.search}
+                                placeholder="Rechercher..."
+                                onChangeText={(e) => setSearchText(e)}
+                                value={searchText}
+                                returnKeyType="send"
+                                placeholderTextColor={"rgba(63, 63, 63, 0.6)"}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onSubmitEditing={() => submitSearch()}
+                            ></TextInput>
+                            <FontAwesome6 name="magnifying-glass" style={styles.icon2} size={RPW(5)} onPress={() => submitSearch()} />
+                        </View>
+
                     </View>
 
 
@@ -138,14 +146,14 @@ export default function Header() {
                         <Text style={styles.link}>Accueil</Text>
                     </TouchableOpacity>
                     {logoutOrConnection}
-                    
-                     { user.is_admin &&  <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
-                            setMenuVisible(false)
-                            router.push('/redaction')
-                        }}>
-                            <Text style={styles.link}>Écrire / Modifier un article</Text>
-                        </TouchableOpacity>}
-                    
+
+                    {user.is_admin && <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
+                        setMenuVisible(false)
+                        router.push('/redaction')
+                    }}>
+                        <Text style={styles.link}>Écrire / Modifier un article</Text>
+                    </TouchableOpacity>}
+
                     {/* {user.is_admin &&
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
@@ -171,7 +179,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        backgroundColor : "#0c0000",
+        backgroundColor: "#0c0000",
     },
     menuIconContainer: {
         width: "15%",
@@ -191,8 +199,8 @@ const styles = StyleSheet.create({
         color: "#fffcfc",
         letterSpacing: RPW(0.6),
         fontWeight: "600",
-        fontFamily : "Barlow-SemiBold",
-        lineHeight : RPW(9.3)
+        fontFamily: "Barlow-SemiBold",
+        lineHeight: RPW(9.3)
     },
     emergencyIconContainer: {
         width: "15%",
@@ -221,7 +229,7 @@ const styles = StyleSheet.create({
         top: RPH(12.9) - statusHeight,
     },
     modalBody2: {
-        height: RPH(77.6)- RPW(10),
+        height: RPH(77.6) - RPW(10),
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
@@ -230,34 +238,47 @@ const styles = StyleSheet.create({
     linkContainer: {
         height: RPH(11.5),
         borderTopWidth: 0.5,
-        borderTopColor: "#19290a",
+        borderTopColor: "#2a0000",
         justifyContent: "center",
         alignItems: "center",
     },
-    searchContainer : {
-        height: RPH(11.5),
+    searchContainer: {
+        height: RPH(13),
         borderTopWidth: 0.5,
-        paddingLeft : RPW(4),
-        paddingRight : RPW(4),
-        flexDirection : "row",
-        borderTopColor: "#19290a",
+        paddingLeft: RPW(10),
+        paddingRight: RPW(10),
+        paddingBottom: RPH(1.2),
+        flexDirection: "row",
+        borderTopColor: "#2a0000",
         justifyContent: "space-between",
         alignItems: "center",
     },
     link: {
         color: "#2a0000",
         fontSize: RPW(7.8),
-        letterSpacing : RPW(0.1),
-        fontFamily : "Barlow-Light",
+        letterSpacing: RPW(0.1),
+        fontFamily: "Barlow-Light",
+    },
+    inputAndIconContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: 0.5,
+        borderBottomColor: "rgba(63, 63, 63, 0.66)",
+        paddingBottom: RPH(2),
+        paddingTop: RPH(1),
     },
     search: {
         color: "#2a0000",
         fontSize: RPW(7.8),
-        letterSpacing : RPW(0.1),
-        fontFamily : "Barlow-Light",
-        width: "90%",
+        letterSpacing: RPW(0.1),
+        fontFamily: "Barlow-Light",
+        width: "85%",
     },
     icon2: {
-        color: "#2a0000",
+        color: "rgba(63, 63, 63, 0.44)",
+        marginRight: RPW(3),
+        marginTop: RPH(0.2)
     },
 })

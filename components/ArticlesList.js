@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
         fontSize: RPW(7.3),
         lineHeight: RPW(8),
         fontWeight: "450",
-        margin: RPW(2),
+        margin: RPW(4),
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
         textAlign: "center"
@@ -669,7 +669,7 @@ const styles = StyleSheet.create({
     line2: {
         width: RPW(25),
         height: 3.5,
-        marginBottom: RPW(2),
+        marginBottom: RPW(4),
         marginTop: RPW(1),
         alignSelf: "center",
         borderRadius: 15,
