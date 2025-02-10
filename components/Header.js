@@ -145,6 +145,14 @@ export default function Header() {
                     }}>
                         <Text style={styles.link}>Accueil</Text>
                     </TouchableOpacity>
+
+                   { user.jwtToken && <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
+                        setMenuVisible(false)
+                        router.push('/user-informations')
+                    }}>
+                        <Text style={styles.link}>Modifier mes informations</Text>
+                    </TouchableOpacity>}
+
                     {logoutOrConnection}
 
                     {user.is_admin && <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {

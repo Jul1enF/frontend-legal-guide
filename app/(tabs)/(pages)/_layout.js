@@ -5,11 +5,13 @@ export default function RootLayout() {
         <Stack screenOptions={{
             headerShown: false,
         }}>
-            <Stack.Screen name="settings" />
+            <Stack.Screen name="user-informations" options={{
+                title: "Mes informations",
+            }} />
             <Stack.Screen name="redaction" />
             <Stack.Screen name="index" options={{
-                title : "Accueil"
-            }}/>
+                title: "Accueil"
+            }} />
         </Stack>
     )
 }

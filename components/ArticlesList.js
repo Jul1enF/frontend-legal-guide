@@ -658,10 +658,11 @@ const styles = StyleSheet.create({
     },
     title2: {
         color: "#2a0000",
-        fontSize: RPW(7.3),
+        fontSize: RPW(7.6),
         lineHeight: RPW(8),
         fontWeight: "450",
         margin: RPW(4),
+        marginTop : RPW(5),
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
         textAlign: "center"
@@ -669,8 +670,8 @@ const styles = StyleSheet.create({
     line2: {
         width: RPW(25),
         height: 3.5,
-        marginBottom: RPW(4),
-        marginTop: RPW(1),
+        marginBottom: RPW(6),
+        marginTop: RPW(0),
         alignSelf: "center",
         borderRadius: 15,
         backgroundColor: "rgb(185, 0, 0)",
