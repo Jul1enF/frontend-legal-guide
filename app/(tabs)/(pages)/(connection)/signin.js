@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
         maxHeight : 46,
         borderRadius: RPH(1),
         marginTop: RPH(7),
-        backgroundColor: "#e6eedd",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0c0000",

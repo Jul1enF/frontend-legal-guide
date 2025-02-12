@@ -6,7 +6,7 @@ import FullArticle from '../../../../components/FullArticle';
 
 import {useLocalSearchParams} from "expo-router"
 
-export default function App() {
+export default function PressArticle() {
     const {_id} = useLocalSearchParams()
 
   return (

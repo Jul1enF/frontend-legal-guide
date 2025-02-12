@@ -26,6 +26,9 @@ export default function Header() {
     const [articlePage, setArticlePage] = useState(false)
     const pathName = usePathname()
 
+    const pagePath = pathName === '/' ? "index" : pathName
+
+
     useEffect(() => {
         if (pathName.includes('-article')) {
             setArticlePage(true)
@@ -101,7 +104,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.emergencyIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => { }} />
+                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => router.push(`/emergencies/${pagePath}`)} />
                 </View>
             </View>
             <View style={styles.headerLigne}></View>
@@ -150,7 +153,7 @@ export default function Header() {
                         setMenuVisible(false)
                         router.push('/user-informations')
                     }}>
-                        <Text style={styles.link}>Modifier mes informations</Text>
+                        <Text style={styles.link}>Mes informations</Text>
                     </TouchableOpacity>}
 
                     {logoutOrConnection}

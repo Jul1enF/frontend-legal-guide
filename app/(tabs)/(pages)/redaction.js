@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, Dimensions, TextInput, KeyboardAvoidingView, TouchableOpacity, Image, Platform, ScrollView, PanResponder, Modal } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { addTestArticle, deleteTestArticle } from "../../../reducers/testArticle";

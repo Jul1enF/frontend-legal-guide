@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(185, 0, 0)",
     },
     inputContainer: {
-        marginBottom: RPW(6),
+        marginBottom: RPW(7),
         width: "90%",
         height: RPW(10.5),
         borderRadius: RPW(2),
@@ -429,10 +429,11 @@ const styles = StyleSheet.create({
         fontSize: RPW(5)
     },
     text1: {
+        fontFamily: "Barlow-SemiBold",
         color: "#0c0000",
-        fontSize: RPW(5),
+        fontSize: RPW(6),
         fontWeight: "600",
-        marginBottom: 11,
+        marginBottom: 13,
         marginTop: RPW(1)
     },
     password: {
@@ -453,7 +454,6 @@ const styles = StyleSheet.create({
         height: RPW(12),
         borderRadius: RPW(2),
         marginTop: RPW(3),
-        backgroundColor: "#e6eedd",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0c0000",
