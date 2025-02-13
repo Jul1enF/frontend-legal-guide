@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import user from '../reducers/user'
 import testArticle from '../reducers/testArticle'
 import articles from '../reducers/articles'
+import emergencies from "../reducers/emergencies";
 
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,7 +14,7 @@ SplashScreen.preventAutoHideAsync();
 
 
 const store = configureStore({
-    reducer: { user, testArticle, articles },
+    reducer: { user, testArticle, articles, emergencies },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false })
 })

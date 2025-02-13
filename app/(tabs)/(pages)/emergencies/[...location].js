@@ -1,14 +1,18 @@
 
-import { useRouter, useLocalSearchParams } from 'expo-router'
+import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router'
 import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Modal, TextInput, Image } from 'react-native';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { addRequest, supressRequest } from '../../../../reducers/emergencies';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import { RPH, RPW } from '../../../../modules/dimensions'
 
 import * as ImagePicker from 'expo-image-picker'
 import { useVideoPlayer, VideoView } from 'expo-video';
+
+import JWT, { SupportedAlgorithms } from 'expo-jwt';
+const jwtKey = process.env.EXPO_PUBLIC_JWT_KEY
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -30,19 +34,25 @@ export default function Emergencies() {
 
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
     const user = useSelector((state) => state.user.value)
+    const emergencies = useSelector((state) => state.emergencies.value)
     const dispatch = useDispatch()
 
     const [firstname, setFirstname] = useState('')
     const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [mediaLink, setMediaLink] = useState('')
     const [mediaType, setMediaType] = useState('')
+    const [mediaMimeType, setMediaMimeType] = useState('')
+    const [mediaExtension, setMediaExtension] = useState('')
+    const [emergencyReason, setEmergencyReason] = useState('')
+
+    const [uploading, setUploading] = useState(false)
 
     const [error, setError] = useState('')
+    const [error2, setError2] = useState("")
 
     const [modal1Visible, setModal1Visible] = useState(false)
-
+    const [modal2Visible, setModal2Visible] = useState(false)
 
 
     // UseEffect pour charger dans les états les valeurs des informations du user
@@ -50,12 +60,31 @@ export default function Emergencies() {
     useEffect(() => {
         setFirstname(user.firstname)
         setName(user.name)
-        setEmail(user.email)
-        user.phone && setPhone(user.phone)
+        setPhone(user.phone)
     }, [])
 
 
 
+
+    // Fonction et useFocusEffect pour vérifier s'il y a une demande en cours en bdd
+
+    const checkEmergency = async () => {
+        if (!emergencies.request._id) {
+            return
+        }
+
+        const response = await fetch(`${url}/emergencies/check-emergency/${emergencies.request._id}`)
+
+        const data = await response.json()
+
+        if (data.result && data.requestDeleted){
+            dispatch(supressRequest())
+        }
+    }
+
+     useFocusEffect(useCallback(() => {
+          checkEmergency()
+        }, [emergencies]))
 
 
 
@@ -75,6 +104,22 @@ export default function Emergencies() {
 
 
 
+    // Fonction pour annuler les renseignements du formulaire
+
+    const cancelPress = () => {
+        !user.firstname && setFirstname("")
+        !user.name && setName("")
+        !user.phone && setPhone("")
+        setMediaLink("")
+        setMediaType("")
+        setMediaMimeType("")
+        setMediaExtension("")
+        setEmergencyReason("")
+    }
+
+
+
+
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
@@ -83,15 +128,151 @@ export default function Emergencies() {
             mediaTypes: ['images', 'videos'],
             allowsEditing: false,
             allowsMultipleSelection: false,
-            quality: 0.4,
+            quality: 0.2,
         });
 
         if (!result.canceled) {
             setMediaLink(result.assets[0].uri);
             setMediaType(result.assets[0].type)
+            setMediaMimeType(result.assets[0].mimeType)
+
+            const name = result.assets[0].fileName
+            const nameDisassembled = name.split(".")
+
+            setMediaExtension(nameDisassembled[nameDisassembled.length - 1])
         }
     };
 
+
+
+
+
+    // Fonction de vérification appelée au premier clique sur envoyer
+
+    const validationPress = () => {
+
+        if (!firstname || !name || !phone) {
+            setError("Merci de renseigner toutes vos informations de contact !")
+            setTimeout(() => setError(''), 3000)
+            return
+        }
+        else if (!emergencyReason) {
+            setError("Merci de renseigner la raison de votre demande !")
+            setTimeout(() => setError(''), 3000)
+            return
+        }
+        else {
+            setModal1Visible(true)
+        }
+    }
+
+
+
+
+
+
+    // Fonction appelée en cliquant définitivement sur envoyer
+
+    const sendRef = useRef(true)
+
+    const sendPress = async (withLocation) => {
+        // LOGIQUE LOCALISATION
+        const user_location = []
+
+        if (!sendRef.current) { return }
+        sendRef.current = false
+
+        setError2("Merci de patienter, envoi de la demande...")
+
+        const formData = new FormData()
+
+        mediaLink && formData.append('userMedia', {
+            uri: mediaLink,
+            name: `${mediaType}.${mediaExtension}`,
+            type: mediaMimeType,
+        })
+
+        // Encodage en jwt pour obtenir un string à passer en param, garder des types booléens etc... et gérer les cas où les inputs n'ont pas été remplis
+
+        const emergencyData = JWT.encode({
+            user_firstname: firstname,
+            user_name: name,
+            user_email: user.email ? user.email : "",
+            user_phone: phone,
+            connected: user.jwtToken ? true : false,
+            media_link: mediaLink,
+            media_type: mediaType,
+            ermergency_reason: emergencyReason,
+            mediaExtension,
+            mediaMimeType,
+            user_location,
+        }, jwtKey)
+
+        const response = await fetch(`${url}/emergencies/new-emergency/${emergencyData}`, {
+            method: 'POST',
+            body: formData,
+        })
+
+        const data = await response.json()
+
+        if (data.result) {
+            setError2("Demande envoyée !")
+            setTimeout(() => {
+                setError2("")
+                cancelPress()
+                sendRef.current = true
+                setModal1Visible(false)
+                dispatch(addRequest({
+                    _id: data.savedEmergency._id,
+                    located: data.savedEmergency.located
+                }))
+            }, 2500)
+        } else {
+            setError2("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
+            setTimeout(() => {
+                setError2("")
+                cancelPress()
+                sendRef.current = true
+                setModal1Visible(false)
+            }, 2500)
+        }
+    }
+
+
+
+
+
+    // Fonction appelée en cliquant définitivement sur annuler la demande
+
+    const abortRef = useRef(true)
+
+    const abortRequestPress = async () => {
+        if (!abortRef.current){
+            return
+        }
+        abortRef.current = false
+
+        const response = await fetch(`${url}/emergencies/suppress-emergency/${emergencies.request._id}`, { method: 'DELETE' })
+
+        const data = await response.json()
+
+        if (data.result) {
+            setError2("Demande annulée !")
+            setTimeout(() => {
+                setError2("")
+                abortRef.current = true
+                setModal2Visible(false)
+                dispatch(supressRequest())
+            }, 2500)
+        } else {
+            setError2("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
+            setTimeout(() => {
+                setError2("")
+                abortRef.current = true
+                setModal2Visible(false)
+            }, 2500)
+        }
+    }
 
 
 
@@ -103,11 +284,61 @@ export default function Emergencies() {
 
 
 
+
+
+    // Affichage conditionnel si demande en cours
+    if (emergencies.request._id) {
+        return (
+            <View style={{ flex: 1, alignItems: "center", paddingTop : RPW(8) }}>
+                <Text style={styles.title}>Demande de contact urgent</Text>
+                <View style={styles.titleLine}></View>
+                <Text style={[styles.reasonText, {marginTop : RPW(3)}]}>Demande de contact urgent en cours</Text>
+
+                <TouchableOpacity style={[styles.btn2, { marginTop: RPW(12) }]} onPress={() => setModal2Visible(true)}>
+                    <Text style={styles.btnSentence}>
+                        Annuler la demande
+                    </Text>
+                </TouchableOpacity>
+
+                <Modal
+                    visible={modal2Visible}
+                    animationType="slide"
+                    style={styles.modal}
+                    backdropColor="rgba(0,0,0,0.9)"
+                    transparent={true}
+                    onRequestClose={() => setModal1Visible(!modal2Visible)}
+                >
+                    <View style={styles.modalBody2}>
+                        <Text style={styles.modalText}>Êtes vous sûr de vouloir annuler votre demande de contact urgent ?</Text>
+                        <View style={[styles.line, { marginTop: 0 }]}>
+                        </View>
+                        <Text style={[styles.error2, error2 == "Demande annulée !" && { color: "green" }, { top: RPW(45) }]}>
+                            {error2}
+                        </Text>
+
+                        <View>
+                            <TouchableOpacity style={styles.btn4} activeOpacity={0.8} onPress={() => abortRequestPress()}>
+                                <Text style={styles.btnSentence}>Oui, annuler ma demande</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.btn4} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
+                                <Text style={styles.btnSentence}>Non, la garder</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </Modal>
+
+            </View>
+        )
+    }
+
+
     return (<>
 
         {/* <KeyboardAwareScrollView
                        style={{ flex: 1, backgroundColor: "#f9fff4" }}
-                       contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
+                       contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
                        scrollEnabled={scrollable}
                        bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}
                         stickyHeaderIndices={[0]}
@@ -115,7 +346,7 @@ export default function Emergencies() {
 
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
-            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
                 keyboardShouldPersistTaps="handled"
                 stickyHeaderIndices={[0]}>
 
@@ -147,25 +378,11 @@ export default function Emergencies() {
                             setError('')
                         }}
                         value={name}
-                        placeholder='Nom'
+                        placeholder='Votre nom'
                         placeholderTextColor="#fbfff790">
                     </TextInput>
                 </View>}
 
-
-                {!user.jwtToken && <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setEmail(e)
-                            setError('')
-                        }}
-                        value={email}
-                        placeholder='Votre Email'
-                        placeholderTextColor="#fbfff790"
-                        keyboardType='email-address'
-                        autoCapitalize='none'>
-                    </TextInput>
-                </View>}
 
                 {!user.phone && <View style={styles.inputContainer} >
                     <TextInput style={styles.input}
@@ -192,7 +409,7 @@ export default function Emergencies() {
                 {mediaType === "video" &&
                     <View style={styles.videoContainer}>
                         <VideoView style={styles.video} player={player} allowsPictureInPicture />
-                        <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display : 'none'}]} onPress={()=>{
+                        <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
                             player.play()
                             setVideoWasLaunched(true)
                         }} />
@@ -202,7 +419,9 @@ export default function Emergencies() {
                 {mediaLink && <TouchableOpacity style={styles.btn2} onPress={() => {
                     setMediaLink('')
                     setMediaType('')
-                    }}>
+                    setMediaMimeType('')
+                    setMediaExtension('')
+                }}>
                     <Text style={styles.btnSentence2}>Enlever le média</Text>
                 </TouchableOpacity>}
 
@@ -213,8 +432,20 @@ export default function Emergencies() {
                     </Text>
                 </View>
 
+                <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#2a0000" }]}>Incident avec la police</Text>
+                </TouchableOpacity>
 
-                <Text style={[styles.error, error == "Demande envoyée !" && { color: "green" }]}>{error}</Text>
+                <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#2a0000" }]}>Procédure urgente</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#2a0000" }]}>Autre urgence</Text>
+                </TouchableOpacity>
+
+
+                <Text style={styles.error}>{error}</Text>
 
 
                 <View style={styles.row}>
@@ -225,7 +456,7 @@ export default function Emergencies() {
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btn} onPress={() => setModal1Visible(true)}>
+                    <TouchableOpacity style={styles.btn} onPress={() => validationPress()}>
                         <Text style={styles.btnSentence}>
                             Envoyer
                         </Text>
@@ -243,9 +474,12 @@ export default function Emergencies() {
                     onRequestClose={() => setModal1Visible(!modal1Visible)}
                 >
                     <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Fournir également votre localisation en temps réel ?</Text>
+                        <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
                         <View style={styles.line}>
                         </View>
+                        <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
+                            {error2}
+                        </Text>
                         <View style={styles.btnContainer}>
                             <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
                                 <Text style={styles.modalText2}>Oui</Text>
@@ -259,6 +493,7 @@ export default function Emergencies() {
                         </View>
                     </View>
                 </Modal>
+
 
 
             </ScrollView>
@@ -343,7 +578,7 @@ const styles = StyleSheet.create({
         width: RPW(42),
         height: RPW(12),
         borderRadius: RPW(2),
-        marginTop: RPW(3),
+        marginTop: RPW(4),
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0c0000",
@@ -359,28 +594,30 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     btn2: {
-        width : RPW(52),
+        width: RPW(52),
         height: RPW(11),
         borderRadius: RPW(2),
         marginTop: RPW(3),
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0c0000",
+        borderColor: "#0c0000",
+        borderWidth: 2,
     },
     imgContainer: {
         width: RPW(50),
         height: RPW(40),
         justifyContent: "center",
         marginTop: RPW(7),
-        marginBottom : RPW(5),
+        marginBottom: RPW(5),
     },
     image: {
         resizeMode: "contain",
         height: RPW(40)
     },
-    videoContainer : {
+    videoContainer: {
         marginTop: RPW(7),
-        marginBottom : RPW(4),
+        marginBottom: RPW(4),
         height: 160,
         width: RPW(100),
         alignItems: "center",
@@ -390,19 +627,31 @@ const styles = StyleSheet.create({
         height: 160,
         width: RPW(100),
     },
-    playIcon : {
-        position : "absolute",
-        color : "white",
+    playIcon: {
+        position: "absolute",
+        color: "white",
     },
-    underlineContainer : {
-        marginTop : RPW(14),
-        borderBottomWidth : 1.5,
-        borderBottomColor :"#0c0000",
-        paddingBottom : RPW(2.5)
+    underlineContainer: {
+        marginTop: RPW(10),
+        borderBottomWidth: 1.5,
+        borderBottomColor: "#0c0000",
+        paddingBottom: RPW(2.2),
+        marginBottom: RPW(5)
     },
-    reasonText : {
+    reasonText: {
         fontFamily: "Barlow-SemiBold",
-        fontSize : RPW(6.5)
+        fontSize: RPW(6.5)
+    },
+    btn3: {
+        width: RPW(60),
+        height: RPW(11),
+        borderRadius: RPW(2),
+        marginTop: RPW(3),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#0c0000",
+        borderColor: "#0c0000",
+        borderWidth: 2,
     },
     error: {
         color: "red",
@@ -414,33 +663,68 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     modalBody: {
-        height: RPH(35),
+        height: RPW(66),
         width: RPW(96),
         borderRadius: 10,
-        paddingTop: RPH(5),
-        paddingBottom: RPH(5),
+        paddingTop: RPW(5),
+        paddingBottom: RPW(7),
         paddingLeft: RPW(2),
         paddingRight: RPW(2),
         backgroundColor: "#dfdfdf",
         position: "absolute",
-        bottom: RPH(17),
+        bottom: RPH(14),
         left: RPW(2),
         justifyContent: "space-between",
         alignItems: "center"
     },
+    modalBody2: {
+        height: RPW(90),
+        width: RPW(96),
+        borderRadius: 10,
+        paddingTop: RPW(5),
+        paddingBottom: RPW(7),
+        paddingLeft: RPW(2),
+        paddingRight: RPW(2),
+        backgroundColor: "#dfdfdf",
+        position: "absolute",
+        top: RPH(30),
+        left: RPW(2),
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    btn4: {
+        width: RPW(70),
+        height: RPW(11),
+        borderRadius: RPW(2),
+        marginTop: RPW(3),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#0c0000",
+        borderColor: "#0c0000",
+        borderWidth: 2,
+    },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(5.7),
+        fontSize: RPW(6),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(5),
         paddingRight: RPW(5),
-        lineHeight: RPH(4)
+        lineHeight: RPW(9)
+    },
+    error2: {
+        color: "rgb(157, 0, 0)",
+        position: "absolute",
+        top: RPW(34),
+        fontSize: RPW(4.3),
+        fontWeight: "600",
+        textAlign: "center",
+        lineHeight: RPW(5)
     },
     line: {
         width: "90%",
         height: 4,
-        marginTop: -6,
+        marginTop: -RPW(6),
         backgroundColor: "rgb(157, 0, 0)",
     },
     btnContainer: {
@@ -450,7 +734,7 @@ const styles = StyleSheet.create({
     },
     btnTouchable: {
         width: RPW(25),
-        height: RPW(13),
+        height: RPW(12),
         borderRadius: 10,
         alignItems: "center",
         justifyContent: "center",

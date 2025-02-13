@@ -25,7 +25,7 @@ export default function Signup() {
         setFirstname(user.firstname)
         setName(user.name)
         setEmail(user.email)
-        user.phone && setPhone(user.phone)
+        setPhone(user.phone)
         setOldPassword("")
         setPassword('')
         setPassword2('')

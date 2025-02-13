@@ -4,6 +4,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../../reducers/user'
+import { addRequest } from '../../../../reducers/emergencies';
 import { router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { RPH, RPW } from "../../../../modules/dimensions"
@@ -69,6 +70,7 @@ export default function Signin() {
                     push_token: data.push_token,
                     bookmarks: data.bookmarks,
                 }))
+
                 connectRef.current = true
 
                 router.push("/")

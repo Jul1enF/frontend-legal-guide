@@ -2638,6 +2638,11 @@ crypt@0.0.2:
   resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
   integrity sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==
 
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
+
 crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
@@ -2994,6 +2999,13 @@ expo-json-utils@~0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/expo-json-utils/-/expo-json-utils-0.14.0.tgz#ad3cbbcb4fb22e4d23bf9fb19b611e36758861d2"
   integrity sha512-xjGfK9dL0B1wLnOqNkX0jM9p48Y0I5xEPzHude28LY67UmamUyAACkqhZGaPClyPNfdzczk7Ej6WaRMT3HfXvw==
+
+expo-jwt@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/expo-jwt/-/expo-jwt-1.8.2.tgz#cb78d84d35b3db7cd4f01f284be159ad940331fb"
+  integrity sha512-I2l4WTKWdzQ74ZWcLijXumo/DJltId/gVVgNHBCNsVp0KvJB9rXuXYo+zGx1GnMPsDh1Y5QeGi+W+Ym9vwZ9CQ==
+  dependencies:
+    crypto-js "^4.2.0"
 
 expo-keep-awake@~14.0.2:
   version "14.0.2"
