@@ -419,7 +419,7 @@ export default function ArticlesList(props) {
         return (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={[styles.btn, chosenSubcategory === props.name && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress(props.name, props.index)}>
-                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#2a0000" }]}>{props.name}</Text>
+                    <Text style={[styles.btnText, chosenSubcategory !== props.name && { color: "#0c0000" }]}>{props.name}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -434,7 +434,7 @@ export default function ArticlesList(props) {
         return (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={[styles.btn, chosenSubcategory2 === props.name && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress2(props.name, props.index)}>
-                    <Text style={[styles.btnText, chosenSubcategory2 !== props.name && { color: "#2a0000" }]}>{props.name}</Text>
+                    <Text style={[styles.btnText, chosenSubcategory2 !== props.name && { color: "#0c0000" }]}>{props.name}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -485,7 +485,7 @@ export default function ArticlesList(props) {
         return (
             <View style={styles.btnContainer}>
                 <TouchableOpacity style={[styles.btn, searchMethodRef.current === props.search && { backgroundColor: "transparent" }]} onPress={() => subcategoryPress0(props.search, props.index)}>
-                    <Text style={[styles.btnText, searchMethodRef.current !== props.search && { color: "#2a0000" }]}>{props.name}</Text>
+                    <Text style={[styles.btnText, searchMethodRef.current !== props.search && { color: "#0c0000" }]}>{props.name}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -515,7 +515,7 @@ export default function ArticlesList(props) {
 
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#2a0000"} onRefresh={() => {
+    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#0c0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#0c0000"} onRefresh={() => {
         setIsRefreshing(true)
         setTimeout(() => setIsRefreshing(false), 1000)
         loadArticles()
@@ -639,7 +639,7 @@ const styles = StyleSheet.create({
         paddingTop: RPH(10),
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.3),
         lineHeight: RPW(9),
         fontWeight: "450",
@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(185, 0, 0)",
     },
     title2: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.6),
         lineHeight: RPW(8),
         fontWeight: "450",
@@ -705,7 +705,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     btnText2: {
-       color: "#2a0000",
+       color: "#0c0000",
         fontSize: RPW(4.3),
         fontWeight: "700",
     },

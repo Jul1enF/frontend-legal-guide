@@ -59,7 +59,7 @@ export default function EmergenciesList() {
     
         const [isRefreshing, setIsRefreshing] = useState(false)
     
-        const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#2a0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#2a0000"} onRefresh={() => {
+        const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#0c0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#0c0000"} onRefresh={() => {
             setIsRefreshing(true)
             setTimeout(() => setIsRefreshing(false), 1000)
             getEmergencies()
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         marginBottom: RPW(5)
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(8),
         marginBottom: RPW(5),
         fontFamily: "Barlow-Bold",

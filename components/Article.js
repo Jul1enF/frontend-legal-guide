@@ -138,7 +138,7 @@ export default function Article(props) {
                     <Text style={styles.date}>{lastingTime}</Text>
                 </View>
 
-                {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#2a0000"} onPress={()=>bookmarkPress()}/>}
+                {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={()=>bookmarkPress()}/>}
             </View>
 
 
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(6.8),
         lineHeight: RPW(8.2),
         fontWeight: "450",
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.16),
     },
     date: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(3.6),
         lineHeight: RPW(4.5),
         fontWeight: "300",

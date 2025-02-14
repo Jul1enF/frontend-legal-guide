@@ -143,7 +143,7 @@ export default function TopArticle(props) {
                 <View style={styles.row}>
                     <Text style={styles.date}>Publié {lastingTime}</Text>
 
-                    {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#2a0000"} onPress={()=>bookmarkPress()}/>}
+                    {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={()=>bookmarkPress()}/>}
                 </View>
 
             </View>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.3),
         lineHeight: RPW(7.3),
         fontWeight: "450",
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     date: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(3.6),
         lineHeight: RPW(4.5),
         marginLeft: RPW(0),

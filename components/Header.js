@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     linkContainer: {
         height: RPH(11.5),
         borderTopWidth: 0.5,
-        borderTopColor: "#2a0000",
+        borderTopColor: "#0c0000",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -260,12 +260,12 @@ const styles = StyleSheet.create({
         paddingRight: RPW(10),
         paddingBottom: RPH(1.2),
         flexDirection: "row",
-        borderTopColor: "#2a0000",
+        borderTopColor: "#0c0000",
         justifyContent: "space-between",
         alignItems: "center",
     },
     link: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.8),
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Light",
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
         paddingTop: RPH(1),
     },
     search: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.8),
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Light",

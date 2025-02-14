@@ -49,10 +49,10 @@ export default function EmergencyDetail() {
     // Image
     if (emergency.media_type === 'image') {
         media = <>
-             <View style={[styles.underlineContainer, {marginBottom : RPW(3)}]}>
+            <View style={[styles.underlineContainer, { marginBottom: RPW(3) }]}>
                 <Text style={styles.informationTitle}>Média :</Text>
             </View>
-            <View style={styles.imgContainer}>
+            <View style={styles.mediaContainer}>
                 <Image source={{ uri: emergency.media_url }} style={styles.image}></Image>
             </View>
         </>
@@ -65,10 +65,10 @@ export default function EmergencyDetail() {
 
     if (emergency.media_type === 'video' && emergency.media_url) {
         media = <>
-            <View style={[styles.underlineContainer, {marginBottom : RPW(3)}]}>
+            <View style={[styles.underlineContainer, { marginBottom: RPW(3) }]}>
                 <Text style={styles.informationTitle}>Média :</Text>
             </View>
-            <View style={styles.videoContainer}>
+            <View style={styles.mediaContainer}>
                 <VideoView style={styles.video} player={player} allowsPictureInPicture />
                 {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
                     player.play()
@@ -139,9 +139,14 @@ export default function EmergencyDetail() {
 
                 {media}
 
-                {emergency.media_url && <Link href={emergency.media_url} style={styles.btn}>
-                <Text style={styles.btnText}>Télécharger le média</Text>
-                </Link>}
+                {/* {emergency.media_url && <Link href={emergency.media_url} style={styles.btn}>
+                    <Text style={styles.btnText}>Télécharger le média</Text>
+                </Link>} */}
+                <Link href={'/'}>
+                    <TouchableOpacity style={styles.btn}>
+                        <Text style={styles.btnText}>Télécharger le média</Text>
+                    </TouchableOpacity>
+                </Link>
 
             </ScrollView>
         </View>
@@ -181,11 +186,13 @@ const styles = StyleSheet.create({
     scrollView: {
         alignItems: 'flex-start',
         paddingTop: RPW(5),
-        paddingRight: RPW(3),
-        paddingLeft: RPW(4)
+        paddingBottom: RPW(8),
+        paddingRight: RPW(4),
+        paddingLeft: RPW(4),
+        backgroundColor: "#fffcfc",
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(8),
         marginBottom: RPW(5),
         fontFamily: "Barlow-Bold",
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(185, 0, 0)",
     },
     date: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(4.5),
         fontFamily: "Barlow-Light",
         letterSpacing: RPW(0.2),
@@ -213,18 +220,18 @@ const styles = StyleSheet.create({
     },
     underlineContainer: {
         borderBottomWidth: 3,
-        borderBottomColor: "#2a0000",
+        borderBottomColor: "#0c0000",
         paddingBottom: RPW(1.5),
         marginRight: RPW(4)
     },
     informationTitle: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(6),
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0),
     },
     txtInfo: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(6),
         fontFamily: "Barlow-Regular",
         letterSpacing: RPW(0.2),
@@ -235,23 +242,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: RPW(9),
     },
-    imgContainer: {
-        width: RPW(90),
+    mediaContainer: {
+        width: RPW(92),
         height: RPW(50),
         justifyContent: "center",
-        marginBottom: RPW(5),
+        marginBottom: RPW(7),
+        marginTop : RPW(3),
         alignSelf: "center",
     },
     image: {
         resizeMode: "contain",
         height: RPW(50)
-    },
-    videoContainer: {
-        marginBottom: RPW(5),
-        height: RPW(50),
-        width: RPW(90),
-        alignItems: "center",
-        justifyContent: "center",
     },
     video: {
         height: RPW(50),
@@ -261,10 +262,17 @@ const styles = StyleSheet.create({
         position: "absolute",
         color: "white",
     },
-    btn : {
-        backgroundColor : "#2a0000",
+    btn: {
+        backgroundColor: "#0c0000",
+        height: RPW(12),
+        width: RPW(53),
+        borderRadius: 8,
+        justifyContent: "center",
+        alignItems: "center",
     },
-    btnText : {
-        color : "#0c0000",
+    btnText: {
+        color: "#fffcfc",
+        fontSize: RPW(4.7),
+        fontWeight: "500",
     }
 });

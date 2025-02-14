@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(8),
         marginBottom: 15,
         fontFamily: "Barlow-Bold",

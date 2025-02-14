@@ -433,15 +433,15 @@ export default function EmergencyRequest() {
                 </View>
 
                 <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
-                    <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#2a0000" }]}>Incident avec la police</Text>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#0c0000" }]}>Incident avec la police</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
-                    <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#2a0000" }]}>Procédure urgente</Text>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#0c0000" }]}>Procédure urgente</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
-                    <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#2a0000" }]}>Autre urgence</Text>
+                    <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#0c0000" }]}>Autre urgence</Text>
                 </TouchableOpacity>
 
 
@@ -537,7 +537,7 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.5)
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(8),
         marginBottom: 15,
         fontFamily: "Barlow-Bold",

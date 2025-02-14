@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     categoryTitle: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(5.5),
         lineHeight: RPW(5.5),
         fontWeight: "450",
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     title: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(7.3),
         lineHeight: RPW(7.5),
         fontWeight: "450",
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(185, 0, 0)",
     },
     date: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(3.2),
         fontWeight: "450",
         marginBottom: 12,
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
     author: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(3.2),
         fontWeight: "450",
         marginBottom: 15,
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     text1: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(4.8),
         fontWeight: "500",
         marginBottom: 25,
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.1),
     },
     text2: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(4.2),
         fontWeight: "500",
         marginBottom: 25,
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     modalText: {
-        color: "#2a0000",
+        color: "#0c0000",
         fontSize: RPW(4.5),
         fontWeight: "600",
         textAlign: "center",
