@@ -270,6 +270,7 @@ export default function Signup() {
                             setError('')
                         }}
                         value={oldPassword}
+                        autoCapitalize='none'
                         placeholder='Ancien mot de passe'
                         placeholderTextColor="#fbfff790"
                         secureTextEntry={!oldPasswordVisible}>
@@ -286,6 +287,7 @@ export default function Signup() {
                             setError('')
                         }}
                         value={password}
+                        autoCapitalize='none'
                         placeholder='Nouveau mot de passe'
                         placeholderTextColor="#fbfff790"
                         secureTextEntry={!passwordVisible}>
@@ -302,6 +304,7 @@ export default function Signup() {
                             setError('')
                         }}
                         value={password2}
+                        autoCapitalize='none'
                         placeholder='Confirmation du mot de passe'
                         placeholderTextColor="#fbfff790"
                         secureTextEntry={!password2Visible}>

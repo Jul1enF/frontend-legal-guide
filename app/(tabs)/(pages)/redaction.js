@@ -272,19 +272,13 @@ export default function Redaction() {
 
     const publishPress = async () => {
 
-        if (!title || !category) {
-            setError('Erreur : titre et catégorie obligatoires.')
+        if (!title || !category || !pictureUri) {
+            setError('Erreur : titre, catégorie et photo obligatoires.')
             setTimeout(() => setError(''), 4000)
             setModalVisible(false)
             return
         }
 
-        if (!pictureUri && !videoLink) {
-            setError('Erreur : merci de mettre une photo OU un lien youtube.')
-            setTimeout(() => setError(''), 4000)
-            setModalVisible(false)
-            return
-        }
 
         if (!publishRef.current) { return }
         publishRef.current = false

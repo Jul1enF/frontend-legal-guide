@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0000",
     },
     headerSection: {
-        width: RPW(30),
+        width: RPW(50),
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center"

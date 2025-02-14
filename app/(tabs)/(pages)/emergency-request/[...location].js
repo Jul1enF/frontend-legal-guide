@@ -18,7 +18,7 @@ const jwtKey = process.env.EXPO_PUBLIC_JWT_KEY
 
 
 
-export default function Emergencies() {
+export default function EmergencyRequest() {
     const router = useRouter()
 
     const { location } = useLocalSearchParams()
@@ -128,7 +128,7 @@ export default function Emergencies() {
             mediaTypes: ['images', 'videos'],
             allowsEditing: false,
             allowsMultipleSelection: false,
-            quality: 0.2,
+            quality: 0.15,
         });
 
         if (!result.canceled) {
@@ -177,7 +177,7 @@ export default function Emergencies() {
 
     const sendPress = async (withLocation) => {
         // LOGIQUE LOCALISATION
-        const user_location = []
+        const user_location = [48.812554, 2.281467]
 
         if (!sendRef.current) { return }
         sendRef.current = false
@@ -202,7 +202,7 @@ export default function Emergencies() {
             connected: user.jwtToken ? true : false,
             media_link: mediaLink,
             media_type: mediaType,
-            ermergency_reason: emergencyReason,
+            emergency_reason: emergencyReason,
             mediaExtension,
             mediaMimeType,
             user_location,
@@ -409,10 +409,10 @@ export default function Emergencies() {
                 {mediaType === "video" &&
                     <View style={styles.videoContainer}>
                         <VideoView style={styles.video} player={player} allowsPictureInPicture />
-                        <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
+                      {Platform.OS === "ios" &&  <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
                             player.play()
                             setVideoWasLaunched(true)
-                        }} />
+                        }} />}
                     </View>
                 }
 

@@ -11,7 +11,6 @@ export default function App() {
       <TouchableOpacity onPress={()=>router.push('/advices')}>
         <Text>Go to Tabs</Text>
       </TouchableOpacity>
-      <StatusBar style="auto" />
     </View>
   );
 }

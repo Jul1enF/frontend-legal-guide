@@ -16,9 +16,12 @@ export const emergenciesSlice = createSlice({
         },
         supressRequest : (state)=>{
             state.value.request = {}
+        },
+        addEmergencies : (state, action)=>{
+            state.value.emergenciesList = action.payload
         }
     }
 })
 
-export const { addRequest, supressRequest } = emergenciesSlice.actions
+export const { addRequest, supressRequest, addEmergencies } = emergenciesSlice.actions
 export default emergenciesSlice.reducer

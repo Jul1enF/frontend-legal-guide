@@ -140,6 +140,7 @@ export default function Signin() {
                             setError('')
                         }}
                         value={password}
+                        autoCapitalize='none'
                         placeholder='Mot de passe'
                         placeholderTextColor="#fbfff790"
                         secureTextEntry={!passwordVisible}>

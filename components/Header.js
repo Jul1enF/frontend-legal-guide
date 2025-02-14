@@ -104,7 +104,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.emergencyIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => router.push(`/emergencies/${pagePath}`)} />
+                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => router.push(`/emergency-request/${pagePath}`)} />
                 </View>
             </View>
             <View style={styles.headerLigne}></View>
@@ -165,14 +165,14 @@ export default function Header() {
                         <Text style={styles.link}>Écrire / Modifier un article</Text>
                     </TouchableOpacity>}
 
-                    {/* {user.is_admin &&
+                    {user.is_admin &&
                         <TouchableOpacity activeOpacity={0.6} style={styles.linkContainer} onPress={() => {
                             setMenuVisible(false)
-                            router.push('/notifications')
+                            router.push('/emergencies-list')
                         }}>
-                            <Text style={styles.link}>Notifications</Text>
+                            <Text style={styles.link}>Liste des contacts urgents</Text>
                         </TouchableOpacity>
-                    } */}
+                    }
                 </View>
             </Modal>
         </View>
