@@ -1,8 +1,9 @@
 
-import { router, useLocalSearchParams, Link } from 'expo-router'
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Platform } from 'react-native';
+import { router, useLocalSearchParams, Link, useFocusEffect } from 'expo-router'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Platform, RefreshControl } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect, useRef } from 'react';
+import { addEmergencies } from '../../../../../reducers/emergencies';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import moment from 'moment/min/moment-with-locales'
 import { useVideoPlayer, VideoView } from 'expo-video';
 
@@ -12,6 +13,8 @@ import { suppressAnEmergency } from '../../../../../reducers/emergencies';
 
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Modal from "react-native-modal"
+
+
 
 export default function EmergencyDetail() {
 
@@ -29,6 +32,8 @@ export default function EmergencyDetail() {
     const [modalVisible, setModalVisible] = useState(false)
 
 
+
+
     // UseEffect pour charger la demande de contact urgent
     useEffect(() => {
         emergencies.emergenciesList.map(e => {
@@ -44,6 +49,31 @@ export default function EmergencyDetail() {
     const hour = moment(emergency.createdAt).format('LT')
 
 
+
+
+
+
+    // Fonction et useFocusEffect pour fetcher les demandes d'urgences
+    const getEmergencies = async () => {
+        const response = await fetch(`${url}/emergencies/get-emergencies/${user.jwtToken}`)
+
+        const data = await response.json()
+
+        if (!data.result) {
+            setError("Erreur : problème de connexion. Données non actualisées. Quittez l'appli et reconnectez vous.")
+            setTimeout(() => { setError(''), 4000 })
+        }
+        else {
+            dispatch(addEmergencies(data.emergencies))
+            if (!data.emergencies || !data.emergencies.some(e=> e._id === _id)){
+                router.back('/emergencies-list')
+            }
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        getEmergencies()
+    }, []))
 
 
 
@@ -121,6 +151,18 @@ export default function EmergencyDetail() {
 
 
 
+    // Composant pour rafraichir la page
+
+    const [isRefreshing, setIsRefreshing] = useState(false)
+
+    const refreshComponent = <RefreshControl refreshing={isRefreshing} colors={["#0c0000"]} progressBackgroundColor={"#fffcfc"} tintColor={"#0c0000"} onRefresh={() => {
+        setIsRefreshing(true)
+        setTimeout(() => setIsRefreshing(false), 1000)
+        getEmergencies()
+    }} />
+
+
+
     // MAP
 
 
@@ -137,7 +179,7 @@ export default function EmergencyDetail() {
                 </TouchableOpacity>
             </View>
 
-            <ScrollView style={styles.body} contentContainerStyle={styles.scrollView}>
+            <ScrollView style={styles.body} contentContainerStyle={styles.scrollView} refreshControl={refreshComponent}>
 
                 <Text style={styles.title}>Demande de contact urgent</Text>
                 <View style={styles.titleLine}></View>
@@ -369,9 +411,9 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         fontSize: RPW(4.8),
-        fontWeight : "600",
-        alignSelf : "center",
-        marginBottom : RPW(3)
+        fontWeight: "600",
+        alignSelf: "center",
+        marginBottom: RPW(3)
     },
     modal: {
         alignItems: "center"
