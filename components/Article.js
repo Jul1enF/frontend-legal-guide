@@ -86,13 +86,10 @@ export default function Article(props) {
 
 
 
-    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
-
-    const onlineImage = props.img_link.includes('https')
-
+    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
 
     let image
-    if (onlineImage) {
+    if (requires[props.img_link] === undefined) {
         image = <Image
             style={[styles.image, {
                 width: RPW(41 * props.img_zoom),
@@ -138,7 +135,7 @@ export default function Article(props) {
                     <Text style={styles.date}>{lastingTime}</Text>
                 </View>
 
-                {user.jwtToken && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={()=>bookmarkPress()}/>}
+                {(user.jwtToken && props._id !== "testArticleId") && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={() => bookmarkPress()} />}
             </View>
 
 

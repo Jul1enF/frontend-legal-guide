@@ -2,13 +2,16 @@
 import { router, useLocalSearchParams, Link } from 'expo-router'
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import moment from 'moment/min/moment-with-locales'
 import { useVideoPlayer, VideoView } from 'expo-video';
 
 import { RPH, RPW } from '../../../../../modules/dimensions'
 
+import { suppressAnEmergency } from '../../../../../reducers/emergencies';
+
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Modal from "react-native-modal"
 
 export default function EmergencyDetail() {
 
@@ -22,6 +25,8 @@ export default function EmergencyDetail() {
     const [error, setError] = useState('')
 
     const [emergency, setEmergency] = useState("")
+
+    const [modalVisible, setModalVisible] = useState(false)
 
 
     // UseEffect pour charger la demande de contact urgent
@@ -38,6 +43,42 @@ export default function EmergencyDetail() {
     const date = moment(emergency.createdAt).format('DD/MM/YYYY')
     const hour = moment(emergency.createdAt).format('LT')
 
+
+
+
+
+    // Fonction appelée en cliquant définitivement sur annuler la demande
+
+    const deleteRef = useRef(true)
+
+    const deletePress = async () => {
+        if (!deleteRef.current) {
+            return
+        }
+        deleteRef.current = false
+
+        const response = await fetch(`${url}/emergencies/suppress-emergency/${emergency._id}`, { method: 'DELETE' })
+
+        const data = await response.json()
+
+        if (data.result) {
+            setError("Requête supprimée !")
+            setModalVisible(false)
+            setTimeout(() => {
+                setError("")
+                deleteRef.current = true
+                dispatch(suppressAnEmergency(emergency._id))
+                router.back('/emergencies-list')
+            }, 2500)
+        } else {
+            setError("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
+            setModalVisible(false)
+            setTimeout(() => {
+                setError("")
+                deleteRef.current = true
+            }, 2500)
+        }
+    }
 
 
 
@@ -79,6 +120,8 @@ export default function EmergencyDetail() {
     }
 
 
+
+    // MAP
 
 
 
@@ -139,14 +182,56 @@ export default function EmergencyDetail() {
 
                 {media}
 
-                {/* {emergency.media_url && <Link href={emergency.media_url} style={styles.btn}>
-                    <Text style={styles.btnText}>Télécharger le média</Text>
-                </Link>} */}
-                <Link href={'/'}>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text style={styles.btnText}>Télécharger le média</Text>
+                {emergency.media_url &&
+                    <View style={styles.centerContainer}>
+                        <Link href={emergency.media_url}>
+                            <View style={styles.btn}>
+                                <Text style={styles.btnText}>Télécharger le média</Text>
+                            </View>
+                        </Link>
+                    </View>
+                }
+
+
+                <Text style={[styles.error, !error && { display: "none" }, error == "Requête supprimée !" && { color: "green" }]}>{error}</Text>
+
+
+                <View style={styles.centerContainer}>
+                    <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(true)}>
+                        <Text style={styles.btnText}>Supprimer la demande</Text>
                     </TouchableOpacity>
-                </Link>
+                </View>
+
+
+
+                <Modal
+                    isVisible={modalVisible}
+                    style={styles.modal}
+                    backdropColor="transparent"
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    statusBarTranslucent={true}
+                    onBackButtonPress={() => setModalVisible(!modalVisible)}
+                    onBackdropPress={() => setModalVisible(!modalVisible)}
+                >
+                    <View style={styles.modalBody}>
+                        <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cette requête ?</Text>
+                        <View style={styles.line2}>
+                        </View>
+                        <View style={styles.btnContainer}>
+                            <TouchableOpacity style={styles.btn2} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.btnText}>Annuler</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btn2} onPress={() => deletePress()}>
+                                <Text style={styles.btnText}>Supprimer</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+
+
+
 
             </ScrollView>
         </View>
@@ -247,7 +332,7 @@ const styles = StyleSheet.create({
         height: RPW(50),
         justifyContent: "center",
         marginBottom: RPW(7),
-        marginTop : RPW(3),
+        marginTop: RPW(3),
         alignSelf: "center",
     },
     image: {
@@ -260,12 +345,18 @@ const styles = StyleSheet.create({
     },
     playIcon: {
         position: "absolute",
+        alignSelf: "center",
         color: "white",
+    },
+    centerContainer: {
+        width: RPW(92),
+        alignItems: "center",
+        marginBottom: RPW(6)
     },
     btn: {
         backgroundColor: "#0c0000",
-        height: RPW(12),
-        width: RPW(53),
+        height: RPW(10),
+        width: RPW(55),
         borderRadius: 8,
         justifyContent: "center",
         alignItems: "center",
@@ -274,5 +365,55 @@ const styles = StyleSheet.create({
         color: "#fffcfc",
         fontSize: RPW(4.7),
         fontWeight: "500",
-    }
+    },
+    error: {
+        color: 'red',
+        fontSize: RPW(4.8),
+        fontWeight : "600",
+        alignSelf : "center",
+        marginBottom : RPW(3)
+    },
+    modal: {
+        alignItems: "center"
+    },
+    modalBody: {
+        height: RPH(32),
+        width: RPW(90),
+        borderRadius: 10,
+        paddingTop: RPH(4),
+        paddingBottom: RPH(4),
+        backgroundColor: "#e7e7e7",
+        position: "absolute",
+        bottom: RPH(11),
+        justifyContent: "space-between",
+    },
+    modalText: {
+        color: "#0c0000",
+        fontSize: RPW(4.5),
+        fontWeight: "600",
+        textAlign: "center",
+        paddingLeft: RPW(6),
+        paddingRight: RPW(6),
+        lineHeight: RPH(4)
+    },
+    line2: {
+        width: "90%",
+        height: 4,
+        marginTop: 0,
+        backgroundColor: "rgb(157, 0, 0)",
+        alignSelf: "center",
+    },
+    btnContainer: {
+        flexDirection: "row",
+        justifyContent: "space-evenly"
+    },
+    btn2: {
+        backgroundColor: "#0c0000",
+        height: RPW(10),
+        width: RPW(36),
+        borderRadius: 8,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
 });

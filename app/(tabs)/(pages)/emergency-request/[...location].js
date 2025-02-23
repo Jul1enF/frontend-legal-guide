@@ -9,6 +9,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { RPH, RPW } from '../../../../modules/dimensions'
 
 import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator'
 import { useVideoPlayer, VideoView } from 'expo-video';
 
 import JWT, { SupportedAlgorithms } from 'expo-jwt';
@@ -128,18 +129,40 @@ export default function EmergencyRequest() {
             mediaTypes: ['images', 'videos'],
             allowsEditing: false,
             allowsMultipleSelection: false,
-            quality: 0.15,
+            quality: 1,
+            videoQuality : ImagePicker.UIImagePickerControllerQualityType.Low
         });
 
         if (!result.canceled) {
-            setMediaLink(result.assets[0].uri);
+            const {uri} = result.assets[0]
+
             setMediaType(result.assets[0].type)
             setMediaMimeType(result.assets[0].mimeType)
 
             const name = result.assets[0].fileName
             const nameDisassembled = name.split(".")
+            const extension = nameDisassembled[nameDisassembled.length - 1]
 
-            setMediaExtension(nameDisassembled[nameDisassembled.length - 1])
+            setMediaExtension(extension)
+
+            if (result.assets[0].type === "image"){
+                const image = ImageManipulator.ImageManipulator.manipulate(uri)
+
+                const transform = image.resize({
+                    width : result.assets[0].width/3.5,
+                    height : result.assets[0].height/3.5
+                })
+                const imageRef = await transform.renderAsync();
+                const imageSaved = await imageRef.saveAsync({base64 : false, compress: 0.5, format: extension})
+
+                console.log("IMAGE SAved",imageSaved)
+
+                setMediaLink(imageSaved.uri);
+
+            }else {
+                setMediaLink(result.assets[0].uri);
+            }
+            
         }
     };
 
@@ -186,7 +209,7 @@ export default function EmergencyRequest() {
 
         const formData = new FormData()
 
-        mediaLink && formData.append('userMedia', {
+        mediaLink && formData.append('emergencyMedia', {
             uri: mediaLink,
             name: `${mediaType}.${mediaExtension}`,
             type: mediaMimeType,
@@ -304,9 +327,9 @@ export default function EmergencyRequest() {
                     visible={modal2Visible}
                     animationType="slide"
                     style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
+                    backdropColor="transparent"
                     transparent={true}
-                    onRequestClose={() => setModal1Visible(!modal2Visible)}
+                    onRequestClose={() => setModal2Visible(!modal2Visible)}
                 >
                     <View style={styles.modalBody2}>
                         <Text style={styles.modalText}>Êtes vous sûr de vouloir annuler votre demande de contact urgent ?</Text>
@@ -402,7 +425,7 @@ export default function EmergencyRequest() {
                 </TouchableOpacity>
 
 
-                {mediaType === 'image' && <View style={styles.imgContainer}>
+                {(mediaType === 'image' && mediaLink) && <View style={styles.imgContainer}>
                     <Image source={{ uri: mediaLink }} style={styles.image}></Image>
                 </View>}
 

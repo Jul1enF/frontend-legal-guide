@@ -9,6 +9,12 @@ import Slider from '@react-native-community/slider'
 
 import requires from "../../../modules/imageRequires";
 
+import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator'
+
+import JWT, { SupportedAlgorithms } from 'expo-jwt';
+const jwtKey = process.env.EXPO_PUBLIC_JWT_KEY
+
 
 // import { KeyboardAwareScrollView, KeyboardToolbar } from "react-native-keyboard-controller";
 
@@ -25,37 +31,9 @@ export default function Redaction() {
 
     const [modalVisible, setModalVisible] = useState(false)
 
-    // useFocusEffect pour ne pas avoir resizing true en revenant sur la page
-
-    useFocusEffect(useCallback(() => {
-        resizingRef.current = false
-        setResizing(false)
-    }, [resizing, resizingRef]))
 
 
-    // useEffect pour charger dans les états un article test
-
-    useEffect(() => {
-        if (testArticle.length > 0) {
-            setTitle(testArticle[0].title)
-            testArticle[0].sub_category && setSubCategory(testArticle[0].sub_category)
-            testArticle[0].text1 && setText1(testArticle[0].text1)
-            testArticle[0].text2 && setText2(testArticle[0].text2)
-            testArticle[0].tags && setTags(testArticle[0].tags.join(', '))
-            testArticle[0].media_link && setTags(testArticle[0].media_link)
-            testArticle[0].video_id && setVideoLink(`https://youtu.be/${testArticle[0].video_id}`)
-            setCategory(testArticle[0].category)
-            setPictureUri(testArticle[0].img_link)
-            testArticle[0].author && setAuthor(testArticle[0].author)
-            setImgMarginTop(testArticle[0].img_margin_top)
-            setImgMarginLeft(testArticle[0].img_margin_left)
-            setImgZoom(testArticle[0].img_zoom)
-            setImgRatio(testArticle[0].img_ratio)
-        }
-    }, [testArticle])
-
-
-    // États pour les inputs et la photo choisie
+    // États pour les inputs des attributs de l'article
 
     const [title, setTitle] = useState('')
     const [subCategory, setSubCategory] = useState('')
@@ -64,7 +42,16 @@ export default function Redaction() {
     const [author, setAuthor] = useState('')
     const [videoLink, setVideoLink] = useState('')
     const [category, setCategory] = useState('')
+
+    // Lien image herbergée sur internet
     const [pictureUri, setPictureUri] = useState("")
+
+    // Lien d'une image sur le portable de l'utilisateur et infos pour enregistrement firebase
+    const [pictureUri2, setPictureUri2] = useState("")
+    const [pictureMimeType, setPictureMimeType] = useState('')
+    const [pictureExtension, setPictureExtension] = useState('')
+
+
     const [tags, setTags] = useState("")
     const [mediaLink, setMediaLink] = useState("")
 
@@ -92,6 +79,52 @@ export default function Redaction() {
     const [resizing, setResizing] = useState(false)
     const [scrollable, setScrollable] = useState(true)
 
+
+
+
+
+
+    // useFocusEffect pour ne pas avoir resizing true en revenant sur la page
+
+    useFocusEffect(useCallback(() => {
+        resizingRef.current = false
+        setResizing(false)
+    }, [resizing, resizingRef]))
+
+
+
+
+
+    // useEffect pour charger dans les états un article test
+
+    useEffect(() => {
+        if (testArticle.length > 0) {
+            setTitle(testArticle[0].title)
+            testArticle[0].sub_category && setSubCategory(testArticle[0].sub_category)
+            testArticle[0].text1 && setText1(testArticle[0].text1)
+            testArticle[0].text2 && setText2(testArticle[0].text2)
+            testArticle[0].tags && setTags(testArticle[0].tags.join(', '))
+            testArticle[0].media_link && setMediaLink(testArticle[0].media_link)
+            testArticle[0].video_id && setVideoLink(`https://youtu.be/${testArticle[0].video_id}`)
+            setCategory(testArticle[0].category)
+
+            // Si c'est une image du portable (pas dans l'app et pas avec une url internet) => pictureUri2
+            if (requires[testArticle[0].img_link] === undefined && !testArticle[0].img_link.includes('https')) {
+                setPictureUri2(testArticle[0].img_link)
+            } else {
+                setPictureUri(testArticle[0].img_link)
+            }
+
+            testArticle[0].pictureExtension && setPictureExtension(testArticle[0].pictureExtension)
+            testArticle[0].pictureMimeType && setPictureMimeType(testArticle[0].pictureMimeType)
+
+            testArticle[0].author && setAuthor(testArticle[0].author)
+            setImgMarginTop(testArticle[0].img_margin_top)
+            setImgMarginLeft(testArticle[0].img_margin_left)
+            setImgZoom(testArticle[0].img_zoom)
+            setImgRatio(testArticle[0].img_ratio)
+        }
+    }, [testArticle])
 
 
 
@@ -170,6 +203,7 @@ export default function Redaction() {
 
 
 
+
     // Récupération de l'id de la vidéo Youtube grâce au lien
 
     let video_id = ""
@@ -177,10 +211,51 @@ export default function Redaction() {
     if (videoLink) {
         if (videoLink.includes("youtu.be/")) {
             video_id = videoLink.slice(17, 28)
-        } else if (videoLink !== ""){
+        } else if (videoLink !== "") {
             video_id = videoLink.slice(30, 41)
         }
     }
+
+
+
+
+    // Fonction appelée en cliquant sur Choisir une image du portable
+
+    const getPhonePicture = async () => {
+        setPictureUri("")
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: 'images',
+            allowsEditing: false,
+            allowsMultipleSelection: false,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            const { uri } = result.assets[0]
+
+            setPictureMimeType(result.assets[0].mimeType)
+
+            const name = result.assets[0].fileName
+            const nameDisassembled = name.split(".")
+            const extension = nameDisassembled[nameDisassembled.length - 1]
+
+            setPictureExtension(extension)
+
+
+            const image = ImageManipulator.ImageManipulator.manipulate(uri)
+
+            const transform = image.resize({
+                width: result.assets[0].width / 3.5,
+                height: result.assets[0].height / 3.5
+            })
+            const imageRef = await transform.renderAsync();
+            const imageSaved = await imageRef.saveAsync({ base64: false, compress: 0.5, format: extension })
+            console.log("IMAGE Saved", imageSaved);
+            setPictureUri2(imageSaved.uri);
+        }
+    }
+
 
 
 
@@ -193,9 +268,10 @@ export default function Redaction() {
             return
         }
 
-        if (!pictureUri && !videoLink) {
-            setError('Erreur : merci de mettre une photo OU un lien youtube.')
+        if (!pictureUri && !pictureUri2) {
+            setError('Erreur : image obligatoire.')
             setTimeout(() => setError(''), 4000)
+            setModalVisible(false)
             return
         }
 
@@ -211,7 +287,9 @@ export default function Redaction() {
             text2,
             video_id,
             category,
-            img_link: pictureUri,
+            img_link: pictureUri ? pictureUri : pictureUri2,
+            pictureMimeType,
+            pictureExtension,
             img_margin_top: imgMarginTop,
             img_margin_left: imgMarginLeft,
             img_zoom: imgZoom,
@@ -226,9 +304,9 @@ export default function Redaction() {
         }))
 
         setResizing(false)
-        if (category !== "home"){
+        if (category !== "home") {
             router.push(`/${category}`)
-        }else {
+        } else {
             router.push('/')
         }
     }
@@ -245,6 +323,9 @@ export default function Redaction() {
         setText2('')
         setCategory('')
         setPictureUri('')
+        setPictureUri2('')
+        setPictureExtension('')
+        setPictureMimeType('')
         setVideoLink('')
         setAuthor('')
         setTags('')
@@ -260,9 +341,7 @@ export default function Redaction() {
         setImgRatio(0.55)
         dispatch(deleteTestArticle())
         setResizing(false)
-
     }
-
 
 
 
@@ -272,8 +351,15 @@ export default function Redaction() {
 
     const publishPress = async () => {
 
-        if (!title || !category || !pictureUri) {
-            setError('Erreur : titre, catégorie et photo obligatoires.')
+        if (!title || !category) {
+            setError('Erreur : titre et catégorie obligatoires.')
+            setTimeout(() => setError(''), 4000)
+            setModalVisible(false)
+            return
+        }
+
+        if (!pictureUri && !pictureUri2) {
+            setError('Erreur : image obligatoire.')
             setTimeout(() => setError(''), 4000)
             setModalVisible(false)
             return
@@ -284,12 +370,22 @@ export default function Redaction() {
         publishRef.current = false
 
 
+        // Si présence d'une image du portable de l'utilisateur, envoie de celle ci en formdata
+        const formData = new FormData()
+
+        pictureUri2 && formData.append('articlePicture', {
+            uri: pictureUri2,
+            name: `picture.${pictureExtension}`,
+            type: pictureMimeType,
+        })
+
+
+
         // Mise en forme des inputs pour leur envoi
         const _id = testArticle.length > 0 ? testArticle[0]._id : "testArticleId"
 
         const date = testArticle.length > 0 ? testArticle[0].createdAt : new Date()
         const tagsArray = tags.split(', ')
-
 
         const articleData = {
             title,
@@ -309,15 +405,19 @@ export default function Redaction() {
             media_link: mediaLink,
         }
 
-        const response = await fetch(`${url}/articles/save-article`, {
+        const postData = JWT.encode({
+            _id,
+            jwtToken: user.jwtToken,
+            createdAt: date,
+            pictureExtension,
+            pictureMimeType,
+            articleData,
+        }, jwtKey)
+
+
+        const response = await fetch(`${url}/articles/save-article/${postData}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                _id,
-                jwtToken : user.jwtToken,
-                createdAt: date,
-                articleData,
-            })
+            body: formData,
         })
 
         const data = await response.json()
@@ -335,9 +435,9 @@ export default function Redaction() {
             cancelPress()
             publishRef.current = true
 
-            if (category !== "home"){
+            if (category !== "home") {
                 router.push(`/${category}`)
-            }else {
+            } else {
                 router.push('/')
             }
         }
@@ -349,7 +449,7 @@ export default function Redaction() {
         }
         else {
             setModalVisible(false)
-            setError("Problème de connexion, merci de voir avec le webmaster")
+            setError("Problème de connexion, merci de voir avec le webmaster ou d'essayer après avoir quitté l'app et vous être reconnecté")
             publishRef.current = true
             setTimeout(() => setError(''), 4000)
         }
@@ -358,21 +458,20 @@ export default function Redaction() {
 
 
 
-    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
+    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
 
-    const onlineImage = pictureUri.includes('https') ? true : false
 
     let image
-    if (onlineImage) {
+    if (pictureUri.includes('https') || pictureUri2) {
         image = <Image
             style={[styles.image, {
                 width: RPW(95 * imgZoom),
                 marginTop: RPW(imgMarginTop * 0.95),
                 marginLeft: RPW(imgMarginLeft * 0.95)
             }]}
-            source={{ uri: pictureUri }}
+            source={{ uri: pictureUri ? pictureUri : pictureUri2 }}
         />
-    } else {
+    } else if (pictureUri) {
         image = <Image
             style={[styles.image, {
                 width: RPW(95 * imgZoom),
@@ -441,6 +540,7 @@ export default function Redaction() {
                     </TextInput>
                     <TextInput style={styles.smallInput}
                         placeholder="Lien vers un autre média"
+                        autoCapitalize="none"
                         onChangeText={(e) => setMediaLink(e)}
                         placeholderTextColor="#fbfff792"
                         value={mediaLink}>
@@ -494,13 +594,26 @@ export default function Redaction() {
 
 
                     <TextInput
-                        style={[styles.smallInput, { marginBottom: 30 }]}
-                        placeholder="Lien de l'image"
-                        onChangeText={(e) => setPictureUri(e)}
+                        style={[styles.smallInput, { marginBottom: RPW(2), marginTop: RPW(2) }]}
+                        placeholder="Lien internet de l'image"
+                        onChangeText={(e) => {
+                            setPictureUri(e)
+                            if (e.length > 0) {
+                                setPictureUri2("")
+                                setPictureExtension("")
+                                setPictureMimeType("")
+                            }
+                        }}
                         placeholderTextColor="#fbfff792"
                         value={pictureUri}
                         autoCapitalize="none">
                     </TextInput>
+
+                    <Text style={styles.categoryText1}>ou</Text>
+
+                    <TouchableOpacity style={styles.btn4} onPress={() => getPhonePicture()} >
+                        <Text style={styles.btn3Text}>Image du téléphone</Text>
+                    </TouchableOpacity>
 
 
                     <View style={[styles.underline, { marginBottom: 20 }]}>
@@ -522,7 +635,7 @@ export default function Redaction() {
 
 
                     <View style={[styles.imgContainer, { height: RPW(95) * imgRatio, }, resizing && { borderColor: "#b60050" }]} {...panResponder.panHandlers} >
-                        {pictureUri && image}
+                        {image && image}
                     </View>
 
                     <View style={[styles.row, { marginBottom: 30 }]}>
@@ -532,7 +645,7 @@ export default function Redaction() {
                                 resizing && setScrollable(true)
                                 setResizing(!resizing)
                             }}>
-                                <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadre l'image" : "Arrêter de recadrer"}</Text>
+                                <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.btnContainer2}>
@@ -548,21 +661,15 @@ export default function Redaction() {
 
 
                     <View style={[styles.row, { marginTop: 8 }]}>
-                        <View style={styles.btnContainer3}>
-                            <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
-                                <Text style={styles.btnText}>Tester</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.btnContainer3}>
-                            <TouchableOpacity style={styles.btn2} onPress={() => setModalVisible(true)}>
-                                <Text style={styles.btnText}>Publier</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.btnContainer3}>
-                            <TouchableOpacity style={styles.btn2} onPress={() => cancelPress()}>
-                                <Text style={styles.btnText}>Annuler</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
+                            <Text style={styles.btnText}>Tester</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => setModalVisible(true)}>
+                            <Text style={styles.btnText}>Publier</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => cancelPress()}>
+                            <Text style={styles.btnText}>Annuler</Text>
+                        </TouchableOpacity>
                     </View>
 
 
@@ -682,11 +789,6 @@ const styles = StyleSheet.create({
         fontSize: RPW(4.2),
         fontWeight: "500",
     },
-    gradientBtn1: {
-        height: RPW(10),
-        borderRadius: 10,
-        marginRight: RPW(7),
-    },
     btnContainer: {
         backgroundColor: "#0c0000",
         height: RPW(10),
@@ -730,10 +832,13 @@ const styles = StyleSheet.create({
         width: RPW(80)
     },
     btn2: {
-        flex: 1,
+        backgroundColor: "#0c0000",
+        width: "30%",
+        height: 45,
+        borderRadius: 10,
+        marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 10,
     },
     btn3: {
         flex: 1,
@@ -743,22 +848,24 @@ const styles = StyleSheet.create({
         margin: 2,
         borderRadius: 10,
     },
-    gradientBtn3: {
-        width: "30%",
-        height: 45,
-        borderRadius: 10,
-        marginBottom: 20,
-    },
-    btnContainer3: {
+    btn4: {
         backgroundColor: "#0c0000",
-        width: "30%",
-        height: 45,
+        width: RPW(50),
+        height: RPW(9),
         borderRadius: 10,
-        marginBottom: 20,
+        marginBottom: RPW(7),
+        marginTop: RPW(1),
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     btn2Text: {
         color: "#0c0000",
         fontSize: RPW(4.5),
+        fontWeight: "500",
+    },
+    btn3Text: {
+        color: "white",
+        fontSize: RPW(4.2),
         fontWeight: "500",
     },
     btnContainer2: {

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native";
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useFocusEffect } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { addBookmark, removeBookmark } from "../reducers/user";
@@ -148,25 +148,38 @@ export default function FullArticle(props) {
 
     // Fonction appelée en cliquant sur Supprimer
 
+    const deleteRef = useRef(true)
+
     const deletePress = async () => {
+
+        if (!deleteRef.current) { return }
+        deleteRef.current = false
+
         const response = await fetch(`${url}/articles/delete-article/${user.jwtToken}/${article._id}`, { method: 'DELETE' })
 
         const data = await response.json()
 
         if (!data.result && data.error) {
+            setModalVisible(false)
             setError(data.error)
             setTimeout(() => setError(''), 4000)
+            deleteRef.current = true
         }
         else if (!data.result) {
-            setError("Problème de connexion à la base de donnée, merci de contacter le webmaster.")
+            setModalVisible(false)
+            setError("Problème de connexion à la base de donnée, merci réessayer après avoir quitté l'app et vous être reconnecté.")
             setTimeout(() => setError(''), 4000)
+            deleteRef.current = true
         }
         else {
             dispatch(deleteOneArticle(article._id))
             setModalVisible(false)
+            deleteRef.current = true
             router.push(`/${article.category}`)
         }
     }
+
+
 
 
     // Boutons pour modifications si l'utilsateur est admin
@@ -196,12 +209,10 @@ export default function FullArticle(props) {
 
 
 
-    // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
-
-    const onlineImage = article.img_link.includes('https')
+   // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
 
     let image
-    if (onlineImage) {
+    if ( requires[article.img_link] === undefined) {
         image = <Image
             style={[styles.image, {
                 width: RPW(100 * article.img_zoom),
@@ -231,7 +242,7 @@ export default function FullArticle(props) {
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>{props.categoryName}</Text>
                 </TouchableOpacity>
-                {user.jwtToken && <TouchableOpacity style={styles.headerSection2} onPress={() => bookmarkPress()}>
+                {(user.jwtToken && article._id !== "testArticleId") && <TouchableOpacity style={styles.headerSection2} onPress={() => bookmarkPress()}>
                     <Text style={styles.headerText} >{isBookmarked ? "Retirer des favoris" : "Ajouter aux favoris"}</Text>
                     <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPH(2.9)} color={isBookmarked ? "rgb(185, 0, 0)" : "white"} style={styles.icon2} />
                 </TouchableOpacity>}
@@ -243,7 +254,8 @@ export default function FullArticle(props) {
                 <Text style={styles.categoryTitle}>{props.categoryNameSingular}</Text>
 
 
-                <Text style={styles.subTitle}>{article.sub_category} </Text>
+                {article.sub_category && <Text style={styles.subTitle}>{article.sub_category} </Text>}
+
                 <Text style={styles.title}>{article.title}</Text>
 
 
@@ -276,7 +288,7 @@ export default function FullArticle(props) {
 
                 {article.media_link && <Link style={styles.link} href={article.media_link}>{article.media_link}</Link>}
 
-                <Text style={[{ color: 'red' }, !error && { display: "none" }]}>{error}</Text>
+                <Text style={[{ color: 'red', fontSize : RPW(4.5) }, !error && { display: "none" }]}>{error}</Text>
 
                 {modifications}
             </ScrollView>
@@ -326,7 +338,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0000",
     },
     headerSection: {
-        width: RPW(50),
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center"
@@ -335,7 +346,6 @@ const styles = StyleSheet.create({
         marginRight: RPW(3)
     },
     headerSection2: {
-        width: RPW(55),
         flexDirection: "row",
         justifyContent: "flex-end",
         alignItems: "center",
