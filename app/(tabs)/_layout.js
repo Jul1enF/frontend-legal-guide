@@ -4,6 +4,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { RPH, RPW } from "../../modules/dimensions"
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 
 export default function TabsLayout() {
@@ -13,35 +17,28 @@ export default function TabsLayout() {
         keyboardHidesTabBar: true,
 
         tabBarIcon: ({ focused }) => {
-          let iconName = '';
           let color = ""
           color = focused ? 'white' : "grey"
 
           if (route.name === '(advices)') {
-            iconName = 'square-outline';
+            // return <MaterialCommunityIcons name='folder-information-outline' size={RPH(3.2)} color={color} />
+            return <FontAwesome name='info-circle' size={RPH(3.1)} color={color} />
           } else if (route.name === '(press)') {
-            iconName = 'triangle-outline';
-          }else if (route.name === '(bookmarks)') {
-            iconName = 'square-outline';
+            return <FontAwesome name='newspaper-o' size={RPH(2.9)} color={color} style={{paddingTop : RPH(0)}} />
+          } else if (route.name === 'calendar') {
+            return <AntDesign name='calendar' size={RPH(2.9)} color={color} style={{paddingTop : RPH(0)}} />
+          } else if (route.name === 'contact') {
+            return <Fontisto name='phone' size={RPH(2.5)} color={color} style={{paddingTop : RPH(0)}} />
+          } else if (route.name === '(bookmarks)') {
+            return <MaterialCommunityIcons name='heart' size={RPH(2.9)} color={color} style={{paddingTop : RPH(0)}} />
           }
-
-          return <MaterialCommunityIcons name={iconName} size={RPH(3.8)} color={color} />;
         },
 
-        tabBarIconStyle: { width: "100%", height: RPH(4.8) },
+        tabBarIconStyle: { width: "100%", height: RPH(4) },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'grey',
-        tabBarLabelStyle: { fontSize: RPW(4.2), fontWeight: "500" },
-        tabBarBackground: () => (
-          <LinearGradient
-            colors={["#0c0000", "#0c0000"]}
-            locations={[0.15, 1]}
-            start={{ x: 0, y: 0.5 }}
-            end={{ x: 1, y: 0.5 }}
-            style={{ height: 150 }}
-          ></LinearGradient>
-        ),
-        tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0), width: RPW(100) },
+        tabBarLabelStyle: { fontSize: RPW(4.3), fontWeight: "500",  fontFamily: "Barlow-Medium", letterSpacing : RPW(0.2)},
+        tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0.2), paddingRight : RPW(4), paddingLeft : RPW(4), width: RPW(100), backgroundColor : "#0c0000" },
         // Build / KeyboardAwareScrollView
         // tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
         // Expo Go / KeyboardAvoidingView
@@ -55,7 +52,13 @@ export default function TabsLayout() {
       <Tabs.Screen name="(press)" options={{
         title: "Presse",
       }} />
-       <Tabs.Screen name="(bookmarks)" options={{
+      <Tabs.Screen name="calendar" options={{
+        title: "Agenda",
+      }} />
+      <Tabs.Screen name="contact" options={{
+        title: "Contact",
+      }} />
+      <Tabs.Screen name="(bookmarks)" options={{
         title: "Favoris",
       }} />
       <Tabs.Screen name="(pages)" options={{

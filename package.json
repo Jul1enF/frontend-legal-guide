@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "publish:main": "yarn clear-react-native-cache && eas update",
-    "clear-react-native-cache": "rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/haste-map-*"
+    "clear-react-native-cache": "rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/haste-map-*",
+    "clear-expo-cache": "rm -rf node_modules && yarn cache clean && yarn && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/haste-map-*"
   },
   "dependencies": {
     "@react-native-community/netinfo": "11.4.1",
@@ -31,9 +32,11 @@
     "react": "18.3.1",
     "react-native": "0.76.6",
     "react-native-android-navbar-height": "^0.3.3",
+    "react-native-calendars": "^1.1309.1",
     "react-native-keyboard-controller": "^1.16.2",
     "react-native-maps": "1.18.0",
     "react-native-modal": "^13.0.1",
+    "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-webview": "^13.13.1",
