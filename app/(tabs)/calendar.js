@@ -14,10 +14,10 @@ import moment from 'moment/min/moment-with-locales'
 
 export default function Calendar() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-    const [events, setEvents] = useState({'2012-05-22': [{name: 'initialObject'}]})
-    const [markers, setMarkers]=useState({'2012-05-20': {color: 'green'}})
+    const [events, setEvents] = useState({ '2012-05-22': [{ name: 'initialObject' }] })
+    const [markers, setMarkers] = useState({ '2012-05-20': { color: 'green' } })
     const [error, setError] = useState('')
-    const [selectedDay, setSelectedDay]=useState(moment(new Date()).format('YYYY-MM-DD'))
+    const [selectedDay, setSelectedDay] = useState(moment(new Date()).format('YYYY-MM-DD'))
 
     // UseFocusEffect et fonction pour fetcher les évènements
 
@@ -44,15 +44,15 @@ export default function Calendar() {
     // useEffect pour fermer l'agenda après que le composant ait monté
 
     const agendaRef = useRef(null)
-    const [agendaReady, setAgendaReady]=useState(false)
+    const [agendaReady, setAgendaReady] = useState(false)
 
 
     useEffect(() => {
-            setTimeout(()=>{
-                setAgendaReady(true)
-                agendaRef.current.setScrollPadPosition(0, false)
-                agendaRef.current.enableCalendarScrolling()
-            }, 150)
+        setTimeout(() => {
+            setAgendaReady(true)
+            agendaRef.current.setScrollPadPosition(0, false)
+            agendaRef.current.enableCalendarScrolling()
+        }, 150)
     }, [])
 
 
@@ -105,9 +105,9 @@ export default function Calendar() {
                 <Agenda
                     ref={agendaRef}
                     items={events}
-                    reservationsKeyExtractor={(item) => item.reservation.id }
+                    reservationsKeyExtractor={(item) => item.reservation.id}
                     markingType={"period"}
-                    markedDates={{...markers, [selectedDay] : {startingDay: true, endingDay: true, color : 'rgba(231, 76, 60, .8)', textColor: 'green'}}}
+                    markedDates={{ ...markers, [selectedDay]: { startingDay: true, endingDay: true, color: 'rgba(231, 76, 60, .8)', textColor: 'green', selected : true } }}
                     // N'aime pas flex : 1
                     style={{ width: RPW(100) }}
                     renderItem={(item) => <CalendarEvent {...item} />}
@@ -117,8 +117,7 @@ export default function Calendar() {
                     showOnlySelectedDayItems={true}
                     onDayPress={day => {
                         setSelectedDay(day.dateString)
-                        // console.log('selected day', day);
-                      }}
+                    }}
                     theme={{
                         // CALENDAR STYLE
                         dotColor: "rgb(185, 0, 0)",
@@ -127,25 +126,38 @@ export default function Calendar() {
                         selectedDayBackgroundColor: "black",
                         selectedDayTextColor: "#fffcfc",
                         selectedDotColor: "#fffcfc",
-                  
-
-                        // Jour des mois non sélectionnés
-                        textDisabledColor: "rgba(148, 148, 148, 0.7)",
-
-                         // Nom des jours (Lun, Mar...)
-                        textSectionTitleColor: "#0c0000",
-                        textDayHeaderFontSize : RPW(3.5),
-
-                        todayTextColor: "rgb(185,0,0)",
-
-                        // Numéro des jours
-                        // dayTextColor: "red",
-                        textDayFontSize : RPW(4),
 
                         //Mois
                         monthTextColor: "rgb(185,0,0)",
                         textMonthFontSize: RPW(4.5),
                         textMonthFontWeight: "700",
+
+                        // Jour des mois non sélectionnés
+                        textDisabledColor: "rgba(148, 148, 148, 0.7)",
+
+                        // Nom des jours (Lun, Mar...)
+                        textSectionTitleColor: "#0c0000",
+                        textDayHeaderFontSize: RPW(3.5),
+
+                        todayTextColor: "rgb(185,0,0)",
+
+                        // Pour gagner un peu de hauteur au dessus du knob
+                        'stylesheet.agenda.main': {
+                            knobContainer: {
+                                flex: 1,
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                height: 20,
+                                bottom: 0,
+                                alignItems: 'center',
+                                backgroundColor: "fff"
+                            },
+                        },
+
+                        // Numéro des jours
+                        // dayTextColor: "red",
+                        // textDayFontSize: RPW(3.5),
 
                         // Rajouter une ligne entre les mois
                         'stylesheet.calendar.main': {
