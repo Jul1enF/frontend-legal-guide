@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
 
@@ -7,6 +7,7 @@ import { RPH, RPW } from '../../modules/dimensions'
 import { LocaleConfig, Agenda } from 'react-native-calendars';
 
 import CalendarEvent from '../../components/CalendarEvent';
+import DayComponent from '../../components/DayComponent';
 
 import moment from 'moment/min/moment-with-locales'
 
@@ -52,7 +53,7 @@ export default function Calendar() {
             setAgendaReady(true)
             agendaRef.current.setScrollPadPosition(0, false)
             agendaRef.current.enableCalendarScrolling()
-        }, 150)
+        }, 350)
     }, [])
 
 
@@ -85,7 +86,6 @@ export default function Calendar() {
 
 
 
-
     return (
         <View style={styles.body}>
             <Text style={styles.subTitle}>Agenda</Text>
@@ -106,58 +106,55 @@ export default function Calendar() {
                     ref={agendaRef}
                     items={events}
                     reservationsKeyExtractor={(item) => item.reservation.id}
-                    markingType={"period"}
-                    markedDates={{ ...markers, [selectedDay]: { startingDay: true, endingDay: true, color: 'rgba(231, 76, 60, .8)', textColor: 'green', selected : true } }}
+                    markingType={"multi-period"}
+                    markedDates={markers}
                     // N'aime pas flex : 1
                     style={{ width: RPW(100) }}
                     renderItem={(item) => <CalendarEvent {...item} />}
+
                     renderEmptyData={() => {
                         return <EmptyData />;
                     }}
                     showOnlySelectedDayItems={true}
-                    onDayPress={day => {
-                        setSelectedDay(day.dateString)
-                    }}
+        
+
+
+                    dayComponent={({date, state, marking }) =>{
+                        return <TouchableOpacity activeOpacity={0.4} onPress={()=> agendaRef.current.onDayPress(date)}>
+                             <DayComponent date={date} state={state} marking={marking} />
+                        </TouchableOpacity>
+                    } }
+
+
+
                     theme={{
                         // CALENDAR STYLE
-                        dotColor: "rgb(185, 0, 0)",
                         calendarBackground: "rgb(243, 241, 241)",
-
-                        selectedDayBackgroundColor: "black",
-                        selectedDayTextColor: "#fffcfc",
-                        selectedDotColor: "#fffcfc",
 
                         //Mois
                         monthTextColor: "rgb(185,0,0)",
-                        textMonthFontSize: RPW(4.5),
+                        textMonthFontSize: 19.5,
                         textMonthFontWeight: "700",
 
-                        // Jour des mois non sélectionnés
-                        textDisabledColor: "rgba(148, 148, 148, 0.7)",
-
                         // Nom des jours (Lun, Mar...)
-                        textSectionTitleColor: "#0c0000",
-                        textDayHeaderFontSize: RPW(3.5),
-
-                        todayTextColor: "rgb(185,0,0)",
+                        textSectionTitleColor: "black",
+                        textDayHeaderFontSize: 14,
 
                         // Pour gagner un peu de hauteur au dessus du knob
                         'stylesheet.agenda.main': {
                             knobContainer: {
-                                flex: 1,
                                 position: 'absolute',
                                 left: 0,
                                 right: 0,
-                                height: 20,
+                                height: 14,
+                                width : RPW(100),
                                 bottom: 0,
+                                paddingBottom : 10,
+                                justifyContent : 'center',
                                 alignItems: 'center',
-                                backgroundColor: "fff"
+                                backgroundColor: "rgb(243, 241, 241)"
                             },
                         },
-
-                        // Numéro des jours
-                        // dayTextColor: "red",
-                        // textDayFontSize: RPW(3.5),
 
                         // Rajouter une ligne entre les mois
                         'stylesheet.calendar.main': {
