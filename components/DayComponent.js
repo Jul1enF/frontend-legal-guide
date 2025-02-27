@@ -51,7 +51,7 @@ export default function DayComponent(props) {
 
           // Style conditionnel largeur dot
           if (marking?.marked2) {
-            setDotWidth(10)
+            setDotWidth(12.5)
         } else if (dotWidth !== 5) {
             setDotColor(5)
         }
@@ -103,7 +103,7 @@ export default function DayComponent(props) {
                 <Text style={[styles.dayText, { color: textColor, fontWeight: textWeight }]}>
                     {date.day}
                 </Text>
-                <View style={[styles.dot, { backgroundColor: dotColor, width : dotWidth, left : dotWidth === 5 ? 14 : 10 }]} />
+                <View style={[styles.dot, { backgroundColor: dotColor, width : dotWidth, left : dotWidth === 5 ? 14 : 9 }]} />
             </View>
 
             <View style={lineStyle}></View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     },
     dot: {
         position: "absolute",
-        bottom: 3,
+        bottom: 2,
         height: 5,
         borderRadius: 3,
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         height: 6,
         width: 45,
         left: 3,
-        backgroundColor: "rgb(185,0,0)",
+        backgroundColor: "rgb(123, 0, 111)",
         borderTopLeftRadius: 2,
         borderBottomLeftRadius: 2,
     },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         top: 23,
         height: 6,
         width: 60,
-        backgroundColor: "rgb(185,0,0)",
+        backgroundColor: "rgb(123, 0, 111)",
     },
     endingLine: {
         position: "absolute",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         height: 6,
         width: 45,
         right: 3,
-        backgroundColor: "rgb(185,0,0)",
+        backgroundColor: "rgb(123, 0, 111)",
         borderTopRightRadius: 2,
         borderBottomRightRadius: 2,
     },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         height: 6,
         width: 45,
         left: 3,
-        backgroundColor: "rgb(77, 0, 108)",
+        backgroundColor: "rgb(35, 0, 105)",
         borderTopLeftRadius: 2,
         borderBottomLeftRadius: 2,
     },
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 29.5,
         height: 6,
-        width: 60,
-        backgroundColor: "rgb(77, 0, 108)",
+        width: RPW(13.5),
+        backgroundColor: "rgb(35, 0, 105)",
     },
     endingLine2: {
         position: "absolute",
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         height: 6,
         width: 45,
         right: 3,
-        backgroundColor: "rgb(77, 0, 108)",
+        backgroundColor: "rgb(35, 0, 105)",
         borderTopRightRadius: 2,
         borderBottomRightRadius: 2,
     },

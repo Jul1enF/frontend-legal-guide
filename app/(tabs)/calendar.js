@@ -65,7 +65,7 @@ export default function Calendar() {
         ],
         monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
         dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-        dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam'],
+        dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         today: "Aujourd'hui"
     };
 
@@ -79,7 +79,7 @@ export default function Calendar() {
     const EmptyData = () => {
         return (
             <View style={styles.emptyDataContainer}>
-                <Text style={styles.emptyDataText}>Pas d'évènements prévus ce jour ci</Text>
+                <Text style={styles.emptyDataText}>Pas d'évènement prévu ce jour ci</Text>
             </View>
         )
     }
@@ -110,20 +110,20 @@ export default function Calendar() {
                     markedDates={markers}
                     // N'aime pas flex : 1
                     style={{ width: RPW(100) }}
-                    renderItem={(item) => <CalendarEvent {...item} />}
+                    renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay} />}
 
                     renderEmptyData={() => {
                         return <EmptyData />;
                     }}
                     showOnlySelectedDayItems={true}
-        
 
 
-                    dayComponent={({date, state, marking }) =>{
-                        return <TouchableOpacity activeOpacity={0.4} onPress={()=> agendaRef.current.onDayPress(date)}>
-                             <DayComponent date={date} state={state} marking={marking} />
+
+                    dayComponent={({ date, state, marking }) => {
+                        return <TouchableOpacity activeOpacity={0.4} onPress={() => agendaRef.current.onDayPress(date)}>
+                            <DayComponent date={date} state={state} marking={marking} />
                         </TouchableOpacity>
-                    } }
+                    }}
 
 
 
@@ -132,29 +132,22 @@ export default function Calendar() {
                         calendarBackground: "rgb(243, 241, 241)",
 
                         //Mois
-                        monthTextColor: "rgb(185,0,0)",
-                        textMonthFontSize: 19.5,
-                        textMonthFontWeight: "700",
+                        'stylesheet.calendar.header' : {
+                            monthText: {
+                                fontSize: 25,
+                                letterSpacing : 1,
+                                fontFamily: "Barlow-Bold",
+                                fontWeight: "100",
+                                color: "rgb(185,0,0)",
+                                margin: 6.5
+                              },
+                        },
 
                         // Nom des jours (Lun, Mar...)
                         textSectionTitleColor: "black",
                         textDayHeaderFontSize: 14,
+                        textDayHeaderFontFamily : "Barlow-Light",
 
-                        // Pour gagner un peu de hauteur au dessus du knob
-                        'stylesheet.agenda.main': {
-                            knobContainer: {
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                height: 14,
-                                width : RPW(100),
-                                bottom: 0,
-                                paddingBottom : 10,
-                                justifyContent : 'center',
-                                alignItems: 'center',
-                                backgroundColor: "rgb(243, 241, 241)"
-                            },
-                        },
 
                         // Rajouter une ligne entre les mois
                         'stylesheet.calendar.main': {
@@ -164,11 +157,56 @@ export default function Calendar() {
                             }
                         },
 
-                        // AGENDA STYLE
-                        agendaKnobColor: "rgb(185, 0, 0)",
-                        agendaDayTextColor: "#fffcfc",
-                        agendaDayNumColor: "#fffcfc",
-                        reservationsBackgroundColor: "rgb(185, 0, 0)",
+
+                         // AGENDA STYLE
+                         agendaKnobColor: "rgb(185, 0, 0)",
+                         reservationsBackgroundColor: "rgb(185, 0, 0)",
+                        
+                         // Encart à gauche de la liste des évènements
+                         'stylesheet.agenda.list': {
+                             dayNum: {
+                                 fontSize: 32,
+                                 letterSpacing : 2,
+                                 fontWeight: '200',
+                                 fontFamily: "Barlow-Bold",
+                                 color: "rgb(245, 245, 245)",
+                                 marginBottom : 0,
+                             },
+                             dayText: {
+                                 fontSize: 17,
+                                 fontFamily: "Barlow-Bold",
+                                 color: "rgb(245, 245, 245)",
+                                 backgroundColor: 'rgba(0,0,0,0)',
+                                 marginTop: 0
+                             },
+                             day: {
+                                 width: 63,
+                                 alignItems: 'center',
+                                 justifyContent: 'flex-start',
+                                 marginTop: 32
+                             },
+                             today: {
+                                 color: "rgb(245, 245, 245)",
+                             },
+                         },
+
+                          // Pour gagner un peu de hauteur au dessus du knob
+                        'stylesheet.agenda.main': {
+                            knobContainer: {
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                height: 14,
+                                width: RPW(100),
+                                bottom: 0,
+                                paddingBottom: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: "rgb(243, 241, 241)"
+                            },
+                        },
+                         
+
                     }}
                 />
             </View>
@@ -179,7 +217,7 @@ export default function Calendar() {
 
 const styles = StyleSheet.create({
     body: {
-        flex: 1,
+        flex : 1,
         backgroundColor: "#fffcfc",
         paddingTop: RPW(5),
         paddingLeft: RPW(1),
@@ -225,12 +263,13 @@ const styles = StyleSheet.create({
     emptyDataContainer: {
         flex: 1,
         alignItems: "center",
-        paddingTop: RPW(8)
+        paddingTop: "10%"
     },
     emptyDataText: {
         color: "#fffcfc",
-        fontSize: RPW(4.5),
-        fontWeight: "700",
-        textAlign: "center"
+        fontSize: RPW(6),
+        textAlign: "center",
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
     }
 });

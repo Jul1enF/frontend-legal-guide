@@ -1,11 +1,9 @@
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { RPH, RPW } from "../../modules/dimensions"
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Fontisto from '@expo/vector-icons/Fontisto';
 
@@ -38,7 +36,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'grey',
         tabBarLabelStyle: { fontSize: RPW(4.3), fontWeight: "500",  fontFamily: "Barlow-Medium", letterSpacing : RPW(0.2)},
-        tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0.2), paddingRight : RPW(4), paddingLeft : RPW(4), width: RPW(100), backgroundColor : "#0c0000" },
+        tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0.2), paddingRight : RPW(2.5), paddingLeft : RPW(2.5), width: RPW(100), backgroundColor : "#0c0000", borderTopWidth : 0},
         // Build / KeyboardAwareScrollView
         // tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
         // Expo Go / KeyboardAvoidingView
