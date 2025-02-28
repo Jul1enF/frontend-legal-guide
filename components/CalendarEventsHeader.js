@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { RPH, RPW } from '../modules/dimensions'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome5';
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
         flexDirection : "row",
         alignItems : "center",
         justifyContent : "space-between",
+        // position : "absolute",
+        // top : -RPW(7),
+        // zIndex : 100,
     },
     icon : {
         color : "black",

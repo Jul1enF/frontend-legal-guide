@@ -82,7 +82,7 @@ export default function Calendar() {
     const EmptyData = () => {
         return (
             <View style={styles.emptyDataContainer}>
-                <CalendarEventsHeader toggleCalendar={toggleCalendar} getAnotherWeek={getAnotherWeek}/>
+                {/* <CalendarEventsHeader toggleCalendar={toggleCalendar} getAnotherWeek={getAnotherWeek}/> */}
                 <Text style={styles.emptyDataText}>Pas d'évènement prévu ce jour ci</Text>
             </View>
         )
@@ -144,7 +144,6 @@ export default function Calendar() {
     }
 
 
-
     return (
         <View style={styles.body}>
             <Text style={styles.subTitle}>Agenda</Text>
@@ -169,6 +168,9 @@ export default function Calendar() {
                     markedDates={markers}
                     // N'aime pas flex : 1
                     style={{ width: RPW(100) }}
+                    
+                    ListHeaderComponent={CalendarEventsHeader}
+                    // renderKnob={CalendarEventsHeader}
 
                     renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay}/>}
 
@@ -176,9 +178,7 @@ export default function Calendar() {
                         return <EmptyData />;
                     }}
                     showOnlySelectedDayItems={true}
-
-
-
+                    
                     dayComponent={({ date, state, marking }) => {
                         return <TouchableOpacity activeOpacity={0.4} onPress={() =>{
                             selectedDayRef.current = date
@@ -192,7 +192,7 @@ export default function Calendar() {
 
                     theme={{
                         // CALENDAR STYLE
-                        calendarBackground: "rgb(243, 241, 241)",
+                        // calendarBackground: "rgb(243, 241, 241)",
 
                         //Mois
                         'stylesheet.calendar.header' : {
@@ -202,14 +202,14 @@ export default function Calendar() {
                                 fontFamily: "Barlow-Bold",
                                 fontWeight: "100",
                                 color: "rgb(185,0,0)",
-                                margin: 6.5
+                                margin: 5
                               },
                         },
 
                         // Nom des jours (Lun, Mar...)
-                        textSectionTitleColor: "black",
-                        textDayHeaderFontSize: 14,
-                        textDayHeaderFontFamily : "Barlow-Light",
+                        // textSectionTitleColor: "black",
+                        // textDayHeaderFontSize: 14,
+                        // textDayHeaderFontFamily : "Barlow-Light",
 
 
                         // Rajouter une ligne entre les mois
@@ -217,6 +217,8 @@ export default function Calendar() {
                             container: {
                                 borderBottomWidth: 1,
                                 borderBottomColor: "rgb(185,0,0)",
+                                overflow: 'hidden',
+                               flex : 1,
                             }
                         },
 
@@ -265,7 +267,7 @@ export default function Calendar() {
                                 paddingBottom: 10,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor : "black",
+                                backgroundColor : "fff",
                                 //backgroundColor: "rgb(243, 241, 241)"
                             },
                         },

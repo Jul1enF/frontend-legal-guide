@@ -165,7 +165,7 @@ export default function DayComponent(props) {
 
             <View style={[lineStyle, lineAdjustment1]}></View>
             <View style={[lineStyle2, lineAdjustment2]}></View>
-            <View style={styles.borderLine} ></View>
+            {/* <View style={styles.borderLine} ></View> */}
 
         </View>
     );
@@ -174,7 +174,7 @@ export default function DayComponent(props) {
 const styles = StyleSheet.create({
     dayContainer: {
         width: 38,
-        height: 34,
+        height: 32,
         alignSelf: 'stretch',
         backgroundColor: 'fff',
         alignItems: 'center',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     },
     selectedContainer: {
         position: "absolute",
-        bottom: 12,
+        bottom: 6,
         width: 30,
         height: 28,
         borderRadius: 17,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     },
     startingLine: {
         position: "absolute",
-        top: 23,
+        top: 29,
         height: 6,
         width: 46,
         left: 3,
@@ -213,14 +213,14 @@ const styles = StyleSheet.create({
     },
     line: {
         position: "absolute",
-        top: 23,
+        top: 29,
         height: 6,
         width: 60,
         backgroundColor: "rgb(123, 0, 111)",
     },
     endingLine: {
         position: "absolute",
-        top: 23,
+        top: 29,
         height: 6,
         width: 46,
         right: 3,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     },
     startingLine2: {
         position: "absolute",
-        top: 29.5,
+        top: 36,
         height: 6,
         width: 46,
         left: 3,
@@ -240,14 +240,14 @@ const styles = StyleSheet.create({
     },
     line2: {
         position: "absolute",
-        top: 29.5,
+        top: 36,
         height: 6,
         width: RPW(13.5),
         backgroundColor: "rgb(35, 0, 105)",
     },
     endingLine2: {
         position: "absolute",
-        top: 29.5,
+        top: 36,
         height: 6,
         width: 46,
         right: 3,
@@ -260,6 +260,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 2,
         position: "absolute",
-        top: 37,
+        top: 48,
     }
 });

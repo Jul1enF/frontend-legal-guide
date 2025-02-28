@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native"
 
 import { RPH, RPW } from "../modules/dimensions"
+import CalendarEventsHeader from "./CalendarEventsHeader"
 import moment from 'moment/min/moment-with-locales'
 
 export default function CalendarEvent(props) {
@@ -28,6 +29,9 @@ export default function CalendarEvent(props) {
 
     return (
         <View style={[styles.body, props.firstItemInDay && { marginTop : RPW(3)}]}>
+
+            {/* {props.firstItemInDay && <CalendarEventsHeader style={styles.header}></CalendarEventsHeader>} */}
+
             <Text style={styles.schedules}>{schedules}</Text>
 
             <View style={[styles.line, {backgroundColor : lineColor}]}></View>
