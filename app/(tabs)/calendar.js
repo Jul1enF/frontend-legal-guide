@@ -8,6 +8,7 @@ import { LocaleConfig, Agenda } from 'react-native-calendars';
 
 import CalendarEvent from '../../components/CalendarEvent';
 import DayComponent from '../../components/DayComponent';
+import CalendarEventsHeader from '../../components/CalendarEventsHeader';
 
 import moment from 'moment/min/moment-with-locales'
 
@@ -18,7 +19,9 @@ export default function Calendar() {
     const [events, setEvents] = useState({ '2012-05-22': [{ name: 'initialObject' }] })
     const [markers, setMarkers] = useState({ '2012-05-20': { color: 'green' } })
     const [error, setError] = useState('')
-    const [selectedDay, setSelectedDay] = useState(moment(new Date()).format('YYYY-MM-DD'))
+
+
+
 
     // UseFocusEffect et fonction pour fetcher les évènements
 
@@ -53,7 +56,7 @@ export default function Calendar() {
             setAgendaReady(true)
             agendaRef.current.setScrollPadPosition(0, false)
             agendaRef.current.enableCalendarScrolling()
-        }, 350)
+        }, 450)
     }, [])
 
 
@@ -79,9 +82,65 @@ export default function Calendar() {
     const EmptyData = () => {
         return (
             <View style={styles.emptyDataContainer}>
+                <CalendarEventsHeader toggleCalendar={toggleCalendar} getAnotherWeek={getAnotherWeek}/>
                 <Text style={styles.emptyDataText}>Pas d'évènement prévu ce jour ci</Text>
             </View>
         )
+    }
+
+
+
+    // HEADER RESERVATION LIST
+
+    // useRef et fonction en IDF pour enregistrer tous les premiers jours de chaque rang et leur date
+
+    const firstDaysInRowRef = useRef([])
+
+    const registerFirstDayInRow = (date)=>{
+        if (!firstDaysInRowRef.current.some(e=>e===date)){
+            firstDaysInRowRef.current.push(date)
+        }
+    }
+
+
+    // Fonction IDF pour fermer le calendrier
+
+    const toggleCalendar = (open)=>{
+        agendaRef.current.toggleCalendarPosition(open)
+    }
+
+    // useRef pour enregistrer le jour sélectionné
+    const selectedDayRef = useRef(null)
+
+    // Fonction IDF pour sélectionner le premier jour de la semaine d'après
+
+    const getAnotherWeek = (previousOrNext)=>{
+        const allFirstDaysOfRows = [...firstDaysInRowRef.current]
+
+       // Tri des dates de premiers jours de rang dans l'ordre croissant si on cherche la première date au dessus ou décroissant si on cherche la première en dessous
+       if (previousOrNext === "previous"){
+        allFirstDaysOfRows.sort((a,b)=> new Date(b)- new Date(a))
+       }else {
+        allFirstDaysOfRows.sort((a,b)=> new Date(a)- new Date(b))
+       }
+
+        const currentSelectedDay = selectedDayRef.current.dateString
+
+        for (let date of allFirstDaysOfRows){
+            if (previousOrNext === "previous"){
+                if (new Date(currentSelectedDay) - new Date(date) > 0){
+                    agendaRef.current.onDayPress({dateString : date})
+                    selectedDayRef.current = {dateString : date}
+                    break ;
+                }
+            }else {
+                if (new Date(currentSelectedDay) - new Date(date) < 0){
+                    agendaRef.current.onDayPress({dateString : date})
+                    selectedDayRef.current = {dateString : date}
+                    break ;
+                }
+            }
+        }
     }
 
 
@@ -110,7 +169,8 @@ export default function Calendar() {
                     markedDates={markers}
                     // N'aime pas flex : 1
                     style={{ width: RPW(100) }}
-                    renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay} />}
+
+                    renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay}/>}
 
                     renderEmptyData={() => {
                         return <EmptyData />;
@@ -120,8 +180,11 @@ export default function Calendar() {
 
 
                     dayComponent={({ date, state, marking }) => {
-                        return <TouchableOpacity activeOpacity={0.4} onPress={() => agendaRef.current.onDayPress(date)}>
-                            <DayComponent date={date} state={state} marking={marking} />
+                        return <TouchableOpacity activeOpacity={0.4} onPress={() =>{
+                            selectedDayRef.current = date
+                            agendaRef.current.onDayPress(date)
+                        }}>
+                            <DayComponent date={date} state={state} marking={marking} registerFirstDayInRow={registerFirstDayInRow}/>
                         </TouchableOpacity>
                     }}
 
@@ -202,9 +265,17 @@ export default function Calendar() {
                                 paddingBottom: 10,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: "rgb(243, 241, 241)"
+                                backgroundColor : "black",
+                                //backgroundColor: "rgb(243, 241, 241)"
                             },
                         },
+
+                        // Cacher le knob et son container
+                        // 'stylesheet.agenda.main': {
+                        //     knobContainer: {
+                        //         height : 0
+                        //     },
+                        // },
                          
 
                     }}
@@ -263,7 +334,6 @@ const styles = StyleSheet.create({
     emptyDataContainer: {
         flex: 1,
         alignItems: "center",
-        paddingTop: "10%"
     },
     emptyDataText: {
         color: "#fffcfc",
@@ -271,5 +341,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
+        marginTop : RPW(10),
     }
 });

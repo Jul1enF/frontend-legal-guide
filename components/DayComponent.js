@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useRef } from 'react';
 
 import { RPH, RPW } from '../modules/dimensions'
 
@@ -8,7 +8,7 @@ export default function DayComponent(props) {
 
     const { date, state, marking } = props
 
-    // if (date.dateString === "2025-03-13") {
+    // if (date.dateString === "2025-04-20") {
     //     console.log("PROPS", props)
     // }
 
@@ -20,7 +20,10 @@ export default function DayComponent(props) {
     const [thisLineStyle, setThisLineStyle] = useState('')
     const [thisLineStyle2, setThisLineStyle2] = useState('')
 
+    // État pour les premiers et derniers jours d'une rangée, pour que la ligne de period marker ne dépasse pas
 
+    const [firstDayInRow, setFirstDayInRow]=useState(false)
+    const [lastDayInRow, setLastDayInRow]=useState(false)
 
 
     const setConditionnalStyle = () => {
@@ -78,6 +81,19 @@ export default function DayComponent(props) {
         } else if (thisLineStyle2 !== "") {
             setThisLineStyle2('')
         }
+
+
+        // Vérification si premier ou dernier de la rangée
+        componentRef.current.measureInWindow((x) => {
+            if (x < RPW(100)/8){
+                // Enregistrement dans le parent du premier jour d'une ligne pour switch semaine suivant
+                props.registerFirstDayInRow(date.dateString)
+
+                setFirstDayInRow(true)
+            }else if (x + 38 > (RPW(100)/8)*7){
+                setLastDayInRow(true)
+            }
+        });
     }
 
 
@@ -97,8 +113,49 @@ export default function DayComponent(props) {
 
 
 
+    // Style conditionnel d'ajustement si premier ou dernier jour d'une rangée pour que la ligne d'un period marker ne sorte pas du calendrier
+    let lineAdjustment1 = {}
+    let lineAdjustment2 = {}
+    if (firstDayInRow){
+        if (thisLineStyle === "line"){
+            lineAdjustment1 = {width : 58, left : 2}
+        }
+        if (thisLineStyle === "endingLine"){
+            lineAdjustment1 = {width : 44, right : -1}
+        }
+        if (thisLineStyle2 === "line2"){
+            lineAdjustment2 = {width : 58, left : 2}
+        }
+        if (thisLineStyle2 === "endingLine2"){
+            lineAdjustment2 = {width : 44, right : -1}
+        }
+    }
+
+    if (lastDayInRow){
+        if (thisLineStyle === "startingLine"){
+            lineAdjustment1 = {width : 44, left : 0}
+        }
+        if (thisLineStyle === "line"){
+            lineAdjustment1 = {width : 58, right : 2}
+        }
+        if (thisLineStyle2 === "startingLine2"){
+            lineAdjustment2 = {width : 44, left : 0}
+        }
+        if (thisLineStyle2 === "line2"){
+            lineAdjustment2 = {width : 58, right : 2}
+        }
+    }
+
+
+
+
+    // Ref du composant pour le OnLayout de la View principale
+    const componentRef = useRef(null)
+
+
+
     return (
-        <View style={styles.dayContainer}>
+        <View style={styles.dayContainer} ref={componentRef}>
             <View style={[styles.selectedContainer, { backgroundColor: selectedBg }]}>
                 <Text style={[styles.dayText, { color: textColor, fontWeight: textWeight }]}>
                     {date.day}
@@ -106,9 +163,9 @@ export default function DayComponent(props) {
                 <View style={[styles.dot, { backgroundColor: dotColor, width : dotWidth, left : dotWidth === 5 ? 14 : 9 }]} />
             </View>
 
-            <View style={lineStyle}></View>
-            <View style={lineStyle2}></View>
-            {/* <View style={styles.borderLine} ></View> */}
+            <View style={[lineStyle, lineAdjustment1]}></View>
+            <View style={[lineStyle2, lineAdjustment2]}></View>
+            <View style={styles.borderLine} ></View>
 
         </View>
     );
@@ -148,11 +205,11 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 23,
         height: 6,
-        width: 45,
+        width: 46,
         left: 3,
         backgroundColor: "rgb(123, 0, 111)",
-        borderTopLeftRadius: 2,
-        borderBottomLeftRadius: 2,
+        borderTopLeftRadius: 4,
+        borderBottomLeftRadius: 4,
     },
     line: {
         position: "absolute",
@@ -165,21 +222,21 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 23,
         height: 6,
-        width: 45,
+        width: 46,
         right: 3,
         backgroundColor: "rgb(123, 0, 111)",
-        borderTopRightRadius: 2,
-        borderBottomRightRadius: 2,
+        borderTopRightRadius: 4,
+        borderBottomRightRadius: 4,
     },
     startingLine2: {
         position: "absolute",
         top: 29.5,
         height: 6,
-        width: 45,
+        width: 46,
         left: 3,
         backgroundColor: "rgb(35, 0, 105)",
-        borderTopLeftRadius: 2,
-        borderBottomLeftRadius: 2,
+        borderTopLeftRadius: 4,
+        borderBottomLeftRadius: 4,
     },
     line2: {
         position: "absolute",
@@ -192,14 +249,14 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 29.5,
         height: 6,
-        width: 45,
+        width: 46,
         right: 3,
         backgroundColor: "rgb(35, 0, 105)",
-        borderTopRightRadius: 2,
-        borderBottomRightRadius: 2,
+        borderTopRightRadius: 4,
+        borderBottomRightRadius: 4,
     },
     borderLine: {
-        backgroundColor: "black",
+        backgroundColor: "red",
         width: 60,
         height: 2,
         position: "absolute",

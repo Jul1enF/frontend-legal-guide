@@ -243,14 +243,12 @@ export default function FullArticle() {
 
 
 
-    if (!article) { return <View></View> }
-
 
 
 
     // Source de l'image à réquérir différement si elle est en ligne ou sur l'appareil
 
-    const onlineImage = article.img_link.includes('https')
+    const onlineImage = article && article.img_link.includes('https')
 
     let image
     if (onlineImage) {
@@ -277,7 +275,7 @@ export default function FullArticle() {
 
 
 
-
+    if (!article) { return <View></View> }
 
     return (
         <View style={styles.body}>
