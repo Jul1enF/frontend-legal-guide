@@ -1,26 +1,24 @@
 
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
 
 import { RPH, RPW } from '../../modules/dimensions'
-import { LocaleConfig, Agenda } from 'react-native-calendars';
+import { LocaleConfig, ExpandableCalendar, AgendaList, CalendarProvider } from 'react-native-calendars';
 
 import CalendarEvent from '../../components/CalendarEvent';
 import DayComponent from '../../components/DayComponent';
-import CalendarEventsHeader from '../../components/CalendarEventsHeader';
 
 import moment from 'moment/min/moment-with-locales'
+moment.locale('fr')
 
 
 
 export default function Calendar() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-    const [events, setEvents] = useState({ '2012-05-22': [{ name: 'initialObject' }] })
-    const [markers, setMarkers] = useState({ '2012-05-20': { color: 'green' } })
+    const [events, setEvents] = useState(null)
+    const [markers, setMarkers] = useState("")
     const [error, setError] = useState('')
-
-
 
 
     // UseFocusEffect et fonction pour fetcher les évènements
@@ -38,27 +36,13 @@ export default function Calendar() {
             setEvents(data.events)
             setMarkers(data.markers)
         }
+
+        // Le premier rendu de DayComponent n'est pas bon
     }
 
     useFocusEffect(useCallback(() => {
         getEvents()
     }, []))
-
-
-    // useEffect pour fermer l'agenda après que le composant ait monté
-
-    const agendaRef = useRef(null)
-    const [agendaReady, setAgendaReady] = useState(false)
-
-
-    useEffect(() => {
-        setTimeout(() => {
-            setAgendaReady(true)
-            agendaRef.current.setScrollPadPosition(0, false)
-            agendaRef.current.enableCalendarScrolling()
-        }, 450)
-    }, [])
-
 
 
 
@@ -74,74 +58,47 @@ export default function Calendar() {
 
     LocaleConfig.defaultLocale = 'fr'
 
-
-
-
-    // Composant à retourner quand pas d'évènements prévus
-
-    const EmptyData = () => {
-        return (
-            <View style={styles.emptyDataContainer}>
-                {/* <CalendarEventsHeader toggleCalendar={toggleCalendar} getAnotherWeek={getAnotherWeek}/> */}
-                <Text style={styles.emptyDataText}>Pas d'évènement prévu ce jour ci</Text>
-            </View>
-        )
-    }
-
-
-
-    // HEADER RESERVATION LIST
-
-    // useRef et fonction en IDF pour enregistrer tous les premiers jours de chaque rang et leur date
-
-    const firstDaysInRowRef = useRef([])
-
-    const registerFirstDayInRow = (date)=>{
-        if (!firstDaysInRowRef.current.some(e=>e===date)){
-            firstDaysInRowRef.current.push(date)
-        }
-    }
-
-
-    // Fonction IDF pour fermer le calendrier
-
-    const toggleCalendar = (open)=>{
-        agendaRef.current.toggleCalendarPosition(open)
-    }
-
-    // useRef pour enregistrer le jour sélectionné
-    const selectedDayRef = useRef(null)
-
-    // Fonction IDF pour sélectionner le premier jour de la semaine d'après
-
-    const getAnotherWeek = (previousOrNext)=>{
-        const allFirstDaysOfRows = [...firstDaysInRowRef.current]
-
-       // Tri des dates de premiers jours de rang dans l'ordre croissant si on cherche la première date au dessus ou décroissant si on cherche la première en dessous
-       if (previousOrNext === "previous"){
-        allFirstDaysOfRows.sort((a,b)=> new Date(b)- new Date(a))
-       }else {
-        allFirstDaysOfRows.sort((a,b)=> new Date(a)- new Date(b))
-       }
-
-        const currentSelectedDay = selectedDayRef.current.dateString
-
-        for (let date of allFirstDaysOfRows){
-            if (previousOrNext === "previous"){
-                if (new Date(currentSelectedDay) - new Date(date) > 0){
-                    agendaRef.current.onDayPress({dateString : date})
-                    selectedDayRef.current = {dateString : date}
-                    break ;
-                }
-            }else {
-                if (new Date(currentSelectedDay) - new Date(date) < 0){
-                    agendaRef.current.onDayPress({dateString : date})
-                    selectedDayRef.current = {dateString : date}
-                    break ;
-                }
+    if (events){
+        events.map(e=>{
+            if (e.title === '2025-04-22'){
+                console.log("22/04", e)
             }
-        }
+        })
     }
+
+
+
+    const agendaItems = [
+        {
+            title: '2025-03-02',
+            data: [{ hour: '12am', duration: '1h', title: 'First Yoga' }, { hour: '9am', duration: '1h', title: 'Long Yoga', itemCustomHeightType: 'LongEvent' }]
+        },
+        {
+            title: '2025-03-04',
+            data: [
+                { hour: '4pm', duration: '1h', title: 'Pilates ABC' },
+                { hour: '5pm', duration: '1h', title: 'Vinyasa Yoga' }
+            ]
+        },
+        {
+            title: '2025-03-06',
+            data: [
+                { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
+                { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
+                { hour: '3pm', duration: '1h', title: 'Private Yoga' }
+            ]
+        },
+    ]
+
+    // Fonction pour mettre la date des évènements au bon format
+
+    const formatDate = (string) => {
+        const localDate = moment(string).format('LLLL')
+        const i = localDate.length
+        const finalDate = localDate.slice(0, i - 6)
+        return finalDate
+    }
+
 
 
     return (
@@ -156,132 +113,85 @@ export default function Calendar() {
             <Text style={[styles.error, !error && { display: "none" }]}>{error}</Text>
 
             <View style={styles.agendaContainer}>
-
-                {/* Composant pour cacher l'agenda en attendant que le calendrier apparaisse */}
-                {!agendaReady && <View style={{ width: RPW(100), height: RPH(100), backgroundColor: "#fffcfc", position: "absolute", zIndex: 2 }} />}
-
-                <Agenda
-                    ref={agendaRef}
-                    items={events}
-                    reservationsKeyExtractor={(item) => item.reservation.id}
-                    markingType={"multi-period"}
-                    markedDates={markers}
-                    // N'aime pas flex : 1
-                    style={{ width: RPW(100) }}
-                    
-                    ListHeaderComponent={CalendarEventsHeader}
-                    // renderKnob={CalendarEventsHeader}
-
-                    renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay}/>}
-
-                    renderEmptyData={() => {
-                        return <EmptyData />;
-                    }}
-                    showOnlySelectedDayItems={true}
-                    
-                    dayComponent={({ date, state, marking }) => {
-                        return <TouchableOpacity activeOpacity={0.4} onPress={() =>{
-                            selectedDayRef.current = date
-                            agendaRef.current.onDayPress(date)
-                        }}>
-                            <DayComponent date={date} state={state} marking={marking} registerFirstDayInRow={registerFirstDayInRow}/>
-                        </TouchableOpacity>
-                    }}
-
-
-
-                    theme={{
-                        // CALENDAR STYLE
-                        // calendarBackground: "rgb(243, 241, 241)",
-
-                        //Mois
-                        'stylesheet.calendar.header' : {
-                            monthText: {
-                                fontSize: 25,
-                                letterSpacing : 1,
-                                fontFamily: "Barlow-Bold",
-                                fontWeight: "100",
-                                color: "rgb(185,0,0)",
-                                margin: 5
-                              },
-                        },
-
-                        // Nom des jours (Lun, Mar...)
-                        // textSectionTitleColor: "black",
-                        // textDayHeaderFontSize: 14,
-                        // textDayHeaderFontFamily : "Barlow-Light",
+                {markers &&
+                    <CalendarProvider
+                        date={moment(new Date()).format('YYYY-MM-DD')}
+                        showTodayButton={false}
+                    >
+                        <ExpandableCalendar
+                            theme={{
+                                "stylesheet.calendar.header": {
+                                    monthText: {
+                                        fontSize: 25,
+                                        letterSpacing: 1,
+                                        fontFamily: "Barlow-Bold",
+                                        fontWeight: "100",
+                                        color: "rgb(185,0,0)",
+                                        margin: 5,
+                                    },
+                                },
+                                stylesheet: {
+                                    expandable: {
+                                        main: {
+                                            knobContainer: {
+                                                position: "absolute",
+                                                left: 0,
+                                                right: 0,
+                                                height: 14,
+                                                width: RPW(100),
+                                                bottom: 0,
+                                                paddingBottom: 0,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                backgroundColor: "rgb(243, 241, 241)"
+                                                //  backgroundColor: "orange"
+                                            },
+                                        },
+                                    },
+                                },
+                                // Ne supporte que le rgb
+                                expandableKnobColor: "rgb(185,0,0)",
+                                calendarBackground: "rgb(243, 241, 241)",
+                                arrowColor: "rgb(185,0,0)",
+                                reservationsBackgroundColor: "rgb(243, 241, 241)"
+                            }}
 
 
-                        // Rajouter une ligne entre les mois
-                        'stylesheet.calendar.main': {
-                            container: {
-                                borderBottomWidth: 1,
-                                borderBottomColor: "rgb(185,0,0)",
-                                overflow: 'hidden',
-                               flex : 1,
-                            }
-                        },
+                            dayComponent={({ date, state, marking, onPress }) => {
+                                return (
+                                    <TouchableOpacity
+                                        activeOpacity={0.2}
+                                        onPress={() => onPress(date)}
+                                    >
+                                        <DayComponent
+                                            date={date}
+                                            state={state}
+                                            marking={marking}
+                                            key={date.dateString}
+                                        />
+                                    </TouchableOpacity>
+                                );
+                            }}
+                            disableWeekScroll
+                            initialPosition='open'
+                            firstDay={1}
+                            markedDates={markers}
+                            animateScroll
+                        />
+                        <AgendaList
+                            style={{ backgroundColor: "rgb(185, 0, 0)", width: RPW(100) }}
+                            contentContainerStyle={{ alignItems: "center" }}
 
+                            sections={events}
+                            renderItem={CalendarEvent}
 
-                         // AGENDA STYLE
-                         agendaKnobColor: "rgb(185, 0, 0)",
-                         reservationsBackgroundColor: "rgb(185, 0, 0)",
-                        
-                         // Encart à gauche de la liste des évènements
-                         'stylesheet.agenda.list': {
-                             dayNum: {
-                                 fontSize: 32,
-                                 letterSpacing : 2,
-                                 fontWeight: '200',
-                                 fontFamily: "Barlow-Bold",
-                                 color: "rgb(245, 245, 245)",
-                                 marginBottom : 0,
-                             },
-                             dayText: {
-                                 fontSize: 17,
-                                 fontFamily: "Barlow-Bold",
-                                 color: "rgb(245, 245, 245)",
-                                 backgroundColor: 'rgba(0,0,0,0)',
-                                 marginTop: 0
-                             },
-                             day: {
-                                 width: 63,
-                                 alignItems: 'center',
-                                 justifyContent: 'flex-start',
-                                 marginTop: 32
-                             },
-                             today: {
-                                 color: "rgb(245, 245, 245)",
-                             },
-                         },
-
-                          // Pour gagner un peu de hauteur au dessus du knob
-                        'stylesheet.agenda.main': {
-                            knobContainer: {
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                height: 14,
-                                width: RPW(100),
-                                bottom: 0,
-                                paddingBottom: 10,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor : "fff",
-                                //backgroundColor: "rgb(243, 241, 241)"
-                            },
-                        },
-
-                        // Cacher le knob et son container
-                        // 'stylesheet.agenda.main': {
-                        //     knobContainer: {
-                        //         height : 0
-                        //     },
-                        // },
-                         
-
-                    }}
-                />
+                            // Encart du haut avec la date
+                            sectionStyle={styles.sectionStyle}
+                            dayFormatter={formatDate}
+                            scrollToNextEvent={false}
+                        />
+                    </CalendarProvider>
+                }
             </View>
 
         </View>
@@ -290,7 +200,7 @@ export default function Calendar() {
 
 const styles = StyleSheet.create({
     body: {
-        flex : 1,
+        flex: 1,
         backgroundColor: "#fffcfc",
         paddingTop: RPW(5),
         paddingLeft: RPW(1),
@@ -343,6 +253,18 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
-        marginTop : RPW(10),
-    }
+        marginTop: RPW(10),
+    },
+    sectionStyle: {
+        color: "white",
+        backgroundColor: "#0c0000",
+        fontSize: RPW(4.5),
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
+        width: RPW(100),
+        height: RPW(10),
+        paddingTop: RPW(4),
+        textAlign: "center",
+        marginBottom: RPW(3)
+    },
 });

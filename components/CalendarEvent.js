@@ -1,53 +1,51 @@
 import { StyleSheet, Text, View } from "react-native"
 
 import { RPH, RPW } from "../modules/dimensions"
-import CalendarEventsHeader from "./CalendarEventsHeader"
 import moment from 'moment/min/moment-with-locales'
 
 export default function CalendarEvent(props) {
+    const {item} = props
 
     let schedules
-    if (props.periodEvent && props.startingDay && props.startingTime){
-        schedules = `À partir de ${props.startingTime}`
-    }else if (props.periodEvent && props.endingDay && props.endingTime){
-        schedules = `Jusqu'à ${props.endingTime}`
-    }else if (props.allDayEvent || props.middleDay){
+    if (item.periodEvent && item.startingDay && item.startingTime){
+        schedules = `À partir de ${item.startingTime}`
+    }else if (item.periodEvent && item.endingDay && item.endingTime){
+        schedules = `Jusqu'à ${item.endingTime}`
+    }else if (item.allDayEvent || item.middleDay){
          schedules = "Jour entier"
     }else{
-         schedules = `${props.startingTime} - ${props.endingTime}`
+         schedules = `${item.startingTime} - ${item.endingTime}`
     }
 
 
     let lineColor = "rgb(185, 0, 0)"
-    if (props.periodNumber === 1){
+    if (item.periodNumber === 1){
         lineColor = "rgb(123, 0, 111)"
-    }else if (props.periodNumber === 2){
+    }else if (item.periodNumber === 2){
         lineColor = "rgb(35, 0, 105)"
     }
 
 
 
     return (
-        <View style={[styles.body, props.firstItemInDay && { marginTop : RPW(3)}]}>
-
-            {/* {props.firstItemInDay && <CalendarEventsHeader style={styles.header}></CalendarEventsHeader>} */}
+        <View style={styles.body}>
 
             <Text style={styles.schedules}>{schedules}</Text>
 
             <View style={[styles.line, {backgroundColor : lineColor}]}></View>
 
-            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.title}>{item.title}</Text>
             
-            { props.description && <Text style={styles.description}>{props.description}</Text>}
+            { item.description && <Text style={styles.description}>{item.description}</Text>}
 
-            {props.location && <Text style={styles.location}>Lieu : {props.location}</Text>}
+            {item.location && <Text style={styles.location}>Lieu : {item.location}</Text>}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     body: {
-        width : "98%",
+        width : RPW(90),
         backgroundColor: "#fffcfc",
         paddingTop: RPW(2),
         paddingLeft: RPW(2),
