@@ -17,8 +17,10 @@ export default function DayComponent(props) {
     const [textWeight, setTextWeight] = useState("300")
     const [dotColor, setDotColor] = useState('fff')
     const [dotWidth, setDotWidth] = useState(5)
+    const [thisLineStyle, setThisLineStyle] = useState('')
+    const [thisLineStyle2, setThisLineStyle2] = useState('')
 
- 
+
 
     const setConditionnalStyle = () => {
         // Style conditionnel selectedContainer
@@ -53,37 +55,59 @@ export default function DayComponent(props) {
             setDotColor(5)
         }
 
+
+        // Style conditionnel de la première ligne d'un marqueur de période
+        if (marking?.periodMarker) {
+            if (marking.startingDay) {
+                setThisLineStyle("startingLine")
+            } else if (marking.endingDay) {
+                setThisLineStyle("endingLine")
+            } else { setThisLineStyle("line") }
+        } else if (thisLineStyle !== "") {
+            setThisLineStyle('')
+        }
+
+        // Style conditionnel de la deuxième ligne d'un marqueur de période
+        if (marking?.periodMarker2) {
+            if (marking.startingDay2) {
+                setThisLineStyle2("startingLine2")
+            } else if (marking.endingDay2) {
+                setThisLineStyle2("endingLine2")
+            } else { setThisLineStyle2("line2") }
+        } else if (thisLineStyle2 !== "") {
+            setThisLineStyle2('')
+        }
+
+
+        // Vérification si premier de la rangée
+        componentRef.current.measureInWindow((x) => {
+            if (x < RPW(100)/8){
+                // Enregistrement dans le parent du premier jour d'une ligne pour switch semaine suivant
+                props.registerFirstDayInRow(date.dateString)
+            }
+        });
     }
 
 
+    
 
     // useLayoutEffect pour effectuer l'affichage conditionnel seulement à chaque fois que marking change et avant rendu
     useLayoutEffect(() => {
         setConditionnalStyle()
-    }, [marking, state])
+    }, [marking])
 
 
-    let lineStyle = {}
-    let lineStyle2 = {}
+    // Style de la première ligne de marqueur de période
+    const lineStyle = styles[thisLineStyle]
 
-     // Style conditionnel de la première ligne d'un marqueur de période
-     if (marking?.periodMarker) {
-        if (marking.startingDay) {
-            lineStyle=styles.startingLine
-        } else if (marking.endingDay) {
-           lineStyle=styles.endingLine
-        } else { lineStyle=styles.line }
-    } 
 
-    // Style conditionnel de la deuxième ligne d'un marqueur de période
-    if (marking?.periodMarker2) {
-        if (marking.startingDay2) {
-            lineStyle2=styles.startingLine2
-        } else if (marking.endingDay2) {
-           lineStyle2=styles.endingLine2
-        } else { lineStyle2=styles.line2 }
-    }
-    
+    // Style de la deuxième ligne de marqueur de période
+    const lineStyle2 = styles[thisLineStyle2]
+
+
+    // Ref du composant pour le OnLayout de la View principale
+    const componentRef = useRef(null)
+
 
 
     return (
@@ -182,15 +206,16 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 36,
         height: 6,
-        width: 46,
+        // width: 46,
+        width: 56,
         right: 3,
         backgroundColor: "rgb(35, 0, 105)",
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,
     },
     borderLine: {
-        backgroundColor: "red",
-        width: 58,
+        backgroundColor: "black",
+        width: 60,
         height: 2,
         position: "absolute",
         top: 30,
