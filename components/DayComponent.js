@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useRef } from 'react';
 
 import { RPH, RPW } from '../modules/dimensions'
 
@@ -8,7 +8,7 @@ export default function DayComponent(props) {
 
     const { date, state, marking } = props
 
-    // if (date.dateString === "2025-03-12") {
+    // if (date.dateString === "2025-04-20") {
     //     console.log("PROPS", props)
     // }
 
@@ -24,7 +24,7 @@ export default function DayComponent(props) {
 
     const setConditionnalStyle = () => {
         // Style conditionnel selectedContainer
-        if (state === "selected") {
+        if (state !== 'disabled' && marking?.selected) {
             setSelectedBg('black')
         } else if (selectedBg !== 'fff') {
             setSelectedBg('fff')
@@ -32,7 +32,7 @@ export default function DayComponent(props) {
 
         // Style conditionnel dayText
         if (state === "disabled") { setTextColor("rgba(148, 148, 148, 0.7)") }
-        else if (state === "selected") { setTextColor("#fffcfc") }
+        else if (marking?.selected) { setTextColor("#fffcfc") }
         else if (state === "today") {
             setTextColor("rgb(185, 0, 0)")
             setTextWeight("500")
@@ -111,7 +111,7 @@ export default function DayComponent(props) {
 
 
     return (
-        <View style={styles.dayContainer}>
+        <View style={styles.dayContainer} ref={componentRef}>
             <View style={[styles.selectedContainer, { backgroundColor: selectedBg }]}>
                 <Text style={[styles.dayText, { color: textColor, fontWeight: textWeight }]}>
                     {date.day}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     dayContainer: {
         width: 38,
         height: 32,
-        alignSelf: 'center',
+        alignSelf: 'stretch',
         backgroundColor: 'fff',
         alignItems: 'center',
         justifyContent: 'center',
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     },
     endingLine: {
         position: "absolute",
-        zIndex : 10,
         top: 29,
         height: 6,
         width: 46,
@@ -218,6 +217,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 2,
         position: "absolute",
-        top: 30,
+        top: 48,
     }
 });

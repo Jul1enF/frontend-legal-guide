@@ -1,27 +1,27 @@
 import { StyleSheet, Text, View } from "react-native"
 
 import { RPH, RPW } from "../modules/dimensions"
+import CalendarEventsHeader from "./CalendarEventsHeader"
 import moment from 'moment/min/moment-with-locales'
 
 export default function CalendarEvent(props) {
-    const {item} = props
 
     let schedules
-    if (item.periodEvent && item.startingDay && item.startingTime){
-        schedules = `À partir de ${item.startingTime}`
-    }else if (item.periodEvent && item.endingDay && item.endingTime){
-        schedules = `Jusqu'à ${item.endingTime}`
-    }else if (item.allDayEvent || item.middleDay){
+    if (props.periodEvent && props.startingDay && props.startingTime){
+        schedules = `À partir de ${props.startingTime}`
+    }else if (props.periodEvent && props.endingDay && props.endingTime){
+        schedules = `Jusqu'à ${props.endingTime}`
+    }else if (props.allDayEvent || props.middleDay){
          schedules = "Jour entier"
     }else{
-         schedules = `${item.startingTime} - ${item.endingTime}`
+         schedules = `${props.startingTime} - ${props.endingTime}`
     }
 
 
     let lineColor = "rgb(185, 0, 0)"
-    if (item.periodNumber === 1){
+    if (props.periodNumber === 1){
         lineColor = "rgb(123, 0, 111)"
-    }else if (item.periodNumber === 2){
+    }else if (props.periodNumber === 2){
         lineColor = "rgb(35, 0, 105)"
     }
 
@@ -36,11 +36,11 @@ export default function CalendarEvent(props) {
 
             <View style={[styles.line, {backgroundColor : lineColor}]}></View>
 
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{props.title}</Text>
             
-            { item.description && <Text style={styles.description}>{item.description}</Text>}
+            { props.description && <Text style={styles.description}>{props.description}</Text>}
 
-            {item.location && <Text style={styles.location}>Lieu : {item.location}</Text>}
+            {props.location && <Text style={styles.location}>Lieu : {props.location}</Text>}
         </View>
     )
 }

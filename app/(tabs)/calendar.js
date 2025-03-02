@@ -1,10 +1,10 @@
 
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
 
 import { RPH, RPW } from '../../modules/dimensions'
-import { LocaleConfig, ExpandableCalendar, AgendaList, CalendarProvider } from 'react-native-calendars';
+import { LocaleConfig, Agenda } from 'react-native-calendars';
 
 import CalendarEvent from '../../components/CalendarEvent';
 import DayComponent from '../../components/DayComponent';
@@ -13,14 +13,13 @@ import CalendarEventsHeader from '../../components/CalendarEventsHeader';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import moment from 'moment/min/moment-with-locales'
-moment.locale('fr')
 
 
 
 export default function Calendar() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-    const [events, setEvents] = useState(null)
-    const [markers, setMarkers] = useState("")
+    const [events, setEvents] = useState({ '2012-05-22': [{ name: 'initialObject' }] })
+    const [markers, setMarkers] = useState({ '2012-05-20': { color: 'green' } })
     const [error, setError] = useState('')
 
     const [agendaOpen, setAgendaOpen] = useState(false)
@@ -43,13 +42,27 @@ export default function Calendar() {
             setEvents(data.events)
             setMarkers(data.markers)
         }
-
-        // Le premier rendu de DayComponent n'est pas bon
     }
 
     useFocusEffect(useCallback(() => {
         getEvents()
     }, []))
+
+
+    // useEffect pour fermer l'agenda après que le composant ait monté
+
+    const agendaRef = useRef(null)
+    const [agendaReady, setAgendaReady] = useState(false)
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            setAgendaReady(true)
+            agendaRef.current.setScrollPadPosition(0, false)
+            agendaRef.current.enableCalendarScrolling()
+        }, 450)
+    }, [])
+
 
 
 
