@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 29,
         height: 6,
-        width: 60,
+        width: RPW(13.5),
         backgroundColor: "rgb(123, 0, 111)",
     },
     endingLine: {

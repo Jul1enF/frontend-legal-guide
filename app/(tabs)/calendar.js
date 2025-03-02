@@ -159,10 +159,6 @@ export default function Calendar() {
 
 
 
-    // Nouveau knob
-    const newKnob = <TouchableOpacity style={styles.newKnob}>
-    </TouchableOpacity>
-
 
 
 
@@ -195,21 +191,6 @@ export default function Calendar() {
                     style={{ width: RPW(100) }}
                     showOnlySelectedDayItems={true}
                     hideKnob={true}
-
-                    onScrollPadLayout={() => console.log("Scroll")}
-
-                    // onCalendarToggled={(calendarOpen) => {
-                    //     if (!calendarOpen && !agendaOpen) {
-                    //         setAgendaOpen(true)
-                    //     } 
-                    //     else if (calendarOpen && agendaOpen) {
-                    //         setAgendaOpen(false)
-                    //     }
-                    // }}
-
-                    renderKnob={() => newKnob}
-
-                    ListHeaderComponent={CalendarEventsHeader}
 
                     renderItem={(item, firstItemInDay) => <CalendarEvent {...item} firstItemInDay={firstItemInDay} toggleCalendar={toggleCalendar} />}
 
@@ -251,6 +232,7 @@ export default function Calendar() {
                                 borderBottomWidth: 1,
                                 borderBottomColor: "rgb(185,0,0)",
                             },
+                            // Pour cacher les lignes qui dépassent
                             monthView: {
                                 overflow: "hidden",
                                 height: 280,
@@ -262,7 +244,7 @@ export default function Calendar() {
                         agendaKnobColor: "rgb(185, 0, 0)",
                         reservationsBackgroundColor: "rgb(185, 0, 0)",
 
-                        // Pour gagner un peu de hauteur au dessus du knob
+                        // Pour gagner cacher la ligne de jours du dessous
                         'stylesheet.agenda.main': {
                             knobContainer: {
                                 position: 'absolute',
@@ -284,31 +266,13 @@ export default function Calendar() {
                         },
 
 
-                        // Encart à gauche de la liste des évènements
+                        // Pour cacher l'encart à gauche de la liste des évènements et centrer dans View
                         'stylesheet.agenda.list': {
-                            dayNum: {
-                                fontSize: 32,
-                                letterSpacing: 2,
-                                fontWeight: '200',
-                                fontFamily: "Barlow-Bold",
-                                color: "rgb(245, 245, 245)",
-                                marginBottom: 0,
-                            },
-                            dayText: {
-                                fontSize: 17,
-                                fontFamily: "Barlow-Bold",
-                                color: "rgb(245, 245, 245)",
-                                backgroundColor: 'rgba(0,0,0,0)',
-                                marginTop: 0
-                            },
                             day: {
                                 width: 0,
                                 alignItems: 'center',
                                 justifyContent: 'flex-start',
                                 marginTop: 32
-                            },
-                            today: {
-                                color: "rgb(245, 245, 245)",
                             },
                             innerContainer: {
                                 flex: 1,
@@ -400,19 +364,4 @@ const styles = StyleSheet.create({
         right: 4,
         zIndex: 1000,
     },
-    newKnob: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        borderStyle: 'solid',
-        borderRightWidth: 16,
-        borderTopWidth: 10,
-        borderLeftWidth: 16,
-        borderRightColor: 'transparent',
-        borderTopColor: "rgb(185,0,0)",
-        borderLeftColor: 'transparent',
-        position: "absolute",
-        top: 0,
-        alignSelf: "center",
-    }
 });
