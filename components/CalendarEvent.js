@@ -28,9 +28,9 @@ export default function CalendarEvent(props) {
 
 
     return (
-        <View style={[styles.body, props.firstItemInDay && { marginTop : RPW(3)}]}>
+        <View style={[styles.body, props.firstItemInDay && { marginTop : RPW(14)}]}>
 
-            {/* {props.firstItemInDay && <CalendarEventsHeader style={styles.header}></CalendarEventsHeader>} */}
+            {props.firstItemInDay && <CalendarEventsHeader style={styles.header} date={props.startingDate} toggleCalendar={props.toggleCalendar}></CalendarEventsHeader>}
 
             <Text style={styles.schedules}>{schedules}</Text>
 
@@ -47,14 +47,14 @@ export default function CalendarEvent(props) {
 
 const styles = StyleSheet.create({
     body: {
-        width : "98%",
+        width : RPW(96),
         backgroundColor: "#fffcfc",
         paddingTop: RPW(2),
         paddingLeft: RPW(2),
         paddingRight: RPW(1),
         paddingBottom : RPW(2),
         marginBottom : RPW(3),
-        borderRadius : RPW(2.5)
+        borderRadius : RPW(2.5),
     },
     schedules : {
         fontSize: RPW(4.4),
