@@ -89,7 +89,7 @@ export default function Redaction() {
     useFocusEffect(useCallback(() => {
         resizingRef.current = false
         setResizing(false)
-    }, [resizing, resizingRef]))
+    }, []))
 
 
 
@@ -640,10 +640,11 @@ export default function Redaction() {
 
                     <View style={[styles.row, { marginBottom: 30 }]}>
                         <View style={styles.btnContainer2} >
-                            <TouchableOpacity style={resizing ? styles.btn2 : styles.btn3} onPress={() => {
+                            <TouchableOpacity style={resizing ? styles.resizeBtn : styles.btn3} onPress={() => {
                                 resizingRef.current = !resizingRef.current
+                            
                                 resizing && setScrollable(true)
-                                setResizing(!resizing)
+                                setResizing(!resizing)   
                             }}>
                                 <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
                             </TouchableOpacity>
@@ -822,23 +823,24 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between"
     },
-    gradientBtn2: {
-        width: "60%",
-        height: 45,
-        borderRadius: 10,
-        marginBottom: 22,
-    },
     slider: {
         width: RPW(80)
     },
     btn2: {
         backgroundColor: "#0c0000",
         width: "30%",
-        height: 45,
+        height: RPW(10),
         borderRadius: 10,
         marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    resizeBtn: {
+        backgroundColor: "#0c0000",
+        flex :1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
     },
     btn3: {
         flex: 1,
@@ -871,7 +873,7 @@ const styles = StyleSheet.create({
     btnContainer2: {
         backgroundColor: "#0c0000",
         width: RPW(43),
-        height: 45,
+        height: RPW(10),
         borderRadius: 10,
         marginBottom: 10,
     },

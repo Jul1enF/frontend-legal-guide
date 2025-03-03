@@ -104,7 +104,7 @@ export default function Header() {
                     </Text>
                 </View>
                 <View style={styles.emergencyIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.icon} size={RPW(6)} onPress={() => router.push(`/emergency-request/${pagePath}`)} />
+                    <Icon name="alarm-light-outline" style={styles.alarmIcon} size={RPW(6)} onPress={() => router.push(`/emergency-request/${pagePath}`)} />
                 </View>
             </View>
             <View style={styles.headerLigne}></View>
@@ -222,6 +222,9 @@ const styles = StyleSheet.create({
     },
     icon: {
         color: "#fffcfc",
+    },
+    alarmIcon: {
+        color: "rgb(185, 0, 0)",
     },
     headerLigne: {
         borderBottomColor: "#878787",

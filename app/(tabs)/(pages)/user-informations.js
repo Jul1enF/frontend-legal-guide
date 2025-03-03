@@ -77,7 +77,7 @@ export default function Signup() {
         }
     }
 
-
+console.log("user", user)
 
 
     // Fonction appelée en cliquant sur enregistrer pour la deuxième fois

@@ -125,7 +125,7 @@ export default function EmergencyRequest() {
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        setTimeout(()=> setUploading(true), 1000)
+        setTimeout(()=> setUploading(true), 2000)
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'],
@@ -348,7 +348,7 @@ export default function EmergencyRequest() {
                         </View>}
 
                         <TouchableOpacity style={styles.btn2} onPress={() => chooseMedia()}>
-                            <Text style={styles.btnSentence2}>Joindre un média</Text>
+                            <Text style={styles.btnSentence2}>Ajouter une photo / vidéo</Text>
                         </TouchableOpacity>
 
                         {uploading && <Text style={styles.error}>Veuillez patienter, média en cours de chargement...</Text>}
@@ -548,7 +548,8 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     btn2: {
-        width: RPW(52),
+        paddingLeft : RPW(3),
+        paddingRight : RPW(3),
         height: RPW(11),
         borderRadius: RPW(2),
         marginTop: RPW(3),

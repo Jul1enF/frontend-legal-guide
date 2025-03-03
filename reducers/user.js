@@ -27,7 +27,7 @@ export const userSlice = createSlice({
             state.value.firstname = action.payload.firstname
             state.value.name = action.payload.name
             state.value.email = action.payload.email
-            state.value.coach = action.payload.coach
+            state.value.phone = action.payload.phone
         },
     }
 })
