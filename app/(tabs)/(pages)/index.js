@@ -11,10 +11,7 @@ import { deleteOneArticle, fillWithArticles } from "../../../reducers/articles"
 import { router, Link, useFocusEffect } from "expo-router";
 
 import Modal from "react-native-modal"
-import Icon from "@expo/vector-icons/MaterialCommunityIcons"
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import YoutubePlayer from "react-native-youtube-iframe";
-import moment from 'moment/min/moment-with-locales'
 
 import NetInfo from '@react-native-community/netinfo'
 
@@ -219,10 +216,6 @@ export default function FullArticle() {
         )
     }
 
-    moment.locale('fr')
-    const date = moment(article.createdAt).format('LL')
-    const hour = moment(article.createdAt).format('LT')
-
 
 
     
@@ -401,7 +394,6 @@ const styles = StyleSheet.create({
         color: "#0c0000",
         fontSize: RPW(5.5),
         lineHeight: RPW(5.5),
-        fontWeight: "450",
         marginBottom: 20,
         fontFamily: "Barlow-Medium",
         letterSpacing: RPW(-0.0),
@@ -411,7 +403,6 @@ const styles = StyleSheet.create({
         fontSize: RPW(8),
         lineHeight: RPW(8),
         marginRight: RPW(3),
-        fontWeight: "400",
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
         marginBottom: 20,
@@ -420,7 +411,6 @@ const styles = StyleSheet.create({
         color: "#0c0000",
         fontSize: RPW(7.3),
         lineHeight: RPW(7.5),
-        fontWeight: "450",
         marginBottom: 15,
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
@@ -436,7 +426,6 @@ const styles = StyleSheet.create({
     date: {
         color: "#0c0000",
         fontSize: RPW(3.2),
-        fontWeight: "450",
         marginBottom: 12,
         fontFamily: "Barlow-Regular",
         letterSpacing: RPW(0.15),
@@ -465,7 +454,6 @@ const styles = StyleSheet.create({
     author: {
         color: "#0c0000",
         fontSize: RPW(3.2),
-        fontWeight: "450",
         marginBottom: 15,
         fontFamily: "Barlow-Regular",
         letterSpacing: RPW(0.15),
@@ -478,7 +466,6 @@ const styles = StyleSheet.create({
     text1: {
         color: "#0c0000",
         fontSize: RPW(4.8),
-        fontWeight: "500",
         marginBottom: 25,
         marginLeft: RPW(0),
         fontFamily: "Barlow-Bold",
@@ -487,7 +474,6 @@ const styles = StyleSheet.create({
     text2: {
         color: "#0c0000",
         fontSize: RPW(4.2),
-        fontWeight: "500",
         marginBottom: 25,
         marginLeft: RPW(0),
         fontFamily: "Barlow-Medium",
@@ -496,7 +482,6 @@ const styles = StyleSheet.create({
     link: {
         color: "rgb(3, 0, 42)",
         fontSize: RPW(4.2),
-        fontWeight: "500",
         marginBottom: 25,
         marginTop: -14,
         textDecorationLine: "underline",

@@ -106,7 +106,7 @@ export default function Header() {
                 </View>
                 <TouchableOpacity style={styles.emergencyIconContainer} onPress={() => router.push(`/emergency-request/${pagePath}`)}>
                     <Icon name="alarm-light-outline" style={styles.alarmIcon} size={RPW(6.2)} />
-                    <Text style={styles.iconText}>Urgence</Text>
+                    <Text style={[styles.iconText, {color: "rgb(185, 0, 0)"}]}>Urgence</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.headerLigne}></View>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         fontFamily: "Barlow-Regular",
         lineHeight: RPW(4),
         marginTop : RPW(1),
-        marginBottom : RPW(1)
+        marginBottom : RPW(1.5)
     },
     titleContainer: {
         width: "60%",

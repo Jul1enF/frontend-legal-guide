@@ -488,7 +488,7 @@ export default function Redaction() {
     return (
         <>
             {/* <KeyboardAwareScrollView
-            style={{ flex: 1, backgroundColor: "#f9fff4" }}
+            style={{ flex: 1, backgroundColor: "#fffcfc" }}
             contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }}
             scrollEnabled={scrollable}
             bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}

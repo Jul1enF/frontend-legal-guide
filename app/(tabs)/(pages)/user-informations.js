@@ -77,8 +77,6 @@ export default function Signup() {
         }
     }
 
-console.log("user", user)
-
 
     // Fonction appelée en cliquant sur enregistrer pour la deuxième fois
 
@@ -180,9 +178,8 @@ console.log("user", user)
     return (<>
 
         {/* <KeyboardAwareScrollView
-                       style={{ flex: 1, backgroundColor: "#f9fff4" }}
+                       style={{ flex: 1, backgroundColor: "#fffcfc" }}
                        contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2), paddingTop: RPW(10) }}
-                       scrollEnabled={scrollable}
                        bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}
                    > */}
 
