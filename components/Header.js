@@ -95,17 +95,19 @@ export default function Header() {
         <View style={styles.body}>
             <StatusBar translucent={true} backgroundColor="transparent" barStyle="light" />
             <View style={styles.header}>
-                <View style={styles.menuIconContainer}>
-                    <FontAwesome name="navicon" style={styles.icon} size={RPW(5.3)} onPress={() => setMenuVisible(!menuVisible)} />
-                </View>
+                <TouchableOpacity style={styles.menuIconContainer} onPress={() => setMenuVisible(!menuVisible)}>
+                    <FontAwesome name="navicon" style={styles.icon} size={RPW(5.3)} />
+                    <Text style={styles.iconText}>Menu</Text>
+                </TouchableOpacity>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
                         Me Baudelin
                     </Text>
                 </View>
-                <View style={styles.emergencyIconContainer}>
-                    <Icon name="alarm-light-outline" style={styles.alarmIcon} size={RPW(6)} onPress={() => router.push(`/emergency-request/${pagePath}`)} />
-                </View>
+                <TouchableOpacity style={styles.emergencyIconContainer} onPress={() => router.push(`/emergency-request/${pagePath}`)}>
+                    <Icon name="alarm-light-outline" style={styles.alarmIcon} size={RPW(6.2)} />
+                    <Text style={styles.iconText}>Urgence</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.headerLigne}></View>
 
@@ -193,14 +195,23 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0000",
     },
     menuIconContainer: {
-        width: "15%",
+        width: "20%",
         height: "100%",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        paddingLeft: RPW(4),
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingLeft: RPW(0),
+    },
+    iconText : {
+        fontSize: RPW(4.2),
+        color: "#fffcfc",
+        letterSpacing: RPW(0.1),
+        fontFamily: "Barlow-Regular",
+        lineHeight: RPW(4),
+        marginTop : RPW(1),
+        marginBottom : RPW(1)
     },
     titleContainer: {
-        width: "70%",
+        width: "60%",
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
@@ -209,16 +220,15 @@ const styles = StyleSheet.create({
         fontSize: RPW(9.3),
         color: "#fffcfc",
         letterSpacing: RPW(0.6),
-        fontWeight: "600",
         fontFamily: "Barlow-SemiBold",
         lineHeight: RPW(9.3)
     },
     emergencyIconContainer: {
-        width: "15%",
+        width: "20%",
         height: "100%",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        paddingRight: RPW(4),
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingRight: RPW(0),
     },
     icon: {
         color: "#fffcfc",

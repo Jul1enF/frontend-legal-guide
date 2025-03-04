@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useLayoutEffect, useState, useRef } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { RPH, RPW } from '../modules/dimensions'
 
@@ -8,7 +8,7 @@ export default function DayComponent(props) {
 
     const { date, state, marking } = props
 
-    // if (date.dateString === "2025-04-20") {
+    // if (date.dateString === "2025-03-12") {
     //     console.log("PROPS", props)
     // }
 
@@ -17,14 +17,12 @@ export default function DayComponent(props) {
     const [textWeight, setTextWeight] = useState("300")
     const [dotColor, setDotColor] = useState('fff')
     const [dotWidth, setDotWidth] = useState(5)
-    const [thisLineStyle, setThisLineStyle] = useState('')
-    const [thisLineStyle2, setThisLineStyle2] = useState('')
 
-
+ 
 
     const setConditionnalStyle = () => {
         // Style conditionnel selectedContainer
-        if (state !== 'disabled' && marking?.selected) {
+        if (state === "selected") {
             setSelectedBg('black')
         } else if (selectedBg !== 'fff') {
             setSelectedBg('fff')
@@ -32,7 +30,7 @@ export default function DayComponent(props) {
 
         // Style conditionnel dayText
         if (state === "disabled") { setTextColor("rgba(148, 148, 148, 0.7)") }
-        else if (marking?.selected) { setTextColor("#fffcfc") }
+        else if (state === "selected") { setTextColor("#fffcfc") }
         else if (state === "today") {
             setTextColor("rgb(185, 0, 0)")
             setTextWeight("500")
@@ -55,63 +53,41 @@ export default function DayComponent(props) {
             setDotColor(5)
         }
 
-
-        // Style conditionnel de la première ligne d'un marqueur de période
-        if (marking?.periodMarker) {
-            if (marking.startingDay) {
-                setThisLineStyle("startingLine")
-            } else if (marking.endingDay) {
-                setThisLineStyle("endingLine")
-            } else { setThisLineStyle("line") }
-        } else if (thisLineStyle !== "") {
-            setThisLineStyle('')
-        }
-
-        // Style conditionnel de la deuxième ligne d'un marqueur de période
-        if (marking?.periodMarker2) {
-            if (marking.startingDay2) {
-                setThisLineStyle2("startingLine2")
-            } else if (marking.endingDay2) {
-                setThisLineStyle2("endingLine2")
-            } else { setThisLineStyle2("line2") }
-        } else if (thisLineStyle2 !== "") {
-            setThisLineStyle2('')
-        }
-
-
-        // Vérification si premier de la rangée
-        componentRef.current.measureInWindow((x) => {
-            if (x < RPW(100)/8){
-                // Enregistrement dans le parent du premier jour d'une ligne pour switch semaine suivant
-                props.registerFirstDayInRow(date.dateString)
-            }
-        });
     }
 
 
-    
 
     // useLayoutEffect pour effectuer l'affichage conditionnel seulement à chaque fois que marking change et avant rendu
     useLayoutEffect(() => {
         setConditionnalStyle()
-    }, [marking])
+    }, [marking, state])
 
 
-    // Style de la première ligne de marqueur de période
-    const lineStyle = styles[thisLineStyle]
+    let lineStyle = {}
+    let lineStyle2 = {}
 
+     // Style conditionnel de la première ligne d'un marqueur de période
+     if (marking?.periodMarker) {
+        if (marking.startingDay) {
+            lineStyle=styles.startingLine
+        } else if (marking.endingDay) {
+           lineStyle=styles.endingLine
+        } else { lineStyle=styles.line }
+    } 
 
-    // Style de la deuxième ligne de marqueur de période
-    const lineStyle2 = styles[thisLineStyle2]
-
-
-    // Ref du composant pour le OnLayout de la View principale
-    const componentRef = useRef(null)
+    // Style conditionnel de la deuxième ligne d'un marqueur de période
+    if (marking?.periodMarker2) {
+        if (marking.startingDay2) {
+            lineStyle2=styles.startingLine2
+        } else if (marking.endingDay2) {
+           lineStyle2=styles.endingLine2
+        } else { lineStyle2=styles.line2 }
+    }
 
 
 
     return (
-        <View style={styles.dayContainer} ref={componentRef}>
+        <View style={styles.dayContainer}>
             <View style={[styles.selectedContainer, { backgroundColor: selectedBg }]}>
                 <Text style={[styles.dayText, { color: textColor, fontWeight: textWeight }]}>
                     {date.day}
@@ -131,7 +107,7 @@ const styles = StyleSheet.create({
     dayContainer: {
         width: 38,
         height: 32,
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         backgroundColor: 'fff',
         alignItems: 'center',
         justifyContent: 'center',
@@ -176,6 +152,7 @@ const styles = StyleSheet.create({
     },
     endingLine: {
         position: "absolute",
+        zIndex : 10,
         top: 29,
         height: 6,
         width: 46,
@@ -205,18 +182,17 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 36,
         height: 6,
-        // width: 46,
-        width: 56,
+        width: 46,
         right: 3,
         backgroundColor: "rgb(35, 0, 105)",
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,
     },
     borderLine: {
-        backgroundColor: "black",
-        width: 60,
+        backgroundColor: "red",
+        width: 58,
         height: 2,
         position: "absolute",
-        top: 48,
+        top: 30,
     }
 });
