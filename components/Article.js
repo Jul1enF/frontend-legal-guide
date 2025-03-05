@@ -111,6 +111,18 @@ export default function Article(props) {
 
 
 
+    // Lineheight différent en fonction de la taille du titre
+
+    let titleLineHeight = RPW(10)
+   
+    if (props.title.length >= 65 && props.title.length <= 91){
+        titleLineHeight = RPW(8.2)
+    }else if (props.title.length > 91){
+        titleLineHeight = RPW(7)
+    }
+   
+
+
     moment.locale('fr')
     const lastingTime = moment(props.createdAt).fromNow()
 
@@ -118,7 +130,7 @@ export default function Article(props) {
         <View style={styles.body}>
             <View style={styles.row1}>
                 <View style={styles.column1}>
-                    <Text style={styles.title}>{props.title}</Text>
+                    <Text style={[styles.title, {lineHeight : titleLineHeight}]}>{props.title}</Text>
                 </View>
                 <View style={styles.column2}>
                     <View style={[styles.imgContainer, { height: RPW(41 * props.img_ratio) }]} >
@@ -150,8 +162,8 @@ const styles = StyleSheet.create({
         width: RPW(100),
         paddingTop: 11,
         marginBottom: 0,
-        paddingRight: RPW(3),
-        paddingLeft: RPW(3),
+        paddingRight: RPW(2),
+        paddingLeft: RPW(2),
     },
     row1: {
         flexDirection: "row",
@@ -159,13 +171,13 @@ const styles = StyleSheet.create({
         marginBottom: 13,
     },
     column1: {
-        width: RPW(50),
+        width: RPW(54),
         minHeight: RPW(14.5),
         justifyContent: "center",
     },
     title: {
         color: "#0c0000",
-        fontSize: RPW(6.8),
+        fontSize: RPW(6),
         lineHeight: RPW(8.2),
         fontWeight: "450",
         fontFamily: "Barlow-Bold",

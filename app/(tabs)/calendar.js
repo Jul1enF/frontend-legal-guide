@@ -211,8 +211,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fffcfc",
         paddingTop: RPW(2.5),
-        paddingLeft: RPW(1),
-        paddingRight: RPW(1),
         alignItems: "center",
     },
     subTitle: {

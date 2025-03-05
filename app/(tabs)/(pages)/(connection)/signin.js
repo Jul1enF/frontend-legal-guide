@@ -45,15 +45,24 @@ export default function Signin() {
             if (!connectRef.current) { return }
             connectRef.current = false
 
-            const response = await fetch(`${url}/users/signin`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    password,
+            let data
+            try {
+                const response = await fetch(`${url}/users/signin`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    })
                 })
-            })
-            const data = await response.json()
+                data = await response.json()
+            } catch (err) {
+                setError("Erreur : Problème de connexion")
+                setTimeout(()=>setError(""), 4000)
+                connectRef.current = true
+                return
+            }
+
 
             if (!data.result) {
                 setError(data.error)

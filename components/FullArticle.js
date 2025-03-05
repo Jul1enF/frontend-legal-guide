@@ -155,9 +155,19 @@ export default function FullArticle(props) {
         if (!deleteRef.current) { return }
         deleteRef.current = false
 
-        const response = await fetch(`${url}/articles/delete-article/${user.jwtToken}/${article._id}`, { method: 'DELETE' })
+        let data
+        try {
+            const response = await fetch(`${url}/articles/delete-article/${user.jwtToken}/${article._id}`, { method: 'DELETE' })
 
-        const data = await response.json()
+            data = await response.json()
+        } catch (err) {
+            setModalVisible(false)
+            setError("Erreur : Problème de connexion")
+            setTimeout(() => setError(''), 4000)
+            deleteRef.current = true
+            return
+        }
+
 
         if (!data.result && data.error) {
             setModalVisible(false)

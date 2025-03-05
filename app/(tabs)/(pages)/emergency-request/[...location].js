@@ -125,7 +125,7 @@ export default function EmergencyRequest() {
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        setTimeout(()=> setUploading(true), 2000)
+        setTimeout(() => setUploading(true), 2000)
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'],
@@ -135,7 +135,7 @@ export default function EmergencyRequest() {
             videoQuality: ImagePicker.UIImagePickerControllerQualityType.Low
         });
 
-        if (result.canceled){
+        if (result.canceled) {
             setUploading(false)
             return
         }
@@ -241,12 +241,23 @@ export default function EmergencyRequest() {
             user_location,
         }, jwtKey)
 
-        const response = await fetch(`${url}/emergencies/new-emergency/${emergencyData}`, {
-            method: 'POST',
-            body: formData,
-        })
+        let data
+        try {
+            const response = await fetch(`${url}/emergencies/new-emergency/${emergencyData}`, {
+                method: 'POST',
+                body: formData,
+            })
 
-        const data = await response.json()
+            data = await response.json()
+        } catch (err) {
+            setError2("Erreur : Problème de connexion")
+            setTimeout(() => {
+                setError2("")
+                sendRef.current = true
+                setModal1Visible(false)
+            }, 2500)
+            return
+        }
 
         if (data.result) {
             setError2("Demande envoyée !")
@@ -548,8 +559,8 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     btn2: {
-        paddingLeft : RPW(3),
-        paddingRight : RPW(3),
+        paddingLeft: RPW(3),
+        paddingRight: RPW(3),
         height: RPW(11),
         borderRadius: RPW(2),
         marginTop: RPW(3),

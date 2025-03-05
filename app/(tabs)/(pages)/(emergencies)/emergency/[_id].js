@@ -65,7 +65,7 @@ export default function EmergencyDetail() {
         }
         else {
             dispatch(addEmergencies(data.emergencies))
-            if (!data.emergencies || !data.emergencies.some(e=> e._id === _id)){
+            if (!data.emergencies || !data.emergencies.some(e => e._id === _id)) {
                 router.back('/emergencies-list')
             }
         }
@@ -87,9 +87,21 @@ export default function EmergencyDetail() {
         }
         deleteRef.current = false
 
-        const response = await fetch(`${url}/emergencies/suppress-emergency/${emergency._id}`, { method: 'DELETE' })
+        let data
+        try {
+            const response = await fetch(`${url}/emergencies/suppress-emergency/${emergency._id}`, { method: 'DELETE' })
 
-        const data = await response.json()
+            data = await response.json()
+        } catch (err) {
+            deleteRef.current = true
+            setError("Erreur : Problème de connexion")
+            setModalVisible(false)
+            setTimeout(() => {
+                setError("")
+            }, 3000)
+            return
+        }
+
 
         if (data.result) {
             setError("Requête supprimée !")

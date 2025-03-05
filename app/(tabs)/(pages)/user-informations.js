@@ -86,21 +86,31 @@ export default function Signup() {
         if (registerRef.current == false) { return }
         registerRef.current = false
 
-
-        const response = await fetch(`${url}/userModifications/modify-user`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name,
-                firstname,
-                email,
-                oldPassword,
-                password,
-                phone,
-                jwtToken: user.jwtToken,
+        let data
+        try {
+            const response = await fetch(`${url}/userModifications/modify-user`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    firstname,
+                    email,
+                    oldPassword,
+                    password,
+                    phone,
+                    jwtToken: user.jwtToken,
+                })
             })
-        })
-        const data = await response.json()
+            data = await response.json()
+        } catch (err) {
+            setModal1Visible(false)
+
+            registerRef.current = true
+
+            setError("Erreur : Problème de connexion")
+            setTimeout(() => setError(''), 5000)
+            return
+        }
 
         if (data.result) {
             setModal1Visible(false)
@@ -146,19 +156,31 @@ export default function Signup() {
 
 
     const unsuscribePress = async () => {
-        if (unsuscribeRef.current = false) { return }
+        if (unsuscribeRef.current === false) { return }
         unsuscribeRef.current = false
 
-        const response = await fetch(`${url}/userModifications/delete-user/${user.jwtToken}`, { method: 'DELETE' })
+        let data
+        try {
+            const response = await fetch(`${url}/userModifications/delete-user/${user.jwtToken}`, { method: 'DELETE' })
 
-        const data = await response.json()
+            data = await response.json()
+        } catch (err) {
+            setModal2Visible(false)
+            unsuscribeRef.current = true
+
+            setError("Erreur : Problème de connexion")
+            setTimeout(() => setError(''), 5000)
+            return
+        }
 
         if (!data.result && data.error) {
+            setModal2Visible(false)
             setError(data.error)
             setTimeout(() => setError(''), 4000)
             unsuscribeRef.current = true
         }
         else if (!data.result) {
+            setModal2Visible(false)
             setError("Erreur : Merci de réessayez après vous être reconnecté ou de contacter l'Éditeur de l'application.")
             setTimeout(() => setError(''), 4000)
             unsuscribeRef.current = true
@@ -432,7 +454,6 @@ const styles = StyleSheet.create({
         fontFamily: "Barlow-SemiBold",
         color: "#0c0000",
         fontSize: RPW(6),
-        fontWeight: "600",
         marginBottom: 13,
         marginTop: RPW(1)
     },

@@ -56,18 +56,27 @@ export default function Signup() {
             if (!registerRef.current) { return }
             registerRef.current = false
 
-            const response = await fetch(`${url}/users/signup`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    firstname,
-                    email,
-                    password,
-                    phone,
+
+            let data
+            try {
+                const response = await fetch(`${url}/users/signup`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        firstname,
+                        email,
+                        password,
+                        phone,
+                    })
                 })
-            })
-            const data = await response.json()
+                data = await response.json()
+            } catch (err) {
+                setError("Erreur : Problème de connexion")
+                setTimeout(()=>setError(""), 4000)
+                registerRef.current = true
+                return
+            }
 
             if (!data.result) {
                 setError(data.error)
@@ -246,7 +255,7 @@ const styles = StyleSheet.create({
         width: RPW(100),
         paddingLeft: RPW(4),
         paddingRight: RPW(4),
-        marginBottom : RPH(4) > 27 ? RPH(6) : RPH(4),
+        marginBottom: RPH(4) > 27 ? RPH(6) : RPH(4),
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -265,13 +274,13 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "500",
         fontSize: RPW(4.5),
-        letterSpacing : RPW(0.1)
+        letterSpacing: RPW(0.1)
     },
     inputContainer: {
         marginBottom: RPH(3.5),
         width: "90%",
         height: RPH(6),
-        maxHeight : 44,
+        maxHeight: 44,
         borderRadius: RPH(1),
         flexDirection: "row",
         justifyContent: "space-between",
@@ -295,7 +304,7 @@ const styles = StyleSheet.create({
     registerBtn: {
         width: "90%",
         height: RPH(6.5),
-        maxHeight : 46,
+        maxHeight: 46,
         borderRadius: RPH(1),
         marginTop: RPH(2.5),
         justifyContent: "center",

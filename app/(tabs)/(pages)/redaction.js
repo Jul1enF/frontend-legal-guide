@@ -414,13 +414,21 @@ export default function Redaction() {
             articleData,
         }, jwtKey)
 
-
-        const response = await fetch(`${url}/articles/save-article/${postData}`, {
-            method: 'POST',
-            body: formData,
-        })
-
-        const data = await response.json()
+        let data
+        try {
+            const response = await fetch(`${url}/articles/save-article/${postData}`, {
+                method: 'POST',
+                body: formData,
+            })
+    
+            data = await response.json()
+        }catch (err){
+            setModalVisible(false)
+            setError("Erreur : Problème de connexion")
+            publishRef.current = true
+            setTimeout(() => setError(''), 4000)
+            return
+        }
 
         if (data.result) {
             if (data.articleSaved) {
@@ -499,63 +507,94 @@ export default function Redaction() {
                 <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }} scrollEnabled={scrollable}
                     keyboardShouldPersistTaps="handled">
 
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Titre de l'article :</Text>
+                    </View>
                     <TextInput
                         style={styles.smallInput}
-                        placeholder="Titre de l'article"
+                        placeholder="Titre de l'article..."
                         onChangeText={(e) => setTitle(e)}
                         placeholderTextColor="#fbfff792"
                         value={title}>
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Sous-Catégorie de l'article :</Text>
+                    </View>
                     <TextInput
                         style={styles.smallInput}
-                        placeholder="Sous-Catégorie de l'article"
+                        placeholder="Sous-Catégorie de l'article..."
                         onChangeText={(e) => setSubCategory(e)}
                         value={subCategory}
                         placeholderTextColor="#fbfff792"
                     >
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Chapeau de l'article :</Text>
+                    </View>
                     <TextInput multiline={true}
                         textAlignVertical="top"
                         style={styles.largeInput1}
-                        placeholder="Chapeau de l'article"
+                        placeholder="Chapeau de l'article..."
                         onChangeText={(e) => setText1(e)}
                         value={text1}
                         placeholderTextColor="#fbfff792"
                         returnKeyType='next'>
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Texte de l'article :</Text>
+                    </View>
                     <TextInput multiline={true}
                         textAlignVertical="top"
                         style={styles.largeInput2}
-                        placeholder="Texte de l'article"
+                        placeholder="Texte de l'article..."
                         onChangeText={(e) => setText2(e)}
                         value={text2}
                         placeholderTextColor="#fbfff792"
                         returnKeyType='next'>
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Auteur de l'article :</Text>
+                    </View>
                     <TextInput style={styles.smallInput}
-                        placeholder="Auteur"
+                        placeholder="Auteur..."
                         onChangeText={(e) => setAuthor(e)}
                         placeholderTextColor="#fbfff792"
                         value={author}>
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien vers un autre média :</Text>
+                    </View>
                     <TextInput style={styles.smallInput}
-                        placeholder="Lien vers un autre média"
+                        placeholder="Lien vers un autre média..."
                         autoCapitalize="none"
                         onChangeText={(e) => setMediaLink(e)}
                         placeholderTextColor="#fbfff792"
                         value={mediaLink}>
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Tags de l'article :</Text>
+                    </View>
                     <TextInput multiline={true}
                         textAlignVertical="top"
                         style={styles.mediumInput}
-                        placeholder="Tags : sans '#', à séparer par une virgule et un espace"
+                        placeholder="Tags : sans '#', à séparer par une virgule et un espace..."
                         onChangeText={(e) => setTags(e)}
                         value={tags}
                         placeholderTextColor="#fbfff792"
                         submitBehavior="blurAndSubmit">
                     </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une vidéo Youtube :</Text>
+                    </View>
                     <TextInput style={[styles.smallInput, { marginBottom: 30 }]}
-                        placeholder="Lien d'une vidéo Youtube"
+                        placeholder="Lien d'une vidéo Youtube..."
                         onChangeText={(e) => setVideoLink(e)}
                         value={videoLink}
                         autoCapitalize="none"
@@ -564,8 +603,8 @@ export default function Redaction() {
                     </TextInput>
 
 
-                    <View style={styles.underline}>
-                        <Text style={styles.categoryText1}>Catégorie :</Text>
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Catégorie :</Text>
                     </View>
 
                     <View style={styles.row3}>
@@ -593,6 +632,9 @@ export default function Redaction() {
                     </View>
 
 
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une image sur internet :</Text>
+                    </View>
                     <TextInput
                         style={[styles.smallInput, { marginBottom: RPW(2), marginTop: RPW(2) }]}
                         placeholder="Lien internet de l'image"
@@ -609,15 +651,15 @@ export default function Redaction() {
                         autoCapitalize="none">
                     </TextInput>
 
-                    <Text style={styles.categoryText1}>ou</Text>
+                    <Text style={styles.inputTitle}>ou</Text>
 
                     <TouchableOpacity style={styles.btn4} onPress={() => getPhonePicture()} >
                         <Text style={styles.btn3Text}>Image du téléphone</Text>
                     </TouchableOpacity>
 
 
-                    <View style={[styles.underline, { marginBottom: 20 }]}>
-                        <Text style={styles.categoryText1}>Réglage du ratio de l'image :</Text>
+                    <View style={[styles.inputTitleUnderline, {marginBottom : RPW(3)}]}>
+                        <Text style={styles.inputTitle}>Réglage du ratio de l'image :</Text>
                     </View>
 
                     <Text style={styles.categoryText1}>Ratio : {imgRatio.toFixed(2)}   (Instagram ={">"} 1,00 ; 16/9 ={">"} 0,55)</Text>
@@ -642,9 +684,9 @@ export default function Redaction() {
                         <View style={styles.btnContainer2} >
                             <TouchableOpacity style={resizing ? styles.resizeBtn : styles.btn3} onPress={() => {
                                 resizingRef.current = !resizingRef.current
-                            
+
                                 resizing && setScrollable(true)
-                                setResizing(!resizing)   
+                                setResizing(!resizing)
                             }}>
                                 <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
                             </TouchableOpacity>
@@ -718,6 +760,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
+    inputTitle: {
+        fontSize: RPW(4.3),
+        fontWeight: "800",
+        marginBottom: RPW(0.5),
+    },
+    inputTitleUnderline: {
+        borderBottomWidth: 3,
+        borderBottomColor: "#0c0000",
+        marginBottom: RPW(2.5)
+    },
     smallInput: {
         backgroundColor: "rgb(157, 0, 0)",
         color: "white",
@@ -780,11 +832,6 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         marginBottom: RPW(1)
     },
-    underline: {
-        borderBottomWidth: 2,
-        borderBottomColor: "#0c0000",
-        marginBottom: 18,
-    },
     categoryText2: {
         color: "white",
         fontSize: RPW(4.2),
@@ -837,7 +884,7 @@ const styles = StyleSheet.create({
     },
     resizeBtn: {
         backgroundColor: "#0c0000",
-        flex :1,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,

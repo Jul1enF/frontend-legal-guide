@@ -29,9 +29,21 @@ export default function PendingRequest() {
         }
         abortRef.current = false
 
-        const response = await fetch(`${url}/emergencies/suppress-emergency/${emergencies.request._id}`, { method: 'DELETE' })
 
-        const data = await response.json()
+        let data
+        try {
+            const response = await fetch(`${url}/emergencies/suppress-emergency/${emergencies.request._id}`, { method: 'DELETE' })
+
+            data = await response.json()
+        } catch (err) {
+            setError2("Erreur : Problème de connexion")
+            setTimeout(() => {
+                setError2("")
+                abortRef.current = true
+                setModal2Visible(false)
+            }, 3000)
+            return
+        }
 
         if (data.result) {
             setError2("Demande annulée !")
