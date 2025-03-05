@@ -111,7 +111,7 @@ export default function EmergencyDetail() {
                 deleteRef.current = true
                 dispatch(suppressAnEmergency(emergency._id))
                 router.back('/emergencies-list')
-            }, 2500)
+            }, 2000)
         } else {
             setError("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
             setModalVisible(false)

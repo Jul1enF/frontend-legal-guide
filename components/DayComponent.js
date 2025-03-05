@@ -50,7 +50,7 @@ export default function DayComponent(props) {
           if (marking?.marked2) {
             setDotWidth(12.5)
         } else if (dotWidth !== 5) {
-            setDotColor(5)
+            setDotWidth(5)
         }
 
     }
@@ -92,7 +92,7 @@ export default function DayComponent(props) {
                 <Text style={[styles.dayText, { color: textColor, fontWeight: textWeight }]}>
                     {date.day}
                 </Text>
-                <View style={[styles.dot, { backgroundColor: dotColor, width : dotWidth, left : dotWidth === 5 ? 14 : 9 }]} />
+                <View style={[styles.dot, { backgroundColor: dotColor, width : dotWidth, left : dotWidth === 5 ? 12.5 : 9 }]} />
             </View>
 
             <View style={lineStyle}></View>

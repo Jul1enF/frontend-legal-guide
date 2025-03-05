@@ -5141,6 +5141,11 @@ react-native-calendars@^1.1309.1:
   optionalDependencies:
     moment "^2.29.4"
 
+react-native-compressor@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/react-native-compressor/-/react-native-compressor-1.10.4.tgz#ba96baf70fbc95ee74eb280cb3ecf85722403827"
+  integrity sha512-58gbmJ+8IvsKP8JKK1E8XW5trfQY3dNuH7S0hYw0tSRQc6l0GZ3k8TYtoUbySOc1xcQSrUo51o0Chwe8x7mUTg==
+
 react-native-helmet-async@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-native-helmet-async/-/react-native-helmet-async-2.0.4.tgz#93f53a1ff22d6898039688a541653a2d6b6866bb"

@@ -12,6 +12,7 @@ import { RPH, RPW } from '../../../../modules/dimensions'
 
 import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
+// import { Video } from 'react-native-compressor';
 import { useVideoPlayer, VideoView } from 'expo-video';
 
 import JWT, { SupportedAlgorithms } from 'expo-jwt';
@@ -163,12 +164,20 @@ export default function EmergencyRequest() {
                 const imageRef = await transform.renderAsync();
                 const imageSaved = await imageRef.saveAsync({ base64: false, compress: 0.5, format: extension })
 
-                console.log("IMAGE SAved", imageSaved)
-
                 setMediaLink(imageSaved.uri);
                 setUploading(false)
 
             } else {
+                // const result = await Video.compress(
+                //     result.assets[0].uri,
+                //     {
+                //       compressionMethod: 'manual',
+                //     },
+                //     (progress) => {
+                //       console.log('Compression Progress: ', progress);
+                //     }
+                //   );
+                // console.log("result", result)
                 setMediaLink(result.assets[0].uri);
                 setUploading(false)
             }
@@ -202,8 +211,6 @@ export default function EmergencyRequest() {
 
 
 
-
-
     // Fonction appelée en cliquant définitivement sur envoyer
 
     const sendRef = useRef(true)
@@ -218,15 +225,14 @@ export default function EmergencyRequest() {
         setError2("Merci de patienter, envoi de la demande...")
 
         const formData = new FormData()
+        console.log("formdata 1", formData)
 
         mediaLink && formData.append('emergencyMedia', {
             uri: mediaLink,
             name: `${mediaType}.${mediaExtension}`,
             type: mediaMimeType,
         })
-
-        // Encodage en jwt pour obtenir un string à passer en param, garder des types booléens etc... et gérer les cas où les inputs n'ont pas été remplis
-
+        
         const emergencyData = JWT.encode({
             user_firstname: firstname,
             user_name: name,
@@ -256,6 +262,7 @@ export default function EmergencyRequest() {
                 sendRef.current = true
                 setModal1Visible(false)
             }, 2500)
+            console.log("ERR", err)
             return
         }
 
@@ -271,7 +278,16 @@ export default function EmergencyRequest() {
                     located: data.savedEmergency.located
                 }))
             }, 2500)
-        } else {
+        } else if (!data.result && data.error){
+            setError2(data.error)
+            setTimeout(() => {
+                setError2("")
+                cancelPress()
+                sendRef.current = true
+                setModal1Visible(false)
+            }, 2500)
+        }
+        else {
             setError2("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
             setTimeout(() => {
                 setError2("")
