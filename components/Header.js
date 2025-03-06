@@ -106,7 +106,7 @@ export default function Header() {
                 </View>
                 <TouchableOpacity style={styles.emergencyIconContainer} onPress={() => router.push(`/emergency-request/${pagePath}`)}>
                     <Icon name="alarm-light-outline" style={styles.alarmIcon} size={RPW(6.2)} />
-                    <Text style={[styles.iconText, {color: "rgb(185, 0, 0)"}]}>Urgence</Text>
+                    <Text style={[styles.iconText, { color: "rgb(185, 0, 0)" }]}>Urgence</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.headerLigne}></View>
@@ -125,7 +125,6 @@ export default function Header() {
                 <View style={!articlePage ? styles.modalBody : styles.modalBody2}>
 
                     <View style={styles.searchContainer}>
-
                         <View style={styles.inputAndIconContainer}>
                             <TextInput
                                 style={styles.search}
@@ -140,9 +139,7 @@ export default function Header() {
                             ></TextInput>
                             <FontAwesome6 name="magnifying-glass" style={styles.icon2} size={RPW(5)} onPress={() => submitSearch()} />
                         </View>
-
                     </View>
-
 
                     <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
                         setMenuVisible(false)
@@ -151,7 +148,7 @@ export default function Header() {
                         <Text style={styles.link}>Accueil</Text>
                     </TouchableOpacity>
 
-                   { user.jwtToken && <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
+                    {user.jwtToken && <TouchableOpacity style={styles.linkContainer} activeOpacity={0.6} onPress={() => {
                         setMenuVisible(false)
                         router.push('/user-informations')
                     }}>
@@ -201,14 +198,14 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         paddingLeft: RPW(0),
     },
-    iconText : {
+    iconText: {
         fontSize: RPW(4.2),
         color: "#fffcfc",
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Regular",
         lineHeight: RPW(4),
-        marginTop : RPW(1),
-        marginBottom : RPW(1.5)
+        marginTop: RPW(1),
+        marginBottom: RPW(1.5)
     },
     titleContainer: {
         width: "60%",
@@ -266,37 +263,33 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    searchContainer: {
-        height: RPH(13),
-        borderTopWidth: 0.5,
-        paddingLeft: RPW(10),
-        paddingRight: RPW(10),
-        paddingBottom: RPH(1.2),
-        flexDirection: "row",
-        borderTopColor: "#0c0000",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
     link: {
         color: "#0c0000",
         fontSize: RPW(7.8),
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Light",
     },
+    searchContainer : {
+        height: RPH(13),
+        width : "100%",
+        paddingLeft: RPW(3),
+        paddingRight: RPW(3),
+        justifyContent : "center",
+    },
     inputAndIconContainer: {
-        flex: 1,
+        height :RPH(8),
+        backgroundColor: "rgb(250, 248, 248)",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        borderBottomWidth: 1.5,
-        borderBottomColor: "rgba(63, 63, 63, 0.66)",
-        paddingBottom: RPH(2),
-        paddingTop: RPH(1),
+        borderRadius : RPW(3),
+        paddingLeft : RPW(5),
+        paddingRight : RPW(3)
     },
     search: {
         color: "#0c0000",
         fontSize: RPW(7.8),
-        letterSpacing: RPW(0.1),
+        letterSpacing: RPW(0.2),
         fontFamily: "Barlow-Light",
         width: "85%",
     },
