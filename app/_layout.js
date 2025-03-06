@@ -1,5 +1,7 @@
 import { Stack } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+
+import * as Notifications from 'expo-notifications';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -20,6 +22,43 @@ const store = configureStore({
 })
 
 export default function RootLayout() {
+
+    // NOTIFICATIONS
+
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
+    });
+
+    const [notification, setNotification] = useState('');
+    const notificationListener = useRef('');
+    const responseListener = useRef('');
+
+
+
+    useEffect(() => {
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            notificationListener.current &&
+                Notifications.removeNotificationSubscription(notificationListener.current);
+            responseListener.current &&
+                Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, [])
+
+
+
+
 
     // FONTS
     const [loaded, error] = useFonts({

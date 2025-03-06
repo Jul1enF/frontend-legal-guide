@@ -11,14 +11,38 @@
     },
     "preview": {
       "distribution": "internal",
-      "channel": "preview"
+      "channel": "preview",
+      "env": {
+        "EXPO_PUBLIC_BACK_ADDRESS": "https://backend-legal-guide.vercel.app",
+        "EXPO_PUBLIC_JWT_KEY": "81ZiqZDQkX-2PkDpEx-t-yUZobNcZTBG",
+        "EXPO_PUBLIC_API_KEY": "AIzaSyCRM--1A-S5hGpIvxDqIDNJJFqumi_4kK8",
+        "EXPO_PUBLIC_AUTH_DOMAIN": "me-baudelin.firebaseapp.com",
+        "EXPO_PUBLIC_PROJECT_ID": "me-baudelin",
+        "EXPO_PUBLIC_STORAGE_BUCKET": "me-baudelin.firebasestorage.app",
+        "EXPO_PUBLIC_MESSAGING_SENDER_ID": "386069257310",
+        "EXPO_PUBLIC_APP_ID": "1:386069257310:web:d1aacf80cf2919713d68cf"
+      }
     },
     "production": {
       "autoIncrement": true,
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_BACK_ADDRESS": "https://backend-legal-guide.vercel.app",
+        "EXPO_PUBLIC_JWT_KEY": "81ZiqZDQkX-2PkDpEx-t-yUZobNcZTBG",
+        "EXPO_PUBLIC_API_KEY": "AIzaSyCRM--1A-S5hGpIvxDqIDNJJFqumi_4kK8",
+        "EXPO_PUBLIC_AUTH_DOMAIN": "me-baudelin.firebaseapp.com",
+        "EXPO_PUBLIC_PROJECT_ID": "me-baudelin",
+        "EXPO_PUBLIC_STORAGE_BUCKET": "me-baudelin.firebasestorage.app",
+        "EXPO_PUBLIC_MESSAGING_SENDER_ID": "386069257310",
+        "EXPO_PUBLIC_APP_ID": "1:386069257310:web:d1aacf80cf2919713d68cf"
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "companyName": "Alexis Baudelin"
+      }
+    }
   }
 }

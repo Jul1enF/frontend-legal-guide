@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         width: RPW(42),
-        height: RPW(12),
+        height: RPW(11),
         borderRadius: RPW(2),
         marginTop: RPW(4),
         justifyContent: "center",
@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(6),
+        fontSize: RPW(5.7),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(5),
@@ -690,7 +690,7 @@ const styles = StyleSheet.create({
     },
     btnTouchable: {
         width: RPW(25),
-        height: RPW(12),
+        height: RPW(11),
         borderRadius: 10,
         alignItems: "center",
         justifyContent: "center",
@@ -698,7 +698,7 @@ const styles = StyleSheet.create({
     },
     modalText2: {
         color: "white",
-        fontSize: RPW(5.2),
+        fontSize: RPW(5),
         fontWeight: "700",
     },
 })

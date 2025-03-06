@@ -1,7 +1,12 @@
 
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { registerForPushNotificationsAsync } from "../../modules/registerForPushNotificationsAsync"
+import { useState, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { logout, changePushToken } from '../../reducers/user'
+import NetInfo from '@react-native-community/netinfo'
 
 import { RPH, RPW } from '../../modules/dimensions'
 import { LocaleConfig, ExpandableCalendar, AgendaList, CalendarProvider } from 'react-native-calendars';
@@ -19,6 +24,44 @@ export default function Calendar() {
     const [events, setEvents] = useState(null)
     const [markers, setMarkers] = useState("")
     const [error, setError] = useState('')
+
+    const user = useSelector((state) => state.user.value)
+    const dispatch = useDispatch()
+
+
+
+
+
+
+    // Fonction pour gérer les potentiels changement de push token
+
+    const checkPushTokenChanges = async () => {
+        const state = await NetInfo.fetch()
+        // Si utilisateur pas inscrit ou pas connecté à internet ou pas admin
+        if (!user.jwtToken || !state.isConnected || !user.is_admin) { return }
+        
+        const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
+
+        if (!pushTokenInfos) {
+            dispatch(logout())
+            router.push('/')
+        }
+        if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
+            dispatch(changePushToken(pushTokenInfos.change))
+        }
+    }
+
+
+    // useFocusEffect pour vérifier si les notifs sont toujours autorisées
+
+    useFocusEffect(useCallback(() => {
+        checkPushTokenChanges()
+    }, []))
+
+
+
+
+
 
 
     // UseFocusEffect et fonction pour fetcher les évènements

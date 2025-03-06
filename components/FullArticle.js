@@ -36,6 +36,8 @@ export default function FullArticle(props) {
 
     const [error, setError] = useState('')
 
+    
+
 
 
     // useEffect pour charger les infos de l'article
@@ -50,6 +52,12 @@ export default function FullArticle(props) {
 
     }, [user])
 
+
+
+
+
+
+
     // useFocusEffect pour vérifier si l'article est en favoris, naviguer vers la liste d'articles si l'article test a été supprimé ou si un nouveau a été mis en test
 
     useFocusEffect(useCallback(() => {
@@ -63,6 +71,8 @@ export default function FullArticle(props) {
     }, [user, testArticle]))
 
 
+
+    
 
 
     // Fonction appelée en cliquant sur l'icone favoris

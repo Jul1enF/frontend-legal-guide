@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar, Image } from 'react-native'
-// import { registerForPushNotificationsAsync } from "../modules/registerForPushNotificationsAsync"
+import { registerForPushNotificationsAsync } from "../modules/registerForPushNotificationsAsync"
 import { useCallback, useState, useEffect, useRef } from 'react'
 
 import { RPW, RPH } from "../modules/dimensions"
@@ -60,31 +60,33 @@ export default function ArticlesList(props) {
 
 
 
+
+
     // Fonction pour gérer les potentiels changement de push token
 
-    // const checkPushTokenChanges = async () => {
-    //     const state = await NetInfo.fetch()
+    const checkPushTokenChanges = async () => {
+        const state = await NetInfo.fetch()
 
-    //     // Si utilisateur pas inscrit ou connecté
-    //     if (!user.jwtToken || !state.isConnected) { return }
+        // Si utilisateur pas inscrit ou pas connecté à internet ou pas admin
+        if (!user.jwtToken || !state.isConnected || !user.is_admin) { return }
 
-    //     const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
+        const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
 
-    //     if (!pushTokenInfos) {
-    //         dispatch(logout())
-    //         router.navigate('/')
-    //     }
-    //     if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
-    //         dispatch(changePushToken(pushTokenInfos.change))
-    //     }
-    // }
+        if (!pushTokenInfos) {
+            dispatch(logout())
+            router.push('/')
+        }
+        if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
+            dispatch(changePushToken(pushTokenInfos.change))
+        }
+    }
 
 
     // useFocusEffect pour vérifier si les notifs sont toujours autorisées
 
-    // useFocusEffect(useCallback(() => {
-    //     checkPushTokenChanges()
-    // }, [user]))
+    useFocusEffect(useCallback(() => {
+        checkPushTokenChanges()
+    }, []))
 
 
 
@@ -302,7 +304,7 @@ export default function ArticlesList(props) {
         searchMethodRef.current = "occurence"
 
         horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
-            offset : 0,
+            offset: 0,
             animated: true,
         })
 
@@ -468,7 +470,7 @@ export default function ArticlesList(props) {
     )
 
 
-    const flatlist0Data = [{name : "Par occurences", search : "occurence"}, {name : "Par catégories / tags", search : "tags"}, {name : "Par titre", search : "title"}]
+    const flatlist0Data = [{ name: "Par occurences", search: "occurence" }, { name: "Par catégories / tags", search: "tags" }, { name: "Par titre", search: "title" }]
 
     const subcategoryPress0 = (search, index) => {
         horizontalFlatlist0Ref.current.scrollToIndex({
@@ -496,9 +498,9 @@ export default function ArticlesList(props) {
     // Header pour la flatlist verticale s'il s'agit d'une recherche
 
     const headerVerticalFlatlist = () => {
-        if (props.category === "searches"){
+        if (props.category === "searches") {
             return (<>
-              <Text style={styles.title2}>Résultats pour votre recherche « {props.searchedText} » :</Text>
+                <Text style={styles.title2}>Résultats pour votre recherche « {props.searchedText} » :</Text>
                 <View style={styles.line2}>
                 </View>
             </>)
@@ -564,18 +566,18 @@ export default function ArticlesList(props) {
             <StatusBar translucent={true} barStyle="light" />
 
             {props.category === "searches" &&
-             <FlatList
-             data={flatlist0Data}
-             ref={horizontalFlatlist0Ref}
-             horizontal={true}
-             ListHeaderComponent={headerFlatlist0}
-             showsHorizontalScrollIndicator={false}
-             style={styles.flatlist0}
-             renderItem={({ item, index }) => {
-                 return <SubcategoryItem0 {...item} index={index} />
-             }}
-             contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2) }}
-         />}
+                <FlatList
+                    data={flatlist0Data}
+                    ref={horizontalFlatlist0Ref}
+                    horizontal={true}
+                    ListHeaderComponent={headerFlatlist0}
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.flatlist0}
+                    renderItem={({ item, index }) => {
+                        return <SubcategoryItem0 {...item} index={index} />
+                    }}
+                    contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2) }}
+                />}
 
 
             <FlatList
@@ -662,7 +664,7 @@ const styles = StyleSheet.create({
         lineHeight: RPW(8),
         fontWeight: "450",
         margin: RPW(4),
-        marginTop : RPW(5),
+        marginTop: RPW(5),
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),
         textAlign: "center"
@@ -694,7 +696,7 @@ const styles = StyleSheet.create({
     },
     btnContainer2: {
         height: RPW(8),
-        borderBottomWidth : 2,
+        borderBottomWidth: 2,
         marginRight: RPW(3.5),
         alignItems: 'center',
         justifyContent: 'center',
@@ -705,7 +707,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     btnText2: {
-       color: "#0c0000",
+        color: "#0c0000",
         fontSize: RPW(4.3),
         fontWeight: "700",
     },

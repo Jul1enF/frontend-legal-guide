@@ -15,13 +15,17 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.baudelin.mebaudelin"
+      "bundleIdentifier": "com.baudelin.mebaudelin",
+      "buildNumber": "1.0.0",
+      "appleTeamId": "W83RJXR472"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.baudelin.mebaudelin",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,5 +1,5 @@
 import { RPH, RPW } from '../../../modules/dimensions'
-// import { registerForPushNotificationsAsync } from "../../../modules/registerForPushNotificationsAsync"
+import { registerForPushNotificationsAsync } from '../../../modules/registerForPushNotificationsAsync'
 
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, RefreshControl } from "react-native";
 import { useEffect, useState, useCallback } from 'react'
@@ -34,31 +34,35 @@ export default function FullArticle() {
 
 
 
+
     // Fonction pour gérer les potentiels changement de push token
 
-    // const checkPushTokenChanges = async () => {
-    //     const state = await NetInfo.fetch()
+    const checkPushTokenChanges = async () => {
+        const state = await NetInfo.fetch()
 
-    //     // Si utilisateur pas inscrit ou connecté
-    //     if (!user.jwtToken || !state.isConnected) { return }
+        // Si utilisateur pas inscrit ou pas connecté à internet ou pas admin
+        if (!user.jwtToken || !state.isConnected || !user.is_admin) { return }
 
-    //     const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
+        const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
 
-    //     if (!pushTokenInfos) {
-    //         dispatch(logout())
-    //         router.navigate('/')
-    //     }
-    //     if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
-    //         dispatch(changePushToken(pushTokenInfos.change))
-    //     }
-    // }
+        if (!pushTokenInfos) {
+            dispatch(logout())
+            router.push('/')
+        }
+        if (pushTokenInfos?.change || pushTokenInfos?.change === "") {
+            dispatch(changePushToken(pushTokenInfos.change))
+        }
+    }
 
 
     // useFocusEffect pour vérifier si les notifs sont toujours autorisées
 
-    // useFocusEffect(useCallback(() => {
-    //     checkPushTokenChanges()
-    // }, [user]))
+    useFocusEffect(useCallback(() => {
+        checkPushTokenChanges()
+    }, []))
+
+
+
 
 
 
@@ -120,7 +124,6 @@ export default function FullArticle() {
     }
 
 
-
     // useEffect pour charger les infos de l'article
     useEffect(() => {
         loadArticles()
@@ -129,18 +132,7 @@ export default function FullArticle() {
 
 
 
-    // useFocusEffect pour naviguer vers la liste d'articles si l'article test a été supprimé ou si un nouveau a été mis en test
 
-    useFocusEffect(useCallback(() => {
-        // Si utilisateur pas connecté
-        if (!user.jwtToken) { return }
-
-        if (article._id === "testArticleId" && testArticle.length === 0) { router.push(`/`) }
-
-        if (article.test && testArticle.length === 0) { router.push(`/`) }
-
-        if (testArticle.length > 0 && testArticle[0].category === category && article._id !== "testArticleId") { router.push(`/`) }
-    }, [user, testArticle]))
 
 
 
