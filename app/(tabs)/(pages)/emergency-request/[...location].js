@@ -7,6 +7,7 @@ import { addRequest, supressRequest } from '../../../../reducers/emergencies';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import PendingRequest from '../../../../components/PendingRequest';
+import { uploadMedia } from '../../../../firebaseConfig';
 
 import { RPH, RPW } from '../../../../modules/dimensions'
 
@@ -15,8 +16,7 @@ import * as ImageManipulator from 'expo-image-manipulator'
 // import { Video } from 'react-native-compressor';
 import { useVideoPlayer, VideoView } from 'expo-video';
 
-import JWT, { SupportedAlgorithms } from 'expo-jwt';
-const jwtKey = process.env.EXPO_PUBLIC_JWT_KEY
+import uuid from 'react-native-uuid';
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -126,7 +126,7 @@ export default function EmergencyRequest() {
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        setTimeout(() => setUploading(true), 2000)
+        setTimeout(() => setUploading(true), 1000)
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'],
@@ -224,37 +224,37 @@ export default function EmergencyRequest() {
 
         setError2("Merci de patienter, envoi de la demande...")
 
-        const formData = new FormData()
-        console.log("formdata 1", formData)
-
-        mediaLink && formData.append('emergencyMedia', {
-            uri: mediaLink,
-            name: `${mediaType}.${mediaExtension}`,
-            type: mediaMimeType,
-        })
-        
-        const emergencyData = JWT.encode({
-            user_firstname: firstname,
-            user_name: name,
-            user_email: user.email ? user.email : "",
-            user_phone: phone,
-            connected: user.jwtToken ? true : false,
-            media_link: mediaLink,
-            media_type: mediaType,
-            emergency_reason: emergencyReason,
-            mediaExtension,
-            mediaMimeType,
-            user_location,
-        }, jwtKey)
+        let media_name = ""
+        let media_url = ""
 
         let data
+
         try {
-            const response = await fetch(`${url}/emergencies/new-emergency/${emergencyData}`, {
+            if (mediaLink) {
+                media_name = `${uuid.v4()}.${mediaExtension}`
+                media_url = await uploadMedia(mediaLink, media_name, mediaMimeType)
+            }
+
+
+            const response = await fetch(`${url}/emergencies/new-emergency`,  {
                 method: 'POST',
-                body: formData,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_firstname: firstname,
+                    user_name: name,
+                    user_email: user.email ? user.email : "",
+                    user_phone: phone,
+                    connected: user.jwtToken ? true : false,
+                    media_url,
+                    media_name,
+                    media_type: mediaType,
+                    emergency_reason: emergencyReason,
+                    user_location,
+                })
             })
 
             data = await response.json()
+
         } catch (err) {
             setError2("Erreur : Problème de connexion")
             setTimeout(() => {
@@ -278,7 +278,7 @@ export default function EmergencyRequest() {
                     located: data.savedEmergency.located
                 }))
             }, 2500)
-        } else if (!data.result && data.error){
+        } else if (!data.result && data.error) {
             setError2(data.error)
             setTimeout(() => {
                 setError2("")

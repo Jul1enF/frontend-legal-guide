@@ -431,11 +431,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     modalBody: {
-        height: RPH(32),
+        height: RPW(65),
         width: RPW(90),
         borderRadius: 10,
-        paddingTop: RPH(4),
-        paddingBottom: RPH(4),
+        paddingTop: RPW(8),
+        paddingBottom: RPW(8),
         backgroundColor: "#e7e7e7",
         position: "absolute",
         bottom: RPH(11),
@@ -443,12 +443,12 @@ const styles = StyleSheet.create({
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(4.5),
+        fontSize: RPW(5),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(6),
         paddingRight: RPW(6),
-        lineHeight: RPH(4)
+        lineHeight: RPW(9)
     },
     line2: {
         width: "90%",
