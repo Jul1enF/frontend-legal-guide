@@ -35,3 +35,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+
+# Google Service et account private key
+me-baudelin-firebase-adminsdk-fbsvc-1db52103b4.json
+google-services.json

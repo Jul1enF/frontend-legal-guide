@@ -122,7 +122,7 @@ export default function Header() {
                 onBackButtonPress={() => setMenuVisible(!menuVisible)}
                 onBackdropPress={() => setMenuVisible(!menuVisible)}
             >
-                <View style={!articlePage ? styles.modalBody : styles.modalBody2}>
+                <View style={styles.modalBody}>
 
                     <View style={styles.searchContainer}>
                         <View style={styles.inputAndIconContainer}>
@@ -245,13 +245,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#e3e3e3",
         position: "absolute",
         top: RPH(12.9) - statusHeight,
-    },
-    modalBody2: {
-        height: RPH(77.6) - RPW(10),
-        width: RPW(80),
-        backgroundColor: "#e3e3e3",
-        position: "absolute",
-        top: RPH(12.9) + RPW(10) - statusHeight,
     },
     linkContainer: {
         height: RPH(11.5),
