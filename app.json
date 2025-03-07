@@ -17,7 +17,10 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
       "buildNumber": "1.0.0",
-      "appleTeamId": "W83RJXR472"
+      "appleTeamId": "W83RJXR472",
+      "config" : {
+        "googleMapsApiKey" : "AIzaSyC2yHqvpoZZOpqid_3D4BZVZCVjCT1pwZU"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -39,11 +42,14 @@
           "supportsPictureInPicture": true
         }
       ],
-      "expo-maps",
-      {
-        "requestLocationPermission": "true",
-        "locationPermission": "Autoriser l'app Me baudelin a accéder à votre localisation"
-      },
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "isIosBackgroundLocationEnabled" : true,
+          "isAndroidBackgroundLocationEnabled" : true
+        }
+      ],
       "expo-router",
       [
         "expo-font",
