@@ -39,6 +39,11 @@
           "supportsPictureInPicture": true
         }
       ],
+      "expo-maps",
+      {
+        "requestLocationPermission": "true",
+        "locationPermission": "Autoriser l'app Me baudelin a accéder à votre localisation"
+      },
       "expo-router",
       [
         "expo-font",
