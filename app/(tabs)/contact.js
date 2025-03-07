@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TouchableOpac
 import { router } from 'expo-router';
 import { useState, useRef } from 'react';
 
+import { AppleMaps, GoogleMaps } from 'expo-maps';
+
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -103,6 +105,21 @@ export default function Contact() {
     }
   }
 
+
+
+
+  // Affichage conditionnel de la map en fonction de ios ou android
+
+  const marker = {coordinates : {latitude : 48.866550, longitude : 2.351357}, title : "Alexis Baudelin Avocat\n80 rue Réaumur\n75002 Paris", tintColor : "black"}
+
+  let map = ""
+
+  if (Platform.OS === 'ios') {
+    map = <AppleMaps.View style={styles.map} cameraPosition={{coordinates : {latitude : 48.866550, longitude : 2.351357}, zoom : 15.5}} markers={[marker]} uiSettings={{myLocationButtonEnabled : false}} />;
+  } else if (Platform.OS === 'android') {
+    map = <GoogleMaps.View style={styles.map} cameraPosition={{coordinates : {latitude : 48.866550, longitude : 2.351357}, zoom : 15.5}} markers={[marker]} uiSettings={{myLocationButtonEnabled : false}} />;
+  }
+
   
 
 
@@ -150,17 +167,18 @@ export default function Contact() {
             </Text>
           </View>
 
-          <View style={[styles.row, { marginBottom: RPW(10) }]}>
+          <View style={[styles.row, map ? { marginBottom: RPW(4) } : {marginBottom : RPW(10)}]}>
             <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
             <Text style={styles.firmContact}>
               01.42.74.72.26
             </Text>
           </View>
+          
+          {map}
 
 
 
-
-          <View style={[styles.underlineContainer, { marginBottom: RPW(10) }]}>
+          <View style={[styles.underlineContainer]}>
             <Text style={styles.sectionTitle}>
               Prendre rendez-vous :
             </Text>
@@ -397,6 +415,11 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: RPW(2.5),
     color: "rgb(155, 1, 1)",
+  },
+  map : {
+    width : RPW(60),
+    height : RPW(55),
+    marginBottom : RPW(8)
   },
   appointmentBtn: {
     backgroundColor: "#0c0000",

@@ -31,8 +31,8 @@ const RPH = (percentage) => {
             return (percentage / 100) * screenHeight;
         }
         else{
-            // return (percentage / 100) * (screenHeight - navigationHeight);
-            return (percentage / 100) * (screenHeight);
+            return (percentage / 100) * (screenHeight - navigationHeight);
+            // return (percentage / 100) * (screenHeight);
         }
     }
     else {

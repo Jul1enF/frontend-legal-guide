@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/test-logo-6.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": false,
@@ -25,7 +25,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/test-logo-6.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
       "versionCode": 1,
@@ -42,6 +42,15 @@
           "supportsPictureInPicture": true
         }
       ],
+      [
+        "expo-build-properties",
+        {
+           "ios": {
+              "deploymentTarget": "15.1"
+           }
+        }
+     ],
+
       [
         "expo-location",
         {

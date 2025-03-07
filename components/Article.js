@@ -118,7 +118,7 @@ export default function Article(props) {
     if (props.title.length >= 65 && props.title.length <= 91){
         titleLineHeight = RPW(8.2)
     }else if (props.title.length > 91){
-        titleLineHeight = RPW(7)
+        titleLineHeight = RPW(6.5)
     }
    
 

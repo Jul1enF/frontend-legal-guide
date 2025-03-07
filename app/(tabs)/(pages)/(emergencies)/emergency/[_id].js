@@ -7,9 +7,14 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import moment from 'moment/min/moment-with-locales'
 import { useVideoPlayer, VideoView } from 'expo-video';
 
+import { AppleMaps, GoogleMaps } from 'expo-maps';
+import { showLocation } from 'react-native-map-link';
+
 import { RPH, RPW } from '../../../../../modules/dimensions'
 
 import { suppressAnEmergency } from '../../../../../reducers/emergencies';
+
+import { useEventListener } from 'expo';
 
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Modal from "react-native-modal"
@@ -30,8 +35,6 @@ export default function EmergencyDetail() {
     const [emergency, setEmergency] = useState("")
 
     const [modalVisible, setModalVisible] = useState(false)
-
-
 
 
     // UseEffect pour charger la demande de contact urgent
@@ -143,7 +146,13 @@ export default function EmergencyDetail() {
 
     // Vidéo
     const [videoWasLaunched, setVideoWasLaunched] = useState(false)
+    const [playerStatus, setPlayerStatus] = useState(false)
     const player = useVideoPlayer(emergency.media_url);
+
+    useEventListener(player, 'statusChange', ({ status }) => {
+        setPlayerStatus(status);
+        console.log("player status", status)
+    });
 
 
     if (emergency.media_type === 'video' && emergency.media_url) {
@@ -152,7 +161,8 @@ export default function EmergencyDetail() {
                 <Text style={styles.informationTitle}>Média :</Text>
             </View>
             <View style={styles.mediaContainer}>
-                <VideoView style={styles.video} player={player} allowsPictureInPicture />
+                <Text style={[{ color: "red", fontSize: RPW(4.7), fontWeight: "600" }, playerStatus === "readyToPlay" && { display: "none" }]}>Chargement de la vidéo...</Text>
+                <VideoView style={styles.video} player={player} />
                 {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
                     player.play()
                     setVideoWasLaunched(true)
@@ -160,6 +170,7 @@ export default function EmergencyDetail() {
             </View>
         </>
     }
+
 
 
 
@@ -175,8 +186,46 @@ export default function EmergencyDetail() {
 
 
 
-    // MAP
 
+
+
+    // MAP
+    let map = ""
+    let locationContainer = ""
+
+    if (emergency.user_location && emergency.user_location.length > 0) {
+
+        const coords = emergency.user_location
+        const latitude = coords[0]
+        const longitude = coords[1]
+        const title = `${emergency.user_firstname} ${emergency.user_name}`
+
+        const marker = { coordinates: { latitude, longitude }, title, tintColor: "red" }
+
+
+        if (Platform.OS === 'ios') {
+            map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude, longitude }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+        } else if (Platform.OS === 'android') {
+            map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude, longitude }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+        }
+
+        locationContainer =
+            <View style={{ width: RPW(92) }}>
+                {map}
+
+                <View style={styles.centerContainer}>
+                    <TouchableOpacity style={styles.btn} onPress={() => showLocation({
+                        latitude,
+                        longitude,
+                        title,
+                        alwaysIncludeGoogle: true, 
+                    })}>
+                        <Text style={styles.btnText}>Afficher sur Maps</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+    }
 
 
 
@@ -245,6 +294,8 @@ export default function EmergencyDetail() {
                         </Link>
                     </View>
                 }
+
+                {locationContainer}
 
 
                 <Text style={[styles.error, !error && { display: "none" }, error == "Requête supprimée !" && { color: "green" }]}>{error}</Text>
@@ -395,7 +446,7 @@ const styles = StyleSheet.create({
     },
     video: {
         height: RPW(50),
-        width: RPW(90),
+        width: RPW(92),
     },
     playIcon: {
         position: "absolute",
@@ -419,6 +470,12 @@ const styles = StyleSheet.create({
         color: "#fffcfc",
         fontSize: RPW(4.7),
         fontWeight: "500",
+    },
+    map: {
+        alignSelf: "center",
+        width: RPW(92),
+        height: RPW(70),
+        marginBottom: RPW(6)
     },
     error: {
         color: 'red',

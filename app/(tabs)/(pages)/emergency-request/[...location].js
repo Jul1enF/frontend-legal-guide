@@ -387,7 +387,7 @@ export default function EmergencyRequest() {
 
                         {mediaType === "video" &&
                             <View style={styles.videoContainer}>
-                                <VideoView style={styles.video} player={player} allowsPictureInPicture />
+                                <VideoView style={styles.video} player={player} />
                                 {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
                                     player.play()
                                     setVideoWasLaunched(true)
