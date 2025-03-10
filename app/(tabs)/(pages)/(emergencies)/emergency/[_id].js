@@ -114,7 +114,7 @@ export default function EmergencyDetail() {
                 deleteRef.current = true
                 dispatch(suppressAnEmergency(emergency._id))
                 router.back('/emergencies-list')
-            }, 2000)
+            }, 1000)
         } else {
             setError("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
             setModalVisible(false)
@@ -151,7 +151,6 @@ export default function EmergencyDetail() {
 
     useEventListener(player, 'statusChange', ({ status }) => {
         setPlayerStatus(status);
-        console.log("player status", status)
     });
 
 
@@ -193,7 +192,10 @@ export default function EmergencyDetail() {
     let map = ""
     let locationContainer = ""
 
-    if (emergency.user_location && emergency.user_location.length > 0) {
+    if (emergency?.user_location?.length > 0) {
+
+        const lastLocationDate = moment(emergency.last_location_date).format('DD/MM/YY')
+        const lastLocationHour = moment(emergency.last_location_date).format('HH:mm')
 
         const coords = emergency.user_location
         const latitude = coords[0]
@@ -210,7 +212,12 @@ export default function EmergencyDetail() {
         }
 
         locationContainer =
-            <View style={{ width: RPW(92) }}>
+            <View style={{ width: RPW(92), alignItems : "flex-start" }}>
+                <View style={[styles.underlineContainer, {marginBottom : RPW(4)}]}>
+                    <Text style={[styles.informationTitle, {letterSpacing : -RPW(0.2)}]}>
+                        Dernière position connue ({lastLocationDate} {lastLocationHour}) :</Text>
+                </View>
+
                 {map}
 
                 <View style={styles.centerContainer}>
@@ -218,7 +225,7 @@ export default function EmergencyDetail() {
                         latitude,
                         longitude,
                         title,
-                        alwaysIncludeGoogle: true, 
+                        alwaysIncludeGoogle: true,
                     })}>
                         <Text style={styles.btnText}>Afficher sur Maps</Text>
                     </TouchableOpacity>

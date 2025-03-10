@@ -1,6 +1,6 @@
 
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router'
-import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Modal, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Modal, TextInput, Image, AppState } from 'react-native';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRequest, supressRequest } from '../../../../reducers/emergencies';
@@ -10,6 +10,8 @@ import PendingRequest from '../../../../components/PendingRequest';
 import { uploadMedia } from '../../../../firebaseConfig';
 
 import { RPH, RPW } from '../../../../modules/dimensions'
+import { startBackgroundLocation } from '../../../../modules/backgroundLocation'
+import * as Location from 'expo-location';
 
 import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
@@ -18,11 +20,14 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 
 import uuid from 'react-native-uuid';
 
+
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 
 
 export default function EmergencyRequest() {
+
+
     const router = useRouter()
 
     const { location } = useLocalSearchParams()
@@ -38,7 +43,7 @@ export default function EmergencyRequest() {
 
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
     const user = useSelector((state) => state.user.value)
-    const emergencies = useSelector((state) => state.emergencies.value)
+    const emergency = useSelector((state) => state.emergencies.value.request)
     const dispatch = useDispatch()
 
     const [firstname, setFirstname] = useState('')
@@ -69,14 +74,40 @@ export default function EmergencyRequest() {
 
 
 
+
+    // UseEffect et AppState Listener pour lancer background location en retour de permission attribuée
+
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', (state) => {
+            if (state === 'active') {
+                Location.getBackgroundPermissionsAsync().then((res) => {
+                    if (res.status === 'granted') {
+                        console.log("PERMISSION GRANTED")
+                        startBackgroundLocation()
+                    } else {
+                        console.log("PERMISSION DENIED")
+                    }
+                });
+            }
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
+
+
+
     // Fonction et useFocusEffect pour vérifier s'il y a une demande en cours en bdd
 
     const checkEmergency = async () => {
-        if (!emergencies.request._id) {
+        if (!emergency._id) {
             return
         }
 
-        const response = await fetch(`${url}/emergencies/check-emergency/${emergencies.request._id}`)
+        const response = await fetch(`${url}/emergencies/check-emergency/${emergency._id}`)
 
         const data = await response.json()
 
@@ -87,7 +118,7 @@ export default function EmergencyRequest() {
 
     useFocusEffect(useCallback(() => {
         checkEmergency()
-    }, [emergencies]))
+    }, [emergency]))
 
 
 
@@ -216,13 +247,34 @@ export default function EmergencyRequest() {
     const sendRef = useRef(true)
 
     const sendPress = async (withLocation) => {
-        // LOGIQUE LOCALISATION
-        const user_location = [48.812554, 2.281467]
 
         if (!sendRef.current) { return }
         sendRef.current = false
 
         setError2("Merci de patienter, envoi de la demande...")
+
+
+        // LOGIQUE LOCALISATION
+        let user_location = []
+
+        if (withLocation) {
+            const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+
+            if (foregroundStatus === 'granted') {
+                const locationData = await Location.getCurrentPositionAsync()
+
+                user_location = [locationData.coords.latitude, locationData.coords.longitude]
+                console.log("USER LOCATION", user_location)
+
+
+                const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
+                if (backgroundStatus === 'granted') {
+                    console.log("FIRST PERMISSION GRANTED")
+                    startBackgroundLocation()
+                }
+            }
+        }
+
 
         let media_name = ""
         let media_url = ""
@@ -236,7 +288,7 @@ export default function EmergencyRequest() {
             }
 
 
-            const response = await fetch(`${url}/emergencies/new-emergency`,  {
+            const response = await fetch(`${url}/emergencies/new-emergency`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -268,15 +320,16 @@ export default function EmergencyRequest() {
 
         if (data.result) {
             setError2("Demande envoyée !")
+
             setTimeout(() => {
-                setError2("")
-                cancelPress()
                 sendRef.current = true
-                setModal1Visible(false)
                 dispatch(addRequest({
                     _id: data.savedEmergency._id,
                     located: data.savedEmergency.located
                 }))
+                setError2("")
+                cancelPress()
+                setModal1Visible(false)
             }, 2500)
         } else if (!data.result && data.error) {
             setError2(data.error)
@@ -328,9 +381,9 @@ export default function EmergencyRequest() {
 
                 <Header />
 
-                {emergencies.request._id && <PendingRequest />}
+                {emergency._id && <PendingRequest />}
 
-                {!emergencies.request._id &&
+                {!emergency._id &&
                     <>
                         <Text style={styles.title}>Demande de contact urgent</Text>
                         <View style={styles.titleLine}></View>

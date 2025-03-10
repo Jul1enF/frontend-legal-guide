@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { supressRequest } from '../reducers/emergencies';
-
+import { stopLocation } from '../modules/backgroundLocation'
 import { RPH, RPW } from '../modules/dimensions'
+
 
 
 
@@ -14,8 +15,10 @@ export default function PendingRequest() {
     const [modal2Visible, setModal2Visible] = useState(false)
 
     const dispatch = useDispatch()
-    const emergencies = useSelector((state) => state.emergencies.value)
+    const emergency = useSelector((state) => state.emergencies.value.request)
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
+
+
 
 
 
@@ -32,7 +35,7 @@ export default function PendingRequest() {
 
         let data
         try {
-            const response = await fetch(`${url}/emergencies/suppress-emergency/${emergencies.request._id}`, { method: 'DELETE' })
+            const response = await fetch(`${url}/emergencies/suppress-emergency/${emergency._id}`, { method: 'DELETE' })
 
             data = await response.json()
         } catch (err) {
@@ -46,6 +49,7 @@ export default function PendingRequest() {
         }
 
         if (data.result) {
+            stopLocation()
             setError2("Demande annulée !")
             setTimeout(() => {
                 setError2("")
@@ -65,7 +69,7 @@ export default function PendingRequest() {
 
 
     return (
-        <View style={{ flex: 1, alignItems: "center"}}>
+        <View style={{ flex: 1, alignItems: "center" }}>
             <Text style={styles.title}>Demande de contact urgent</Text>
             <View style={styles.titleLine}></View>
             <Text style={[styles.reasonText, { marginTop: RPW(3) }]}>Demande de contact urgent en cours</Text>
