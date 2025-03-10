@@ -2,10 +2,12 @@
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const LOCATION_TASK_NAME = 'background-location-task';
 
 
-const askLocationPermissions = async ()=>{
+const askLocationPermissions = async () => {
     let userCurrentLocation = []
 
     const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
@@ -13,7 +15,7 @@ const askLocationPermissions = async ()=>{
     console.log("FOREGROUND STATUS", foregroundStatus)
 
     if (foregroundStatus === 'granted') {
-    
+
         const locationData = await Location.getCurrentPositionAsync()
 
         userCurrentLocation = [locationData.coords.latitude, locationData.coords.longitude]
@@ -26,12 +28,12 @@ const askLocationPermissions = async ()=>{
             console.log("FIRST PERMISSION GRANTED")
             startBackgroundLocation()
 
-            return { userCurrentLocation, backgroundLocation : true}
-        }else{
-            return { userCurrentLocation, backgroundLocation : false}
+            return { userCurrentLocation, backgroundLocation: true }
+        } else {
+            return { userCurrentLocation, backgroundLocation: false }
         }
-    }else{
-        return { userCurrentLocation, backgroundLocation : false}
+    } else {
+        return { userCurrentLocation, backgroundLocation: false }
     }
 }
 
@@ -43,10 +45,10 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Balanced,
-        // deferredUpdatesDistance : 1,
-        // distanceInterval : 10,
-        deferredUpdatesInterval: 1000,
-        timeInterval: 1000,
+        deferredUpdatesDistance : 10,
+        distanceInterval : 10,
+        // deferredUpdatesInterval: 1000,
+        // timeInterval: 1000,
     });
 };
 
@@ -62,7 +64,7 @@ const stopLocation = async () => {
 
 
 // Tâche background de Task Manager
-TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
     if (error) {
         console.log("TASK MANAGER ERROR", error)
         return;
@@ -75,7 +77,25 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         const long = locations[0].coords.longitude
         const user_location = [lat, long]
 
-        console.log("USER LOCATION", user_location)
+        const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
+
+        AsyncStorage.getItem("emergency-id").then((_id)=>{
+            console.log("STORAGE", _id)
+            if (_id){
+                fetch(`${url}/emergencies/update-location`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({_id, user_location})
+                    })
+                    .then(response=> response.json())
+                    .then(fetchData=> {
+                    console.log("FETCH DATA", fetchData)
+                    if (!fetchData.result && fetchData.error === "No more emergency in data base"){
+                        stopLocation()
+                    }
+                    });
+            }
+        })
     }
 });
 

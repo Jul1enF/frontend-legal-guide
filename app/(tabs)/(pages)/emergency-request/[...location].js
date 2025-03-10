@@ -20,6 +20,8 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 
 import uuid from 'react-native-uuid';
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -117,6 +119,13 @@ export default function EmergencyRequest() {
         if (data.result && data.requestDeleted) {
             emergency.backgroundLocation && stopLocation()
             dispatch(supressRequest())
+            
+            // On efface d'asyncStorage l'id de l'urgence
+            try {
+                await AsyncStorage.setItem("emergency-id", "");
+              } catch (e) {
+                console.log(e);
+              }
         }
     }
 
@@ -317,15 +326,22 @@ export default function EmergencyRequest() {
 
         if (data.result) {
             setError2("Demande envoyée !")
+            sendRef.current = true
+            dispatch(addRequest({
+                _id: data.savedEmergency._id,
+                located: data.savedEmergency.located
+            }))
+            cancelPress()
+
+            // Enregistrement dans Async Storage de l'id
+            try {
+                await AsyncStorage.setItem("emergency-id", data.savedEmergency._id);
+              } catch (e) {
+                console.log(e);
+              }
 
             setTimeout(() => {
-                sendRef.current = true
-                dispatch(addRequest({
-                    _id: data.savedEmergency._id,
-                    located: data.savedEmergency.located
-                }))
                 setError2("")
-                cancelPress()
                 setModal1Visible(false)
             }, 2500)
         } else if (!data.result && data.error) {

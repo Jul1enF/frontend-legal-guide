@@ -215,7 +215,7 @@ export default function EmergencyDetail() {
             <View style={{ width: RPW(92), alignItems : "flex-start" }}>
                 <View style={[styles.underlineContainer, {marginBottom : RPW(4)}]}>
                     <Text style={[styles.informationTitle, {letterSpacing : -RPW(0.2)}]}>
-                        Dernière position connue ({lastLocationDate} {lastLocationHour}) :</Text>
+                        Dernière position connue ({lastLocationDate}  {lastLocationHour}) :</Text>
                 </View>
 
                 {map}

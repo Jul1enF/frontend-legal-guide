@@ -6,6 +6,8 @@ import { supressRequest, toggleBackgroundLocation, toggleUserLocationPermission 
 import { stopLocation, askLocationPermissions } from '../modules/backgroundLocation'
 import { RPH, RPW } from '../modules/dimensions'
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 
@@ -48,8 +50,17 @@ export default function PendingRequest() {
 
             dispatch(toggleUserLocationPermission(true))
 
-            if (!backgroundLocation && userCurrentLocation.length > 0){
-                
+            if (userCurrentLocation.length > 0){
+                const response = await fetch(`${url}/emergencies/update-location`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        _id : emergency._id, 
+                        user_location : userCurrentLocation,
+                    })
+                })
+    
+                const data = await response.json()
             }
         }
     }
@@ -85,11 +96,19 @@ export default function PendingRequest() {
         if (data.result) {
             stopLocation()
             setError2("Demande annulée !")
+            dispatch(supressRequest())
+            abortRef.current = true
+
+            // On efface d'asyncStorage l'id de l'urgence
+            try {
+                await AsyncStorage.setItem("emergency-id", "");
+              } catch (e) {
+                console.log(e);
+              }
+
             setTimeout(() => {
                 setError2("")
-                abortRef.current = true
                 setModal2Visible(false)
-                dispatch(supressRequest())
             }, 2500)
         } else {
             setError2("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
