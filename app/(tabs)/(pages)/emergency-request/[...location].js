@@ -3,14 +3,14 @@ import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router'
 import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Modal, TextInput, Image, AppState } from 'react-native';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addRequest, supressRequest } from '../../../../reducers/emergencies';
+import { addRequest, supressRequest, toggleBackgroundLocation, toggleUserLocationPermission} from '../../../../reducers/emergencies';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import PendingRequest from '../../../../components/PendingRequest';
 import { uploadMedia } from '../../../../firebaseConfig';
 
 import { RPH, RPW } from '../../../../modules/dimensions'
-import { startBackgroundLocation } from '../../../../modules/backgroundLocation'
+import { startBackgroundLocation, askLocationPermissions, stopLocation } from '../../../../modules/backgroundLocation'
 import * as Location from 'expo-location';
 
 import * as ImagePicker from 'expo-image-picker'
@@ -75,7 +75,7 @@ export default function EmergencyRequest() {
 
 
 
-    // UseEffect et AppState Listener pour lancer background location en retour de permission attribuée
+    // UseEffect et AppState Listener pour lancer background location en retour de permission attribuée hors écran de l'app
 
 
     useEffect(() => {
@@ -84,7 +84,10 @@ export default function EmergencyRequest() {
                 Location.getBackgroundPermissionsAsync().then((res) => {
                     if (res.status === 'granted') {
                         console.log("PERMISSION GRANTED")
-                        startBackgroundLocation()
+                        if (!emergency.backgroundLocation && emergency.userLocationPermission){
+                            startBackgroundLocation()
+                            dispatch(toggleBackgroundLocation(true))
+                        }
                     } else {
                         console.log("PERMISSION DENIED")
                     }
@@ -112,6 +115,7 @@ export default function EmergencyRequest() {
         const data = await response.json()
 
         if (data.result && data.requestDeleted) {
+            emergency.backgroundLocation && stopLocation()
             dispatch(supressRequest())
         }
     }
@@ -258,21 +262,14 @@ export default function EmergencyRequest() {
         let user_location = []
 
         if (withLocation) {
-            const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+            const permissionsData = await askLocationPermissions()
+            console.log("PERMISSIONS DATA", permissionsData)
 
-            if (foregroundStatus === 'granted') {
-                const locationData = await Location.getCurrentPositionAsync()
+            user_location = permissionsData.userCurrentLocation
 
-                user_location = [locationData.coords.latitude, locationData.coords.longitude]
-                console.log("USER LOCATION", user_location)
+            dispatch(toggleUserLocationPermission(true))
 
-
-                const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
-                if (backgroundStatus === 'granted') {
-                    console.log("FIRST PERMISSION GRANTED")
-                    startBackgroundLocation()
-                }
-            }
+            permissionsData.backgroundLocation && dispatch(toggleBackgroundLocation(true))
         }
 
 

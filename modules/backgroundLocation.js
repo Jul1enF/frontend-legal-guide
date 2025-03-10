@@ -5,66 +5,37 @@ import * as Location from 'expo-location';
 const LOCATION_TASK_NAME = 'background-location-task';
 
 
+const askLocationPermissions = async ()=>{
+    let userCurrentLocation = []
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+    const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
 
+    console.log("FOREGROUND STATUS", foregroundStatus)
 
-// const defineAndLaunchTask = async () => {
-//     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-//         accuracy: Location.Accuracy.Balanced,
-//         // deferredUpdatesDistance : 1,
-//         // distanceInterval : 10,
-//         deferredUpdatesInterval: 1000,
-//         timeInterval: 2000,
-//     });
-// }
+    if (foregroundStatus === 'granted') {
+    
+        const locationData = await Location.getCurrentPositionAsync()
 
-
-
-// Activation de la localisation
-
-// const startBackgroundLocation = async () => {
-
-//     const { status } = await Location.requestForegroundPermissionsAsync();
-
-//     let currentLocation = []
-
-//     if (status === 'granted') {
-
-//         const locationData = await Location.getCurrentPositionAsync()
-
-//         currentLocation = [locationData.coords.latitude, locationData.coords.longitude]
-
-//         console.log("CURRENT POSITION", currentLocation)
+        userCurrentLocation = [locationData.coords.latitude, locationData.coords.longitude]
+        console.log("USER LOCATION", userCurrentLocation)
 
 
-//         Location.requestBackgroundPermissionsAsync().then(() => {
-//             if (res.status === 'granted') {
-//                 console.log("PERMISSION ALREADY GIVEN")
-//                 defineAndLaunchTask()
-//                 return currentLocation
-//             }
-//             if (AppState.currentState === 'active') {
-//                 console.log("PERMISSION DENIED")
-//                 return currentLocation
-//             }
-//             AppState.addEventListener('change', (state) => {
-//                 if (state === 'active') {
-//                     Location.getBackgroundPermissionsAsync().then((res) => {
-//                         if (res.status === 'granted') {
-//                             defineAndLaunchTask()
-//                             return currentLocation
-//                         } else {
-//                             return currentLocation
-//                         }
-//                     });
-//                 }
-//             });
-//         });
-//     }else {
-//         return currentLocation
-//     }
-// };
+        const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
+
+        if (backgroundStatus === 'granted') {
+            console.log("FIRST PERMISSION GRANTED")
+            startBackgroundLocation()
+
+            return { userCurrentLocation, backgroundLocation : true}
+        }else{
+            return { userCurrentLocation, backgroundLocation : false}
+        }
+    }else{
+        return { userCurrentLocation, backgroundLocation : false}
+    }
+}
+
+
 
 const startBackgroundLocation = async () => {
 
@@ -74,34 +45,24 @@ const startBackgroundLocation = async () => {
         accuracy: Location.Accuracy.Balanced,
         // deferredUpdatesDistance : 1,
         // distanceInterval : 10,
-        deferredUpdatesInterval: 2000,
-        // timeInterval: 2000,
+        deferredUpdatesInterval: 1000,
+        timeInterval: 1000,
     });
-
-    const registeredTasks = await TaskManager.getRegisteredTasksAsync()
-
-    console.log("REGISTERED TASKS", registeredTasks)
-
-    const taskManagerAvailable = await TaskManager.isAvailableAsync()
-
-    console.log("TASK MANAGER AVAILABLE", taskManagerAvailable)
-
 };
 
-// console.log('STARTING BG LOCATION')
 
 
 // Arrêter la localisation
 
 const stopLocation = async () => {
     console.log("BG LOCATION STOPPED !")
-    await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME)
+    await TaskManager.unregisterAllTasksAsync()
 }
 
 
 
 // Tâche background de Task Manager
-TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
     if (error) {
         console.log("TASK MANAGER ERROR", error)
         return;
@@ -120,5 +81,5 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
 
 
 
-module.exports = { startBackgroundLocation, stopLocation }
+module.exports = { startBackgroundLocation, stopLocation, askLocationPermissions }
 

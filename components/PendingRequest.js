@@ -2,8 +2,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { supressRequest } from '../reducers/emergencies';
-import { stopLocation } from '../modules/backgroundLocation'
+import { supressRequest, toggleBackgroundLocation, toggleUserLocationPermission } from '../reducers/emergencies';
+import { stopLocation, askLocationPermissions } from '../modules/backgroundLocation'
 import { RPH, RPW } from '../modules/dimensions'
 
 
@@ -16,9 +16,43 @@ export default function PendingRequest() {
 
     const dispatch = useDispatch()
     const emergency = useSelector((state) => state.emergencies.value.request)
+    console.log("EMERGENCY", emergency)
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
 
 
+
+    // Phrases conditionnelles du bouton de localisation
+    let locationBtnSentence
+
+    if (emergency.backgroundLocation) {
+        locationBtnSentence = "Arrêter de me localiser"
+    } else {
+        locationBtnSentence = "Me localiser en continu"
+    }
+
+
+
+    // Fonction déclenchant en cliquant sur le bouton de localisation
+
+    const locationPress = async () => {
+        if (emergency.backgroundLocation) {
+            stopLocation()
+            dispatch(toggleBackgroundLocation(false))
+            dispatch(toggleUserLocationPermission(false))
+        } else {
+            const { userCurrentLocation, backgroundLocation } = await askLocationPermissions()
+
+            console.log("PERMISSIONS DATA", userCurrentLocation, backgroundLocation)
+
+            backgroundLocation && dispatch(toggleBackgroundLocation(true))
+
+            dispatch(toggleUserLocationPermission(true))
+
+            if (!backgroundLocation && userCurrentLocation.length > 0){
+                
+            }
+        }
+    }
 
 
 
@@ -74,7 +108,13 @@ export default function PendingRequest() {
             <View style={styles.titleLine}></View>
             <Text style={[styles.reasonText, { marginTop: RPW(3) }]}>Demande de contact urgent en cours</Text>
 
-            <TouchableOpacity style={[styles.btn2, { marginTop: RPW(12) }]} onPress={() => setModal2Visible(true)}>
+            <TouchableOpacity style={[styles.btn2, { marginTop: RPW(12) }]} onPress={() => locationPress()}>
+                <Text style={styles.btnSentence}>
+                    {locationBtnSentence}
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.btn2} onPress={() => setModal2Visible(true)}>
                 <Text style={styles.btnSentence}>
                     Annuler la demande
                 </Text>
@@ -140,10 +180,10 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     btn2: {
-        width: RPW(52),
+        width: RPW(65),
         height: RPW(11),
         borderRadius: RPW(2),
-        marginTop: RPW(3),
+        marginTop: RPW(8),
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#0c0000",
