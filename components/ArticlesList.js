@@ -44,21 +44,6 @@ export default function ArticlesList(props) {
 
 
 
-    // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet
-
-    const [isOnline, setIsOnline] = useState(true)
-
-    const checkNetConnection = async () => {
-        const state = await NetInfo.fetch()
-        state.isConnected ? setIsOnline(true) : setIsOnline(false)
-    }
-
-    useFocusEffect(useCallback(() => {
-        checkNetConnection()
-    }, []))
-
-
-
 
 
 
@@ -207,7 +192,6 @@ export default function ArticlesList(props) {
             const state = await NetInfo.fetch()
 
             if (state.isConnected && props.category !== "bookmarks" && props.category !== "searches") {
-                setIsOnline(true)
 
                 const response = await fetch(`${url}/articles/getArticles`)
 
@@ -230,8 +214,6 @@ export default function ArticlesList(props) {
                 }
 
             }
-
-            !state.isConnected && setIsOnline(false)
 
 
             // Tri des articles concernés par cette page

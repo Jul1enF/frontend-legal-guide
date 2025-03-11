@@ -9,7 +9,7 @@ import { addBookmark, removeBookmark } from '../reducers/user';
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons"
 
-
+import NetInfo from "@react-native-community/netinfo";
 
 import moment from 'moment/min/moment-with-locales'
 import requires from '../modules/imageRequires';
@@ -25,6 +25,8 @@ export default function Article(props) {
     const [isBookmarked, setIsBookmarked] = useState(false)
 
 
+
+
     // useFocusEffect pour vérifier si l'article est en favoris
 
     useFocusEffect(useCallback(() => {
@@ -33,6 +35,25 @@ export default function Article(props) {
 
         user.bookmarks.includes(props._id) ? setIsBookmarked(true) : setIsBookmarked(false)
     }, [user]))
+
+
+
+
+
+    // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet (pour affichage de l'image)
+
+    const [isOnline, setIsOnline] = useState(true)
+
+    const checkNetConnection = async () => {
+        const state = await NetInfo.fetch()
+        state.isConnected ? setIsOnline(true) : setIsOnline(false)
+    }
+
+    useFocusEffect(useCallback(() => {
+        checkNetConnection()
+    }, []))
+
+
 
 
 
@@ -90,14 +111,25 @@ export default function Article(props) {
 
     let image
     if (requires[props.img_link] === undefined) {
-        image = <Image
+        if (isOnline) {
+            image = <Image
+                style={[styles.image, {
+                    width: RPW(41 * props.img_zoom),
+                    marginTop: RPW(props.img_margin_top * 0.41),
+                    marginLeft: RPW(props.img_margin_left * 0.41)
+                }]}
+                source={{ uri: props.img_link, }}
+            />
+        }else{
+            image = <Image
             style={[styles.image, {
                 width: RPW(41 * props.img_zoom),
                 marginTop: RPW(props.img_margin_top * 0.41),
                 marginLeft: RPW(props.img_margin_left * 0.41)
             }]}
-            source={{ uri: props.img_link, }}
+            source={props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
         />
+        }
     } else {
         image = <Image
             style={[styles.image, {
@@ -114,13 +146,13 @@ export default function Article(props) {
     // Lineheight différent en fonction de la taille du titre
 
     let titleLineHeight = RPW(10)
-   
-    if (props.title.length >= 65 && props.title.length <= 91){
+
+    if (props.title.length >= 65 && props.title.length <= 91) {
         titleLineHeight = RPW(8.2)
-    }else if (props.title.length > 91){
+    } else if (props.title.length > 91) {
         titleLineHeight = RPW(6.5)
     }
-   
+
 
 
     moment.locale('fr')
@@ -130,7 +162,7 @@ export default function Article(props) {
         <View style={styles.body}>
             <View style={styles.row1}>
                 <View style={styles.column1}>
-                    <Text style={[styles.title, {lineHeight : titleLineHeight}]}>{props.title}</Text>
+                    <Text style={[styles.title, { lineHeight: titleLineHeight }]}>{props.title}</Text>
                 </View>
                 <View style={styles.column2}>
                     <View style={[styles.imgContainer, { height: RPW(41 * props.img_ratio) }]} >

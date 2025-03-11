@@ -10,6 +10,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons"
 
 import moment from 'moment/min/moment-with-locales'
 import requires from '../modules/imageRequires';
+import NetInfo from "@react-native-community/netinfo";
 
 
 export default function TopArticle(props) {
@@ -33,50 +34,68 @@ export default function TopArticle(props) {
 
 
 
+
+    // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet (pour affichage de l'image)
+
+    const [isOnline, setIsOnline] = useState(true)
+
+    const checkNetConnection = async () => {
+        const state = await NetInfo.fetch()
+        state.isConnected ? setIsOnline(true) : setIsOnline(false)
+    }
+
+    useFocusEffect(useCallback(() => {
+        checkNetConnection()
+    }, []))
+
+
+
+
+
     // Fonction appelée en cliquant sur l'icone favoris
-        const bookmarkPress = async () => {
-            if (props._id === "testArticleId" || props.test) {
+    const bookmarkPress = async () => {
+        if (props._id === "testArticleId" || props.test) {
+            return
+        }
+        if (!isBookmarked) {
+            const response = await fetch(`${url}/userModifications/addBookmark`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jwtToken: user.jwtToken,
+                    _id: props._id,
+                })
+            })
+            const data = await response.json()
+
+            if (!data.result) {
                 return
             }
-            if (!isBookmarked) {
-                const response = await fetch(`${url}/userModifications/addBookmark`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jwtToken: user.jwtToken,
-                        _id : props._id,
-                    })
-                })
-                const data = await response.json()
-    
-                if (!data.result) {
-                    return
-                }
-                else {
-                    setIsBookmarked(true)
-                    dispatch(addBookmark(props._id))
-                }
-            }
             else {
-                const response = await fetch(`${url}/userModifications/removeBookmark`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jwtToken: user.jwtToken,
-                        _id : props._id,
-                    })
-                })
-                const data = await response.json()
-    
-                if (!data.result) {
-                   return
-                }
-                else {
-                    setIsBookmarked(false)
-                    dispatch(removeBookmark(props._id))   
-                }
+                setIsBookmarked(true)
+                dispatch(addBookmark(props._id))
             }
         }
+        else {
+            const response = await fetch(`${url}/userModifications/removeBookmark`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jwtToken: user.jwtToken,
+                    _id: props._id,
+                })
+            })
+            const data = await response.json()
+
+            if (!data.result) {
+                return
+            }
+            else {
+                setIsBookmarked(false)
+                dispatch(removeBookmark(props._id))
+            }
+        }
+    }
 
 
 
@@ -92,15 +111,27 @@ export default function TopArticle(props) {
 
     let image
     if (requires[props.img_link] === undefined) {
-        image = <Image
-            style={[styles.image, {
-                width: RPW(100 * props.img_zoom),
-                marginTop: RPW(props.img_margin_top * 1),
-                marginLeft: RPW(props.img_margin_left * 1)
-            },]}
-            source={{ uri: props.img_link, }}
-            onLoadEnd={() => setImgLoaded(true)}
-        />
+        if (isOnline) {
+            image = <Image
+                style={[styles.image, {
+                    width: RPW(100 * props.img_zoom),
+                    marginTop: RPW(props.img_margin_top * 1),
+                    marginLeft: RPW(props.img_margin_left * 1)
+                },]}
+                source={{ uri: props.img_link, }}
+                onLoadEnd={() => setImgLoaded(true)}
+            />
+        } else {
+            image = <Image
+                style={[styles.image, {
+                    width: RPW(100 * props.img_zoom),
+                    marginTop: RPW(props.img_margin_top),
+                    marginLeft: RPW(props.img_margin_left)
+                },]}
+                source={props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
+                onLoadEnd={() => setImgLoaded(true)}
+            />
+        }
     } else {
         image = <Image
             style={[styles.image, {
@@ -141,7 +172,7 @@ export default function TopArticle(props) {
                 <View style={styles.row}>
                     <Text style={styles.date}>Publié {lastingTime}</Text>
 
-                    {(user.jwtToken && props._id !== "testArticleId") && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={()=>bookmarkPress()}/>}
+                    {(user.jwtToken && props._id !== "testArticleId") && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={() => bookmarkPress()} />}
                 </View>
 
             </View>

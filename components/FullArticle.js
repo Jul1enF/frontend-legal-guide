@@ -15,6 +15,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import moment from 'moment/min/moment-with-locales'
 
 import requires from "../modules/imageRequires";
+import NetInfo from "@react-native-community/netinfo";
 
 
 export default function FullArticle(props) {
@@ -50,6 +51,28 @@ export default function FullArticle(props) {
         }
 
     }, [user])
+
+
+
+
+
+
+
+
+    // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet (pour affichage de l'image)
+
+    const [isOnline, setIsOnline] = useState(true)
+
+    const checkNetConnection = async () => {
+        const state = await NetInfo.fetch()
+        state.isConnected ? setIsOnline(true) : setIsOnline(false)
+    }
+
+    useFocusEffect(useCallback(() => {
+        checkNetConnection()
+    }, []))
+
+
 
 
 
@@ -232,14 +255,25 @@ export default function FullArticle(props) {
 
     let image
     if (requires[article.img_link] === undefined) {
-        image = <Image
+        if (isOnline) {
+            image = <Image
+                style={[styles.image, {
+                    width: RPW(100 * article.img_zoom),
+                    marginTop: RPW(article.img_margin_top * 1),
+                    marginLeft: RPW(article.img_margin_left * 1)
+                }]}
+                source={{ uri: article.img_link }}
+            />
+        }else{
+            image = <Image
             style={[styles.image, {
                 width: RPW(100 * article.img_zoom),
                 marginTop: RPW(article.img_margin_top * 1),
                 marginLeft: RPW(article.img_margin_left * 1)
             }]}
-            source={{ uri: article.img_link }}
+            source={ props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
         />
+        }
     } else {
         image = <Image
             style={[styles.image, {
@@ -271,7 +305,6 @@ export default function FullArticle(props) {
 
             <ScrollView style={styles.body} contentContainerStyle={styles.contentBody}>
                 <Text style={styles.categoryTitle}>{props.categoryNameSingular}</Text>
-
 
                 {article.sub_category && <Text style={styles.subTitle}>{article.sub_category} </Text>}
 
@@ -509,7 +542,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#e7e7e7",
         position: "absolute",
         bottom: RPH(11),
-        left : RPW(5),
+        left: RPW(5),
         justifyContent: "space-between",
     },
     modalText: {
