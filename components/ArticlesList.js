@@ -54,9 +54,36 @@ export default function ArticlesList(props) {
     }
 
     useFocusEffect(useCallback(() => {
-        checkNetConnection
+        checkNetConnection()
     }, []))
 
+
+
+
+
+
+    // Bookmarks : Fonction et useEffect pour vérifier s'il y a plusieurs catégories d'articles en favoris. Si qu'une seule, on affiche directement les sous catégorie
+
+    const isThereOnlyOneCategoryBookmarked = () => {
+        if (props.category === "bookmarks") {
+
+            if (allConcernedArticles.some(e => e.category == "advices") && allConcernedArticles.some(e => e.category == "press")) {
+                return false
+            } else if (allConcernedArticles.some(e => e.category == "advices")) {
+                return "Conseils"
+            } else if (allConcernedArticles.some(e => e.category == "press")) {
+                return "Presse"
+            }
+        }else {
+            return false
+        }
+    }
+
+    useEffect(() => {
+        if (allConcernedArticles) {
+            isThereOnlyOneCategoryBookmarked() && subcategoryPress(isThereOnlyOneCategoryBookmarked())
+        }
+    }, [allConcernedArticles])
 
 
 
@@ -266,6 +293,7 @@ export default function ArticlesList(props) {
                         break;
                 }
 
+                // Tri des sous catégories par nombre d'occurence
                 concernedArticles.map(e => {
                     let itemPresence = false
 
@@ -331,7 +359,7 @@ export default function ArticlesList(props) {
     const subcategoryPress = (subcategory, index) => {
         setChosenSubcategory(subcategory)
 
-        horizontalFlatlistRef.current.scrollToIndex({
+        index && horizontalFlatlistRef.current.scrollToIndex({
             animated: true,
             index,
             viewOffset: RPW(5)
@@ -354,10 +382,10 @@ export default function ArticlesList(props) {
                 let sortedSubcategories2
 
                 if (subcategory === "Conseils") {
-                    sortedSubcategories2 = [{ name: "Tous les conseils", count: 100000000 }]
+                    sortedSubcategories2 = [{ name: isThereOnlyOneCategoryBookmarked() ? "Tous les favoris" : "Tous les conseils", count: 100000000 }]
                 }
                 if (subcategory === "Presse") {
-                    sortedSubcategories2 = [{ name: "Tous les articles", count: 100000000 }]
+                    sortedSubcategories2 = [{ name: isThereOnlyOneCategoryBookmarked() ? "Tous les favoris" : "Tous les articles", count: 100000000 }]
                 }
 
                 setChosenSubcategory2(sortedSubcategories2[0].name)
@@ -580,17 +608,18 @@ export default function ArticlesList(props) {
                 />}
 
 
-            <FlatList
+          { !isThereOnlyOneCategoryBookmarked() && <FlatList
                 data={subcategoriesList}
                 ref={horizontalFlatlistRef}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={[styles.flatlist, subcategoriesList2 && { borderBottomWidth: 0 }, !subcategoriesList && { display: "none" }]}
+                style={[styles.flatlist, subcategoriesList2 && { borderBottomWidth: 0 }, !subcategoriesList && { display: "none" },]}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem {...item} index={index} />
                 }}
                 contentContainerStyle={{ alignItems: 'center', paddingLeft: RPW(2) }}
-            />
+            />}
+
 
             {/* Bookmarks, deuxième liste de sous catégories */}
             <FlatList
@@ -598,7 +627,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlist2Ref}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={[styles.flatlist2, !subcategoriesList2 && { display: "none" }]}
+                style={[styles.flatlist2, !subcategoriesList2 && { display: "none" }, isThereOnlyOneCategoryBookmarked() && {marginTop : RPW(2)}]}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem2 {...item} index={index} />
                 }}
