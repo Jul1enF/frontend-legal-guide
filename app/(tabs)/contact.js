@@ -11,7 +11,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { RPH, RPW } from '../../modules/dimensions'
-
+import { KeyboardAwareScrollView, KeyboardToolbar } from "react-native-keyboard-controller";
 
 
 
@@ -127,17 +127,16 @@ export default function Contact() {
 
   return (
     <>
-      {/* <KeyboardAwareScrollView
-        style={{ flex: 1, backgroundColor: "#f9fff4" }}
+      <KeyboardAwareScrollView
+        style={{ flex: 1,  backgroundColor: "#fffcfc",}}
         contentContainerStyle={styles.contentContainer}
-        scrollEnabled={scrollable}
-        bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}
-      > */}
+        bottomOffset={Platform.OS === 'ios' ? RPW(16) : RPW(8)}
+      >
 
-      <KeyboardAvoidingView
+      {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
         <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.contentContainer}
-          keyboardShouldPersistTaps="handled">
+          keyboardShouldPersistTaps="handled"> */}
 
           <Text style={styles.subTitle}>Contact</Text>
           <Text style={styles.title}>Infomations et rendez-vous</Text>
@@ -339,10 +338,11 @@ export default function Contact() {
           </Modal>
 
 
-        </ScrollView>
-      </KeyboardAvoidingView>
+        {/* </ScrollView>
+      </KeyboardAvoidingView> */}
 
-      {/* </KeyboardAwareScrollView> */}
+      </KeyboardAwareScrollView>
+      {Platform.OS === "ios" && <KeyboardToolbar doneText="Fermer"/>}
 
     </>
 

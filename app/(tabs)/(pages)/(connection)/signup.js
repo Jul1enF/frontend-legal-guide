@@ -8,7 +8,7 @@ import { router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { RPH, RPW } from "../../../../modules/dimensions"
 
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 
 
@@ -73,7 +73,7 @@ export default function Signup() {
                 data = await response.json()
             } catch (err) {
                 setError("Erreur : Problème de connexion")
-                setTimeout(()=>setError(""), 4000)
+                setTimeout(() => setError(""), 4000)
                 registerRef.current = true
                 return
             }
@@ -123,122 +123,122 @@ export default function Signup() {
 
     return (<>
 
-        {/* <KeyboardAwareScrollView
-                       style={{ flex: 1, backgroundColor: "#fffcfc" }}
-                       contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
-                       scrollEnabled={scrollable}
-                       bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}
-                       stickyHeaderIndices={[0]}
-                   > */}
+        <KeyboardAwareScrollView
+            style={{ flex: 1, backgroundColor: "#fffcfc" }}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(25) }}
+            bottomOffset={Platform.OS === 'ios' ? RPW(16) : RPW(8)}
+            keyboardShouldPersistTaps="handled"
+            stickyHeaderIndices={[0]}
+        >
 
-        <KeyboardAvoidingView
+            {/* <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(12)}  >
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
                 keyboardShouldPersistTaps="handled"
-                stickyHeaderIndices={[0]}>
+                stickyHeaderIndices={[0]}> */}
 
 
-                <StickyHeader />
+            <StickyHeader />
 
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setFirstname(e)
-                            setError('')
-                        }}
-                        value={firstname}
-                        placeholder='Prénom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setFirstname(e)
+                        setError('')
+                    }}
+                    value={firstname}
+                    placeholder='Prénom'
+                    placeholderTextColor="#fbfff790">
+                </TextInput>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setName(e)
-                            setError('')
-                        }}
-                        value={name}
-                        placeholder='Nom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setName(e)
+                        setError('')
+                    }}
+                    value={name}
+                    placeholder='Nom'
+                    placeholderTextColor="#fbfff790">
+                </TextInput>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setEmail(e)
-                            setError('')
-                        }}
-                        value={email}
-                        placeholder='Email'
-                        placeholderTextColor="#fbfff790"
-                        keyboardType='email-address'
-                        autoCapitalize='none'>
-                    </TextInput>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                        setError('')
+                    }}
+                    value={email}
+                    placeholder='Email'
+                    placeholderTextColor="#fbfff790"
+                    keyboardType='email-address'
+                    autoCapitalize='none'>
+                </TextInput>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword(e)
-                            setError('')
-                        }}
-                        value={password}
-                        autoCapitalize='none'
-                        placeholder='Mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!passwordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
-                    </FontAwesome>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setPassword(e)
+                        setError('')
+                    }}
+                    value={password}
+                    autoCapitalize='none'
+                    placeholder='Mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!passwordVisible}>
+                </TextInput>
+                <FontAwesome
+                    name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
+                </FontAwesome>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword2(e)
-                            setError('')
-                        }}
-                        value={password2}
-                        autoCapitalize='none'
-                        placeholder='Confirmation mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!password2Visible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={password2Visible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPassword2Visible(!password2Visible)}>
-                    </FontAwesome>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setPassword2(e)
+                        setError('')
+                    }}
+                    value={password2}
+                    autoCapitalize='none'
+                    placeholder='Confirmation mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!password2Visible}>
+                </TextInput>
+                <FontAwesome
+                    name={password2Visible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPassword2Visible(!password2Visible)}>
+                </FontAwesome>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setPhone(e)
-                            setError('')
-                        }}
-                        value={phone}
-                        placeholder="Téléphone (facultatif)"
-                        placeholderTextColor="#fbfff790"
-                    >
-                    </TextInput>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setPhone(e)
+                        setError('')
+                    }}
+                    value={phone}
+                    placeholder="Téléphone (facultatif)"
+                    placeholderTextColor="#fbfff790"
+                >
+                </TextInput>
+            </View>
 
-                <TouchableOpacity style={styles.registerBtn} onPress={() => registerClick()}>
-                    <Text style={styles.registerSentence}>
-                        S'inscrire
-                    </Text>
-                </TouchableOpacity>
 
+            <TouchableOpacity style={styles.registerBtn} onPress={() => registerClick()}>
                 <Text style={styles.error}>{error}</Text>
+                <Text style={styles.registerSentence}>
+                    S'inscrire
+                </Text>
+            </TouchableOpacity>
 
 
-            </ScrollView>
-        </KeyboardAvoidingView>
+            {/* </ScrollView>
+        </KeyboardAvoidingView> */}
 
-        {/* </KeyboardAwareScrollView> */}
+        </KeyboardAwareScrollView>
 
     </>
     )
@@ -319,6 +319,8 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: RPW(4),
         fontWeight: "600",
-        marginTop: RPH(1)
+        marginTop: RPH(1),
+        position: "absolute",
+        top : -RPH(4)
     }
 })

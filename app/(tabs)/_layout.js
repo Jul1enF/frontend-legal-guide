@@ -38,9 +38,9 @@ export default function TabsLayout() {
         tabBarLabelStyle: { fontSize: RPW(4.3), fontWeight: "500",  fontFamily: "Barlow-Medium", letterSpacing : RPW(0.2)},
         tabBarStyle: { height: RPH(9.5), paddingTop: RPH(0.2), paddingRight : RPW(2.5), paddingLeft : RPW(2.5), width: RPW(100), backgroundColor : "#0c0000", borderTopWidth : 0},
         // Build / KeyboardAwareScrollView
-        // tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
+        tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
         // Expo Go / KeyboardAvoidingView
-        tabBarHideOnKeyboard: Platform.OS === 'android' ? true : false,
+        // tabBarHideOnKeyboard: Platform.OS === 'android' ? true : false,
         header: (props) => <Header {...props} />,
       })}
     >

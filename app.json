@@ -5,11 +5,11 @@
     "scheme": "me-baudelin",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/test-logo-6.png",
+    "icon": "./assets/logo-splash.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/test-logo-6.png",
+      "image": "./assets/logo-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -24,7 +24,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/test-logo-6.png",
+        "foregroundImage": "./assets/logo-android.png",
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",

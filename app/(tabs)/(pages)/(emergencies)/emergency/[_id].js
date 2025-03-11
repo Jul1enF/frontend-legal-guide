@@ -19,6 +19,8 @@ import { useEventListener } from 'expo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Modal from "react-native-modal"
 
+import * as Location from 'expo-location';
+
 
 
 export default function EmergencyDetail() {
@@ -37,8 +39,15 @@ export default function EmergencyDetail() {
     const [modalVisible, setModalVisible] = useState(false)
 
 
-    // UseEffect pour charger la demande de contact urgent
+    // UseEffect pour charger la demande de contact urgent et demander l'autorisation de localiser pour apparaitre sur la carte
+
+    const askLocationPermission = async ()=>{
+         const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+    }
+
     useEffect(() => {
+        askLocationPermission()
+
         emergencies.emergenciesList.map(e => {
             if (e._id === _id) {
                 setEmergency(e)
@@ -224,7 +233,6 @@ export default function EmergencyDetail() {
                     <TouchableOpacity style={styles.btn} onPress={() => showLocation({
                         latitude,
                         longitude,
-                        title,
                         alwaysIncludeGoogle: true,
                     })}>
                         <Text style={styles.btnText}>Afficher sur Maps</Text>

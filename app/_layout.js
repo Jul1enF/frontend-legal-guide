@@ -14,6 +14,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
 
+import { KeyboardProvider } from "react-native-keyboard-controller";
+
 
 const store = configureStore({
     reducer: { user, testArticle, articles, emergencies },
@@ -87,15 +89,17 @@ export default function RootLayout() {
 
     return (
         <Provider store={store}>
-            <Stack >
-                <Stack.Screen name="home" options={{
-                    headerShown: false,
-                    title: "Home",
-                }} />
-                <Stack.Screen name="(tabs)" options={{
-                    headerShown: false,
-                }} />
-            </Stack>
+            <KeyboardProvider>
+                <Stack >
+                    <Stack.Screen name="home" options={{
+                        headerShown: false,
+                        title: "Home",
+                    }} />
+                    <Stack.Screen name="(tabs)" options={{
+                        headerShown: false,
+                    }} />
+                </Stack>
+            </KeyboardProvider>
         </Provider>
     )
 }

@@ -72,7 +72,7 @@ export default function FullArticle(props) {
 
 
 
-    
+
 
 
     // Fonction appelée en cliquant sur l'icone favoris
@@ -327,7 +327,7 @@ export default function FullArticle(props) {
                     <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cet article ?</Text>
                     <View style={styles.line2}>
                     </View>
-                    <View style={styles.btnContainer}>
+                    <View style={{flexDirection : "row", justifyContent : "space-evenly"}}>
                         <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(false)}>
                             <Text style={styles.btnText}>Annuler</Text>
                         </TouchableOpacity>
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     },
     btn: {
         width: RPW(35),
-        height: 45,
+        height: RPW(12),
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     modalBody: {
-        height: RPH(32),
+        height: RPW(60),
         width: RPW(90),
         borderRadius: 10,
         paddingTop: RPH(4),
@@ -517,12 +517,12 @@ const styles = StyleSheet.create({
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(4.5),
+        fontSize: RPW(5),
+        lineHeight : RPW(7),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(6),
         paddingRight: RPW(6),
-        lineHeight: RPH(4)
     },
     line2: {
         width: "90%",

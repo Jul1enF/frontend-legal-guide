@@ -9,7 +9,7 @@ import { router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { RPH, RPW } from "../../../../modules/dimensions"
 
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 
 
@@ -58,7 +58,7 @@ export default function Signin() {
                 data = await response.json()
             } catch (err) {
                 setError("Erreur : Problème de connexion")
-                setTimeout(()=>setError(""), 4000)
+                setTimeout(() => setError(""), 4000)
                 connectRef.current = true
                 return
             }
@@ -75,7 +75,7 @@ export default function Signin() {
                     email: data.email,
                     jwtToken: data.jwtToken,
                     is_admin: data.is_admin,
-                    phone : data.phone,
+                    phone: data.phone,
                     push_token: data.push_token,
                     bookmarks: data.bookmarks,
                 }))
@@ -110,69 +110,69 @@ export default function Signin() {
 
     return (<>
 
-        {/* <KeyboardAwareScrollView
-                       style={{ flex: 1, backgroundColor: "#fffcfc" }}
-                       contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
-                       scrollEnabled={scrollable}
-                       bottomOffset={Platform.OS === 'ios' ? RPH(7) : RPH(2)}
-                       stickyHeaderIndices={[0]}
-                   > */}
+        <KeyboardAwareScrollView
+            style={{ flex: 1, backgroundColor: "#fffcfc" }}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
+            bottomOffset={Platform.OS === 'ios' ? RPW(16) : RPW(8)}
+            stickyHeaderIndices={[0]}
+            keyboardShouldPersistTaps="handled"
+        >
 
-        <KeyboardAvoidingView
+            {/* <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(12)}  >
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2) }}
                 keyboardShouldPersistTaps="handled"
-                stickyHeaderIndices={[0]}>
+                stickyHeaderIndices={[0]}> */}
 
 
-                <StickyHeader />
+            <StickyHeader />
 
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setEmail(e)
-                            setError('')
-                        }}
-                        value={email}
-                        placeholder='Email'
-                        placeholderTextColor="#fbfff790"
-                        keyboardType='email-address'
-                        autoCapitalize='none'>
-                    </TextInput>
-                </View>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                        setError('')
+                    }}
+                    value={email}
+                    placeholder='Email'
+                    placeholderTextColor="#fbfff790"
+                    keyboardType='email-address'
+                    autoCapitalize='none'>
+                </TextInput>
+            </View>
 
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword(e)
-                            setError('')
-                        }}
-                        value={password}
-                        autoCapitalize='none'
-                        placeholder='Mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!passwordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
-                    </FontAwesome>
-                </View>
-
-
-                <TouchableOpacity style={styles.registerBtn} onPress={() => connectClick()}>
-                    <Text style={styles.registerSentence}>
-                        Se connecter
-                    </Text>
-                </TouchableOpacity>
-
-                <Text style={styles.error}>{error}</Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setPassword(e)
+                        setError('')
+                    }}
+                    value={password}
+                    autoCapitalize='none'
+                    placeholder='Mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!passwordVisible}>
+                </TextInput>
+                <FontAwesome
+                    name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
+                </FontAwesome>
+            </View>
 
 
-            </ScrollView>
-        </KeyboardAvoidingView>
+            <TouchableOpacity style={styles.registerBtn} onPress={() => connectClick()}>
+                <Text style={styles.registerSentence}>
+                    Se connecter
+                </Text>
+            </TouchableOpacity>
 
-        {/* </KeyboardAwareScrollView> */}
+            <Text style={styles.error}>{error}</Text>
+
+
+            {/* </ScrollView>
+    </KeyboardAvoidingView > */}
+
+        </KeyboardAwareScrollView>
 
     </>
     )
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         width: RPW(100),
         paddingLeft: RPW(4),
         paddingRight: RPW(4),
-        marginBottom : RPH(18),
+        marginBottom: RPH(18),
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -208,13 +208,13 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "500",
         fontSize: RPW(4.5),
-        letterSpacing : RPW(0.1)
+        letterSpacing: RPW(0.1)
     },
     inputContainer: {
         marginBottom: RPH(4),
         width: "90%",
         height: RPH(6),
-        maxHeight : 44,
+        maxHeight: 44,
         borderRadius: RPH(1),
         flexDirection: "row",
         justifyContent: "space-between",
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     registerBtn: {
         width: "90%",
         height: RPH(6),
-        maxHeight : 46,
+        maxHeight: 46,
         borderRadius: RPH(1),
         marginTop: RPH(7),
         justifyContent: "center",

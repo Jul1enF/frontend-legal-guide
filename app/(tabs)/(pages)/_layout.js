@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 
 export default function RootLayout() {
     return (
@@ -8,7 +9,10 @@ export default function RootLayout() {
             <Stack.Screen name="user-informations" options={{
                 title: "Mes informations",
             }} />
-            <Stack.Screen name="redaction" />
+            <Stack.Screen name="redaction" options={{
+                title : "Rédaction",
+            }}
+            />
             <Stack.Screen name="index" options={{
                 title: "Accueil"
             }} />
