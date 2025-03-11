@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Platform, TextInput, Modal, Keyboard } from 'react-native';
-import { router } from 'expo-router';
+import { router, Link } from 'expo-router';
 import { useState, useRef } from 'react';
 
 import { AppleMaps, GoogleMaps } from 'expo-maps';
@@ -314,11 +314,14 @@ export default function Contact() {
 
 
 
+          <Link href="/legal" style={styles.cgu}>C.G.U</Link>
+
+
+
           <Modal
             visible={modalVisible}
             animationType="slide"
             style={styles.modal}
-            backdropColor="rgba(0,0,0,0.9)"
             transparent={true}
             onRequestClose={() => setModalVisible(!modalVisible)}
           >
@@ -495,6 +498,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: RPW(4.5),
     lineHeight: RPW(5),
+  },
+  cgu : {
+    fontSize : RPW(4),
+    fontWeight : "500",
+    textDecorationLine : "underline"
   },
   modal: {
     alignItems: "center"

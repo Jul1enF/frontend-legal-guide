@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, Modal } from "react-native";
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useFocusEffect } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +9,6 @@ import { RPH, RPW } from "../modules/dimensions"
 
 import { router, Link } from "expo-router";
 
-import Modal from "react-native-modal"
 import Icon from "@expo/vector-icons/MaterialCommunityIcons"
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import YoutubePlayer from "react-native-youtube-iframe";
@@ -36,13 +35,13 @@ export default function FullArticle(props) {
 
     const [error, setError] = useState('')
 
-    
+
 
 
 
     // useEffect pour charger les infos de l'article
     useEffect(() => {
-        if (_id === "testArticleId" ) {
+        if (_id === "testArticleId") {
             setArticle(testArticle[0])
         } else {
             articles.map(e => {
@@ -118,7 +117,7 @@ export default function FullArticle(props) {
             else {
                 setIsBookmarked(false)
                 dispatch(removeBookmark(_id))
-                if(props.category === "bookmarks"){
+                if (props.category === "bookmarks") {
                     router.back("/bookmarks")
                 }
             }
@@ -205,7 +204,7 @@ export default function FullArticle(props) {
     // Boutons pour modifications si l'utilsateur est admin
 
     let modifications
- 
+
     if (user.is_admin && _id !== "testArticleId") {
         modifications = (
             <View style={styles.btnContainer}>
@@ -229,10 +228,10 @@ export default function FullArticle(props) {
 
 
 
-   // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
+    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
 
     let image
-    if ( requires[article.img_link] === undefined) {
+    if (requires[article.img_link] === undefined) {
         image = <Image
             style={[styles.image, {
                 width: RPW(100 * article.img_zoom),
@@ -308,26 +307,23 @@ export default function FullArticle(props) {
 
                 {article.media_link && <Link style={styles.link} href={article.media_link}>{article.media_link}</Link>}
 
-                <Text style={[{ color: 'red', fontSize : RPW(4.5) }, !error && { display: "none" }]}>{error}</Text>
+                <Text style={[{ color: 'red', fontSize: RPW(4.5) }, !error && { display: "none" }]}>{error}</Text>
 
                 {modifications}
             </ScrollView>
 
             <Modal
-                isVisible={modalVisible}
+                visible={modalVisible}
+                animationType="slide"
                 style={styles.modal}
-                backdropColor="transparent"
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                statusBarTranslucent={true}
-                onBackButtonPress={() => setModalVisible(!modalVisible)}
-                onBackdropPress={() => setModalVisible(!modalVisible)}
+                transparent={true}
+                onRequestClose={() => setModalVisible(!modalVisible)}
             >
                 <View style={styles.modalBody}>
                     <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cet article ?</Text>
                     <View style={styles.line2}>
                     </View>
-                    <View style={{flexDirection : "row", justifyContent : "space-evenly"}}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
                         <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(false)}>
                             <Text style={styles.btnText}>Annuler</Text>
                         </TouchableOpacity>
@@ -513,12 +509,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#e7e7e7",
         position: "absolute",
         bottom: RPH(11),
+        left : RPW(5),
         justifyContent: "space-between",
     },
     modalText: {
         color: "#0c0000",
         fontSize: RPW(5),
-        lineHeight : RPW(7),
+        lineHeight: RPW(7),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(6),

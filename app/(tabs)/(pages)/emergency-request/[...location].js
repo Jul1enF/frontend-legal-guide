@@ -15,7 +15,7 @@ import * as Location from 'expo-location';
 
 import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
-// import { Video } from 'react-native-compressor';
+import { Video } from 'react-native-compressor';
 import { useVideoPlayer, VideoView } from 'expo-video';
 
 import uuid from 'react-native-uuid';
@@ -193,6 +193,7 @@ export default function EmergencyRequest() {
             setMediaMimeType(result.assets[0].mimeType)
 
             const name = result.assets[0].fileName
+            console.log("NAME", name)
             const nameDisassembled = name.split(".")
             const extension = nameDisassembled[nameDisassembled.length - 1]
 
@@ -212,25 +213,18 @@ export default function EmergencyRequest() {
                 setUploading(false)
 
             } else {
-                // const result = await Video.compress(
-                //     result.assets[0].uri,
-                //     {
-                //       compressionMethod: 'manual',
-                //     },
-                //     (progress) => {
-                //       console.log('Compression Progress: ', progress);
-                //     }
-                //   );
-                // console.log("result", result)
-                setMediaLink(result.assets[0].uri);
+                const videoResult = await Video.compress(
+                    uri,
+                    {});
+                setMediaLink(videoResult);
+                setMediaExtension("mp4")
                 setUploading(false)
             }
 
-        }else{
+        } else {
             setUploading(false)
         }
     };
-
 
 
 
@@ -729,7 +723,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(5.7),
+        fontSize: RPW(5.6),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(5),

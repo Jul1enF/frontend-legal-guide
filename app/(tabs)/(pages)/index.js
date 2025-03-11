@@ -1,7 +1,7 @@
 import { RPH, RPW } from '../../../modules/dimensions'
 import { registerForPushNotificationsAsync } from '../../../modules/registerForPushNotificationsAsync'
 
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, StatusBar, RefreshControl, Modal } from "react-native";
 import { useEffect, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { logout, changePushToken } from "../../../reducers/user";
@@ -10,7 +10,6 @@ import { deleteOneArticle, fillWithArticles } from "../../../reducers/articles"
 
 import { router, Link, useFocusEffect } from "expo-router";
 
-import Modal from "react-native-modal"
 import YoutubePlayer from "react-native-youtube-iframe";
 
 import NetInfo from '@react-native-community/netinfo'
@@ -197,7 +196,7 @@ export default function FullArticle() {
 
     if (user.is_admin && article._id !== "testArticleId" && !article.test) {
         modifications = (
-            <View style={styles.btnContainer}>
+            <View style={[styles.btnContainer, {marginTop : RPW(12)}]}>
                 <TouchableOpacity style={styles.btn} onPress={() => modifyPress()}>
                     <Text style={styles.btnText}>Modifier</Text>
                 </TouchableOpacity>
@@ -210,7 +209,7 @@ export default function FullArticle() {
 
 
 
-    
+
 
     // Composant pour rafraichir la page
 
@@ -310,14 +309,11 @@ export default function FullArticle() {
             </ScrollView>
 
             <Modal
-                isVisible={modalVisible}
+                visible={modalVisible}
+                animationType="slide"
                 style={styles.modal}
-                backdropColor="transparent"
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                statusBarTranslucent={true}
-                onBackButtonPress={() => setModalVisible(!modalVisible)}
-                onBackdropPress={() => setModalVisible(!modalVisible)}
+                transparent={true}
+                onRequestClose={() => setModalVisible(!modalVisible)}
             >
                 <View style={styles.modalBody}>
                     <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cet article ?</Text>
@@ -380,7 +376,7 @@ const styles = StyleSheet.create({
         paddingTop: RPH(2),
         paddingLeft: RPW(1),
         paddingRight: RPW(1),
-        paddingBottom: 10,
+        paddingBottom: RPW(12),
     },
     categoryTitle: {
         color: "#0c0000",
@@ -481,8 +477,6 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.1),
     },
     btnContainer: {
-        marginTop: 35,
-        marginBottom: 20,
         flexDirection: "row",
         justifyContent: "space-evenly"
     },
@@ -508,19 +502,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingTop: RPH(4),
         paddingBottom: RPH(4),
-        backgroundColor: "#e7e7e7",
+        backgroundColor: "#dfdfdf",
         position: "absolute",
         bottom: RPH(11),
+        left : RPW(5),
         justifyContent: "space-between",
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(4.5),
+        fontSize: RPW(5),
+        lineHeight : RPW(7),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(6),
         paddingRight: RPW(6),
-        lineHeight: RPH(4)
     },
     line2: {
         width: "90%",

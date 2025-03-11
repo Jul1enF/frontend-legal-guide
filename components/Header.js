@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
+        zIndex : 10,
         top: RPH(12.9) - statusHeight,
     },
     linkContainer: {

@@ -1,6 +1,6 @@
 
 import { router, useLocalSearchParams, Link, useFocusEffect } from 'expo-router'
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Platform, RefreshControl } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Platform, RefreshControl, Modal } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { addEmergencies } from '../../../../../reducers/emergencies';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -17,7 +17,6 @@ import { suppressAnEmergency } from '../../../../../reducers/emergencies';
 import { useEventListener } from 'expo';
 
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Modal from "react-native-modal"
 
 import * as Location from 'expo-location';
 
@@ -41,8 +40,8 @@ export default function EmergencyDetail() {
 
     // UseEffect pour charger la demande de contact urgent et demander l'autorisation de localiser pour apparaitre sur la carte
 
-    const askLocationPermission = async ()=>{
-         const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+    const askLocationPermission = async () => {
+        const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
     }
 
     useEffect(() => {
@@ -221,9 +220,9 @@ export default function EmergencyDetail() {
         }
 
         locationContainer =
-            <View style={{ width: RPW(92), alignItems : "flex-start" }}>
-                <View style={[styles.underlineContainer, {marginBottom : RPW(4)}]}>
-                    <Text style={[styles.informationTitle, {letterSpacing : -RPW(0.2)}]}>
+            <View style={{ width: RPW(92), alignItems: "flex-start" }}>
+                <View style={[styles.underlineContainer, { marginBottom: RPW(4) }]}>
+                    <Text style={[styles.informationTitle, { letterSpacing: -RPW(0.2) }]}>
                         Dernière position connue ({lastLocationDate}  {lastLocationHour}) :</Text>
                 </View>
 
@@ -325,14 +324,11 @@ export default function EmergencyDetail() {
 
 
                 <Modal
-                    isVisible={modalVisible}
+                    visible={modalVisible}
+                    animationType="slide"
                     style={styles.modal}
-                    backdropColor="transparent"
-                    animationIn="slideInUp"
-                    animationOut="slideOutDown"
-                    statusBarTranslucent={true}
-                    onBackButtonPress={() => setModalVisible(!modalVisible)}
-                    onBackdropPress={() => setModalVisible(!modalVisible)}
+                    transparent={true}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                 >
                     <View style={styles.modalBody}>
                         <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer cette requête ?</Text>
@@ -511,6 +507,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#e7e7e7",
         position: "absolute",
         bottom: RPH(11),
+        left : RPW(5),
         justifyContent: "space-between",
     },
     modalText: {

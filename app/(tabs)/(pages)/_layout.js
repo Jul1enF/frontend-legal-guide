@@ -16,6 +16,9 @@ export default function RootLayout() {
             <Stack.Screen name="index" options={{
                 title: "Accueil"
             }} />
+             <Stack.Screen name="legal" options={{
+                title: "CGU"
+            }} />
              <Stack.Screen name="emergency-request/[...location]" options={{
                 title: "Demande de contact urgent",
             }} />
