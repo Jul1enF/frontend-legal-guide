@@ -35,18 +35,18 @@ export default function TopArticle(props) {
 
 
 
-    // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet (pour affichage de l'image)
+   // Fonction, État et useFocusEffect pour déterminer si l'utilisateur est connecté à internet (pour affichage de l'image)
 
-    const [isOnline, setIsOnline] = useState(true)
+   const [isOnline, setIsOnline] = useState(true)
 
-    const checkNetConnection = async () => {
-        const state = await NetInfo.fetch()
-        state.isConnected ? setIsOnline(true) : setIsOnline(false)
-    }
+   const checkNetConnection = async () => {
+       const state = await NetInfo.fetch()
+       state.isConnected ? setIsOnline(true) : setIsOnline(false)
+   }
 
-    useFocusEffect(useCallback(() => {
-        checkNetConnection()
-    }, []))
+   useFocusEffect(useCallback(() => {
+       checkNetConnection()
+   }, [imageLoadError]))
 
 
 
@@ -109,9 +109,18 @@ export default function TopArticle(props) {
 
     // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
 
+    const [imageLoadError, setImageLoadError]=useState(false)
+    const backupImage = (!isOnline && imageLoadError) ? true : false
+
     let image
     if (requires[props.img_link] === undefined) {
-        if (isOnline) {
+        if (!isOnline && imageLoadError) {
+            image = <Image
+            style={[styles.image, { width: RPW(100) },]}
+            source={props.category === "advices" ? require('../assets/backup-advices1.jpg') : require('../assets/backup-press1.jpg')}
+            onLoadEnd={() => setImgLoaded(true)}
+        />
+        } else {
             image = <Image
                 style={[styles.image, {
                     width: RPW(100 * props.img_zoom),
@@ -119,17 +128,11 @@ export default function TopArticle(props) {
                     marginLeft: RPW(props.img_margin_left * 1)
                 },]}
                 source={{ uri: props.img_link, }}
-                onLoadEnd={() => setImgLoaded(true)}
-            />
-        } else {
-            image = <Image
-                style={[styles.image, {
-                    width: RPW(100 * props.img_zoom),
-                    marginTop: RPW(props.img_margin_top),
-                    marginLeft: RPW(props.img_margin_left)
-                },]}
-                source={props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
-                onLoadEnd={() => setImgLoaded(true)}
+                onError={({ nativeEvent: {error} }) => setImageLoadError(true)}
+                onLoadEnd={() => {
+                    setImgLoaded(true)
+                    setImageLoadError(false)
+                }}
             />
         }
     } else {
@@ -152,7 +155,7 @@ export default function TopArticle(props) {
     return (
         <View style={[styles.body, props.index === 0 && { paddingTop: 0 }]}>
 
-            {props.img_link && <View style={[styles.imgContainer, { height: RPW(100 * props.img_ratio) }]} >
+            {props.img_link && <View style={[styles.imgContainer, { height: backupImage ? RPW(100) : RPW(100 * props.img_ratio) }]} >
                 {
                     !imgLoaded && <View style={[{ minWidth: RPW(300), minHeight: RPW(600), backgroundColor: "#fffcfc" }]}></View>
                 }

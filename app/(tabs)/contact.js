@@ -184,7 +184,7 @@ export default function Contact() {
           </View>
 
 
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?hashid=0ae6e87b0f07df83d925')}>
+          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?hashid=1f5e4927627e727d42ba')}>
             <FontAwesome name="handshake-o" size={RPW(5)} style={styles.appointmentIcon} />
             <Text style={styles.appointmentText}>
               Consultation en cabinet de 60 min pour 150€
@@ -192,7 +192,7 @@ export default function Contact() {
             <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?hashid=1d515dce1e5e08d5f288')}>
+          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?hashid=4a58649ec5f0befc7545')}>
             <FontAwesome name="video-camera" size={RPW(5)} style={styles.appointmentIcon} />
             <Text style={styles.appointmentText}>
               Consultation vidéo de 30 min pour 90€
@@ -200,7 +200,7 @@ export default function Contact() {
             <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?hashid=639601bb4a6ce57d8f09')}>
+          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?hashid=711ac3a49697f490caee')}>
             <MaterialIcons name="phone-iphone" size={RPW(6)} style={styles.appointmentIcon} />
             <Text style={styles.appointmentText}>
               Consultation téléphonique de 30 min pour 70€
@@ -208,7 +208,7 @@ export default function Contact() {
             <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?hashid=9c1bb8b1eb4ea6a0abd7')}>
+          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?hashid=19da4e4fe13bee622560')}>
             <MaterialCommunityIcons name="chat" size={RPW(5)} style={styles.appointmentIcon} />
             <Text style={styles.appointmentText}>
               Réponse à une question simple pour 50€
@@ -216,7 +216,7 @@ export default function Contact() {
             <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?hashid=9c1bb8b1eb4ea6a0abd7')}>
+          <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-juridique/forms.php?hashid=7c96aeae1d321aaa3f81')}>
             <AntDesign name="form" size={RPW(5)} style={styles.appointmentIcon} />
             <Text style={styles.appointmentText}>
               Consultation écrite détaillée pour 250€

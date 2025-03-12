@@ -70,7 +70,7 @@ export default function FullArticle(props) {
 
     useFocusEffect(useCallback(() => {
         checkNetConnection()
-    }, []))
+    }, [imageLoadError]))
 
 
 
@@ -246,16 +246,22 @@ export default function FullArticle(props) {
     const hour = moment(article.createdAt).format('LT')
 
 
-    if (!article) { return <View></View> }
 
 
 
+    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou si le portable est offline
 
-    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
+    const [imageLoadError, setImageLoadError]=useState(false)
+    const backupImage = (!isOnline && imageLoadError) ? true : false
 
     let image
     if (requires[article.img_link] === undefined) {
-        if (isOnline) {
+        if (!isOnline && imageLoadError) {
+            image = <Image
+            style={[styles.image, { width: RPW(100) }]}
+            source={ props.category === "advices" ? require('../assets/backup-advices1.jpg') : require('../assets/backup-press1.jpg')}
+        />
+        }else{
             image = <Image
                 style={[styles.image, {
                     width: RPW(100 * article.img_zoom),
@@ -263,16 +269,9 @@ export default function FullArticle(props) {
                     marginLeft: RPW(article.img_margin_left * 1)
                 }]}
                 source={{ uri: article.img_link }}
+                onError={({ nativeEvent: {error} }) => setImageLoadError(true)}
+                onLoadEnd={() => {setImageLoadError(false)}}
             />
-        }else{
-            image = <Image
-            style={[styles.image, {
-                width: RPW(100 * article.img_zoom),
-                marginTop: RPW(article.img_margin_top * 1),
-                marginLeft: RPW(article.img_margin_left * 1)
-            }]}
-            source={ props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
-        />
         }
     } else {
         image = <Image
@@ -285,6 +284,12 @@ export default function FullArticle(props) {
         />
     }
 
+
+
+
+    if (!article) { return <View></View> }
+
+    
 
 
     return (
@@ -316,7 +321,7 @@ export default function FullArticle(props) {
                 <Text style={styles.date}>Publié le {date} à {hour}</Text>
 
                 {article.img_link &&
-                    <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }, { height: RPW(100 * article.img_ratio) }]} >
+                    <View style={[styles.imgContainer, !article.author && { marginBottom: 25 }, { height: backupImage ? RPW(100) : RPW(100 * article.img_ratio) }]} >
                         {image}
                     </View>}
 

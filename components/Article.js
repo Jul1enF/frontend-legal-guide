@@ -51,7 +51,7 @@ export default function Article(props) {
 
     useFocusEffect(useCallback(() => {
         checkNetConnection()
-    }, []))
+    }, [imageLoadError]))
 
 
 
@@ -110,17 +110,14 @@ export default function Article(props) {
     // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou si le portable est offline
 
     const [imageLoadError, setImageLoadError]=useState(false)
+    const backupImage = (!isOnline && imageLoadError) ? true : false
 
     let image
     if (requires[props.img_link] === undefined) {
         if (!isOnline && imageLoadError){
             image = <Image
-            style={[styles.image, {
-                width: RPW(41 * props.img_zoom),
-                marginTop: RPW(props.img_margin_top * 0.41),
-                marginLeft: RPW(props.img_margin_left * 0.41)
-            }]}
-            source={props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
+            style={[styles.image, { width: RPW(41)}]}
+            source={props.category === "advices" ? require('../assets/backup-advices2.jpg') : require('../assets/backup-press2.jpg')}
         />
         }
         else {
@@ -131,7 +128,7 @@ export default function Article(props) {
                     marginLeft: RPW(props.img_margin_left * 0.41)
                 }]}
                 source={{ uri: props.img_link, }}
-                onError={onError=({ nativeEvent: {error} }) => setImageLoadError(true)}
+                onError={({ nativeEvent: {error} }) => {setImageLoadError(true)}}
                 onLoadEnd={() => {setImageLoadError(false)}}
             />
         }
@@ -170,7 +167,7 @@ export default function Article(props) {
                     <Text style={[styles.title, { lineHeight: titleLineHeight }]}>{props.title}</Text>
                 </View>
                 <View style={styles.column2}>
-                    <View style={[styles.imgContainer, { height: RPW(41 * props.img_ratio) }]} >
+                    <View style={[styles.imgContainer, { height: !backupImage ? RPW(41 * props.img_ratio) : RPW(41)}]} >
                         {image}
                     </View>
 
