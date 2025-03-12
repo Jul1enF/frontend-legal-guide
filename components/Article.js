@@ -107,20 +107,13 @@ export default function Article(props) {
 
 
 
-    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou dans l'app
+    // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou si le portable est offline
+
+    const [imageLoadError, setImageLoadError]=useState(false)
 
     let image
     if (requires[props.img_link] === undefined) {
-        if (isOnline) {
-            image = <Image
-                style={[styles.image, {
-                    width: RPW(41 * props.img_zoom),
-                    marginTop: RPW(props.img_margin_top * 0.41),
-                    marginLeft: RPW(props.img_margin_left * 0.41)
-                }]}
-                source={{ uri: props.img_link, }}
-            />
-        }else{
+        if (!isOnline && imageLoadError){
             image = <Image
             style={[styles.image, {
                 width: RPW(41 * props.img_zoom),
@@ -129,6 +122,18 @@ export default function Article(props) {
             }]}
             source={props.category === "advices" ? require('../assets/backup-advices.jpg') : require('../assets/backup-press.jpg')}
         />
+        }
+        else {
+            image = <Image
+                style={[styles.image, {
+                    width: RPW(41 * props.img_zoom),
+                    marginTop: RPW(props.img_margin_top * 0.41),
+                    marginLeft: RPW(props.img_margin_left * 0.41)
+                }]}
+                source={{ uri: props.img_link, }}
+                onError={onError=({ nativeEvent: {error} }) => setImageLoadError(true)}
+                onLoadEnd={() => {setImageLoadError(false)}}
+            />
         }
     } else {
         image = <Image
