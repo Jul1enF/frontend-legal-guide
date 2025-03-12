@@ -100,7 +100,7 @@ export default function EmergencyRequest() {
         return () => {
             subscription.remove();
         };
-    }, []);
+    }, [emergency]);
 
 
 
@@ -274,7 +274,7 @@ export default function EmergencyRequest() {
 
             dispatch(toggleUserLocationPermission(true))
 
-            permissionsData.backgroundLocation && dispatch(toggleBackgroundLocation(true))
+            permissionsData.backgroundLocation ? dispatch(toggleBackgroundLocation(true)) : dispatch(toggleBackgroundLocation(false))
         }
 
 
