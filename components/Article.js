@@ -184,7 +184,8 @@ export default function Article(props) {
                 {(user.jwtToken && props._id !== "testArticleId") && <Icon name={isBookmarked ? "heart-remove" : "heart-plus"} size={RPW(6)} color={isBookmarked ? "rgb(185, 0, 0)" : "#0c0000"} onPress={() => bookmarkPress()} />}
             </View>
 
-
+            <Text>IS ONLINE : {isOnline.toString()}</Text>
+            <Text>IMAGE LOAD ERROR : {imageLoadError.toString()}</Text>
             <View style={styles.line} >
             </View>
         </View>

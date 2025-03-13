@@ -8,18 +8,13 @@
     "icon": "./assets/logo-splash.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/logo-splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
       "buildNumber": "1.0.0",
       "appleTeamId": "W83RJXR472",
-      "config" : {
-        "googleMapsApiKey" : "AIzaSyC2yHqvpoZZOpqid_3D4BZVZCVjCT1pwZU"
+      "config": {
+        "googleMapsApiKey": "AIzaSyC2yHqvpoZZOpqid_3D4BZVZCVjCT1pwZU"
       }
     },
     "android": {
@@ -43,20 +38,27 @@
         }
       ],
       [
+        "expo-splash-screen",
+        {
+          "image": "./assets/logo-splash.png",
+          "backgroundColor": "#000000",
+          "imageWidth": 300
+        }
+      ],
+      [
         "expo-build-properties",
         {
-           "ios": {
-              "deploymentTarget": "15.1"
-           }
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
         }
-     ],
-
+      ],
       [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
-          "isIosBackgroundLocationEnabled" : true,
-          "isAndroidBackgroundLocationEnabled" : true
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
         }
       ],
       "expo-router",
