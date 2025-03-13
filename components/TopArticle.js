@@ -118,7 +118,7 @@ export default function TopArticle(props) {
             image = <Image
             style={[styles.image, { width: RPW(100) },]}
             source={props.category === "advices" ? require('../assets/backup-advices1.jpg') : require('../assets/backup-press1.jpg')}
-            onLoadEnd={() => setImgLoaded(true)}
+            onLoad={() => setImgLoaded(true)}
         />
         } else {
             image = <Image
@@ -129,7 +129,7 @@ export default function TopArticle(props) {
                 },]}
                 source={{ uri: props.img_link, }}
                 onError={({ nativeEvent: {error} }) => setImageLoadError(true)}
-                onLoadEnd={() => {
+                onLoad={() => {
                     setImgLoaded(true)
                     setImageLoadError(false)
                 }}

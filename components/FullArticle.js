@@ -270,7 +270,7 @@ export default function FullArticle(props) {
                 }]}
                 source={{ uri: article.img_link }}
                 onError={({ nativeEvent: {error} }) => setImageLoadError(true)}
-                onLoadEnd={() => {setImageLoadError(false)}}
+                onLoad={() => {setImageLoadError(false)}}
             />
         }
     } else {
