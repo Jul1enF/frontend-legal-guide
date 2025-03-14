@@ -45,8 +45,9 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
-        // deferredUpdatesDistance : 10,
-        deferredUpdatesInterval: 30000,
+        // deferredUpdatesDistance : 1,
+        deferredUpdatesInterval: 61000,
+        timeInterval : 61000,
     });
 };
 
@@ -62,7 +63,7 @@ const stopLocation = async () => {
 
 
 // Tâche background de Task Manager
-TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => { 
     if (error) {
         console.log("TASK MANAGER ERROR", error)
         return;
