@@ -59,7 +59,7 @@ export default function ArticlesList(props) {
             } else if (allConcernedArticles.some(e => e.category == "press")) {
                 return "Presse"
             }
-        }else {
+        } else {
             return false
         }
     }
@@ -309,19 +309,36 @@ export default function ArticlesList(props) {
         }
     }
 
+
+    // useEffect quand ce n'est pas bookmarks (pour ne pas recharger la page en ajoutant un favoris => on ne met pas user dans les dépendances)
     useEffect(() => {
-        // Reset de la méthode de recherche quand le composant est monté à nouveau
-        searchMethodRef.current = "occurence"
+        if (props.category !== "bookmarks") {
+            // Reset de la méthode de recherche quand le composant est monté à nouveau
+            searchMethodRef.current = "occurence"
 
-        horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
-            offset: 0,
-            animated: true,
-        })
+            horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
+                offset: 0,
+                animated: true,
+            })
 
-        loadArticles()
-    }, [testArticle, user, props.searchedText])
+            loadArticles()
+        }
+    }, [testArticle, props.searchedText])
 
+    // useEffect pour bookmarks
+    useEffect(() => {
+        if (props.category === "bookmarks") {
+            // Reset de la méthode de recherche quand le composant est monté à nouveau
+            searchMethodRef.current = "occurence"
 
+            horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
+                offset: 0,
+                animated: true,
+            })
+
+            loadArticles()
+        }
+    }, [user])
 
 
 
@@ -387,6 +404,7 @@ export default function ArticlesList(props) {
                         sortedSubcategories2.push({ name: e.sub_category, count: 1 })
                     }
                 })
+                sortedSubcategories2.sort((a, b) => b.count - a.count)
 
                 setSubcategoriesList2(sortedSubcategories2)
             }
@@ -590,7 +608,7 @@ export default function ArticlesList(props) {
                 />}
 
 
-          { !isThereOnlyOneCategoryBookmarked() && <FlatList
+            {!isThereOnlyOneCategoryBookmarked() && <FlatList
                 data={subcategoriesList}
                 ref={horizontalFlatlistRef}
                 horizontal={true}
@@ -609,7 +627,7 @@ export default function ArticlesList(props) {
                 ref={horizontalFlatlist2Ref}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={[styles.flatlist2, !subcategoriesList2 && { display: "none" }, isThereOnlyOneCategoryBookmarked() && {marginTop : RPW(2)}]}
+                style={[styles.flatlist2, !subcategoriesList2 && { display: "none" }, isThereOnlyOneCategoryBookmarked() && { marginTop: RPW(2) }]}
                 renderItem={({ item, index }) => {
                     return <SubcategoryItem2 {...item} index={index} />
                 }}

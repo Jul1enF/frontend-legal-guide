@@ -170,7 +170,7 @@ export default function EmergencyRequest() {
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        setTimeout(() => setUploading(true), 1000)
+        setTimeout(() => setUploading(true), 1500)
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'],
