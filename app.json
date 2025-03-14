@@ -15,9 +15,8 @@
       "appleTeamId": "W83RJXR472"
     },
     "android": {
-      "icon" : "./assets/logo-android2.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo-splash.png",
+        "foregroundImage": "./assets/logo-android2.png",
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
