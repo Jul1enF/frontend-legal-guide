@@ -45,9 +45,7 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
-        // deferredUpdatesDistance : 1,
         deferredUpdatesInterval: 61000,
-        timeInterval : 61000,
     });
 };
 

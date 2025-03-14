@@ -69,7 +69,7 @@ export default function EmergencyDetail() {
         const response = await fetch(`${url}/emergencies/get-emergencies/${user.jwtToken}`)
 
         const data = await response.json()
-
+ 
         if (!data.result) {
             setError("Erreur : problème de connexion. Données non actualisées. Quittez l'appli et reconnectez vous.")
             setTimeout(() => { setError(''), 4000 })
@@ -214,7 +214,7 @@ export default function EmergencyDetail() {
 
 
         if (Platform.OS === 'ios') {
-            map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude, longitude }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+            map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude, longitude }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }}/>;
         } else if (Platform.OS === 'android') {
             map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude, longitude }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
         }
@@ -223,10 +223,16 @@ export default function EmergencyDetail() {
             <View style={{ width: RPW(92), alignItems: "flex-start" }}>
                 <View style={[styles.underlineContainer, { marginBottom: RPW(4) }]}>
                     <Text style={[styles.informationTitle, { letterSpacing: -RPW(0.2) }]}>
-                        Dernière position connue ({lastLocationDate}  {lastLocationHour}) :</Text>
+                        Dernière position connue - {lastLocationDate}  {lastLocationHour} :</Text>
                 </View>
 
                 {map}
+
+                <View style={styles.centerContainer}>
+                    <TouchableOpacity style={styles.btn} onPress={() => getEmergencies()}>
+                        <Text style={styles.btnText}>Actualiser</Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.centerContainer}>
                     <TouchableOpacity style={styles.btn} onPress={() => showLocation({

@@ -259,7 +259,6 @@ export default function FullArticle() {
 
 
 
-    if (!article) { return <View></View> }
 
     return (
         <View style={styles.body}>

@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo-android.png",
+        "foregroundImage": "./assets/logo-android2.png",
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
@@ -39,7 +39,7 @@
         {
           "image": "./assets/logo-splash.png",
           "backgroundColor": "#000000",
-          "imageWidth": 400
+          "imageWidth": 300
         }
       ],
       [
