@@ -12,10 +12,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
       "buildNumber": "1.0.0",
-      "appleTeamId": "W83RJXR472",
-      "config": {
-        "googleMapsApiKey": "AIzaSyC2yHqvpoZZOpqid_3D4BZVZCVjCT1pwZU"
-      }
+      "appleTeamId": "W83RJXR472"
     },
     "android": {
       "adaptiveIcon": {
