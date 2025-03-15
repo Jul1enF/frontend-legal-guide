@@ -30,8 +30,8 @@ export default function Redaction() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
 
     const [modalVisible, setModalVisible] = useState(false)
-    const [modal2Visible, setModal2Visible]=useState(false)
-    const [uploading, setUploading]=useState('')
+    const [modal2Visible, setModal2Visible] = useState(false)
+    const [uploading, setUploading] = useState('')
 
 
     // États pour les inputs des attributs de l'article
@@ -217,7 +217,7 @@ export default function Redaction() {
     }
 
 
-   
+
 
     // Fonction appelée en cliquant sur Choisir une image du portable
 
@@ -225,11 +225,11 @@ export default function Redaction() {
         setPictureUri("")
 
         let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: 'images',
-                allowsEditing: false,
-                allowsMultipleSelection: false,
-                quality: 1,
-            });
+            mediaTypes: 'images',
+            allowsEditing: false,
+            allowsMultipleSelection: false,
+            quality: 1,
+        });
 
         if (!result.canceled) {
             const { uri } = result.assets[0]
@@ -250,18 +250,18 @@ export default function Redaction() {
             }) : image
 
             const imageRef = await transformedImage.renderAsync();
-            const imageSaved = compressed ? await imageRef.saveAsync({ base64: false, compress: 0.5, format: extension}) : await imageRef.saveAsync({ base64: false, compress: 0.8, format: "jpeg"})
+            const imageSaved = compressed ? await imageRef.saveAsync({ base64: false, compress: 0.5, format: extension }) : await imageRef.saveAsync({ base64: false, compress: 0.8, format: "jpeg" })
 
             // Quand on ne change pas la taille mais seulement la qualité, on le fait en passant en jpg car le png ne peut pas. Réglage des états.
 
-            if (!compressed){
+            if (!compressed) {
                 setPictureMimeType("image/jpeg")
                 setPictureExtension("jpg")
             }
 
             setPictureUri2(imageSaved.uri);
             setModalVisible(false)
-        }else{
+        } else {
             setModalVisible(false)
         }
     }
@@ -510,302 +510,590 @@ export default function Redaction() {
     // useState pour offset du Keyboard
     const [keyboardOffset, setKeyboardOffset] = useState(Platform.OS === 'ios' ? RPW(16) : RPW(8))
 
-    return (
-        <>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, backgroundColor: "#fffcfc" }}
-                contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }}
-                scrollEnabled={scrollable}
-                keyboardShouldPersistTaps="handled"
-                bottomOffset={keyboardOffset}
-            >
+    if (Platform.OS == "ios") {
+        return (
+            <>
+                <KeyboardAwareScrollView
+                    style={{ flex: 1, backgroundColor: "#fffcfc" }}
+                    contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }}
+                    scrollEnabled={scrollable}
+                    keyboardShouldPersistTaps="handled"
+                    bottomOffset={keyboardOffset}
+                >
 
-                {/* <KeyboardAvoidingView
+                    {/* <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14.5)}  >
                 <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }} scrollEnabled={scrollable}
                     keyboardShouldPersistTaps="handled"> */}
 
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Titre de l'article :</Text>
-                </View>
-                <TextInput
-                    style={styles.smallInput}
-                    placeholder="Titre de l'article..."
-                    onChangeText={(e) => setTitle(e)}
-                    placeholderTextColor="#fbfff792"
-                    value={title}
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Titre de l'article :</Text>
+                    </View>
+                    <TextInput
+                        style={styles.smallInput}
+                        placeholder="Titre de l'article..."
+                        onChangeText={(e) => setTitle(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={title}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
 
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Sous-Catégorie de l'article :</Text>
-                </View>
-                <TextInput
-                    style={styles.smallInput}
-                    placeholder="Sous-Catégorie de l'article..."
-                    onChangeText={(e) => setSubCategory(e)}
-                    value={subCategory}
-                    placeholderTextColor="#fbfff792"
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}
-                >
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Chapeau de l'article :</Text>
-                </View>
-                <TextInput multiline={true}
-                    textAlignVertical="top"
-                    style={styles.largeInput1}
-                    placeholder="Chapeau de l'article..."
-                    onChangeText={(e) => setText1(e)}
-                    value={text1}
-                    placeholderTextColor="#fbfff792"
-                    returnKeyType='next'
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Texte de l'article :</Text>
-                </View>
-                <TextInput multiline={true}
-                    textAlignVertical="top"
-                    style={styles.largeInput2}
-                    placeholder="Texte de l'article..."
-                    onChangeText={(e) => setText2(e)}
-                    value={text2}
-                    placeholderTextColor="#fbfff792"
-                    returnKeyType='next'
-                    onFocus={() => setKeyboardOffset(-RPW(50))}>
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Auteur de l'article :</Text>
-                </View>
-                <TextInput style={styles.smallInput}
-                    placeholder="Auteur..."
-                    onChangeText={(e) => setAuthor(e)}
-                    placeholderTextColor="#fbfff792"
-                    value={author}
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Lien vers un autre média :</Text>
-                </View>
-                <TextInput style={styles.smallInput}
-                    placeholder="Lien vers un autre média..."
-                    autoCapitalize="none"
-                    onChangeText={(e) => setMediaLink(e)}
-                    placeholderTextColor="#fbfff792"
-                    value={mediaLink}
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Tags de l'article :</Text>
-                </View>
-                <TextInput multiline={true}
-                    textAlignVertical="top"
-                    style={styles.mediumInput}
-                    placeholder="Tags : sans '#', à séparer par une virgule et un espace..."
-                    onChangeText={(e) => setTags(e)}
-                    value={tags}
-                    placeholderTextColor="#fbfff792"
-                    submitBehavior="blurAndSubmit"
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Lien d'une vidéo Youtube :</Text>
-                </View>
-                <TextInput style={[styles.smallInput, { marginBottom: 30 }]}
-                    placeholder="Lien d'une vidéo Youtube..."
-                    onChangeText={(e) => setVideoLink(e)}
-                    value={videoLink}
-                    autoCapitalize="none"
-                    placeholderTextColor="#fbfff792"
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}
-                >
-                </TextInput>
-
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Catégorie :</Text>
-                </View>
-
-                <View style={styles.row3}>
-                    <View
-                        style={styles.btnContainer}
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Sous-Catégorie de l'article :</Text>
+                    </View>
+                    <TextInput
+                        style={styles.smallInput}
+                        placeholder="Sous-Catégorie de l'article..."
+                        onChangeText={(e) => setSubCategory(e)}
+                        value={subCategory}
+                        placeholderTextColor="#fbfff792"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}
                     >
-                        <TouchableOpacity style={[styles.btn, category === "advices" && { backgroundColor: "transparent" }]} onPress={() => setCategory("advices")}>
-                            <Text style={[styles.categoryText2, category !== "advices" && { color: "#0c0000" }]}>Conseils</Text>
-                        </TouchableOpacity>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Chapeau de l'article :</Text>
                     </View>
-                    <View
-                        style={styles.btnContainer}
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.largeInput1}
+                        placeholder="Chapeau de l'article..."
+                        onChangeText={(e) => setText1(e)}
+                        value={text1}
+                        placeholderTextColor="#fbfff792"
+                        returnKeyType='next'
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Texte de l'article :</Text>
+                    </View>
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.largeInput2}
+                        placeholder="Texte de l'article..."
+                        onChangeText={(e) => setText2(e)}
+                        value={text2}
+                        placeholderTextColor="#fbfff792"
+                        returnKeyType='next'
+                        onFocus={() => setKeyboardOffset(-RPW(50))}>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Auteur de l'article :</Text>
+                    </View>
+                    <TextInput style={styles.smallInput}
+                        placeholder="Auteur..."
+                        onChangeText={(e) => setAuthor(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={author}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien vers un autre média :</Text>
+                    </View>
+                    <TextInput style={styles.smallInput}
+                        placeholder="Lien vers un autre média..."
+                        autoCapitalize="none"
+                        onChangeText={(e) => setMediaLink(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={mediaLink}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Tags de l'article :</Text>
+                    </View>
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.mediumInput}
+                        placeholder="Tags : sans '#', à séparer par une virgule et un espace..."
+                        onChangeText={(e) => setTags(e)}
+                        value={tags}
+                        placeholderTextColor="#fbfff792"
+                        submitBehavior="blurAndSubmit"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une vidéo Youtube :</Text>
+                    </View>
+                    <TextInput style={[styles.smallInput, { marginBottom: 30 }]}
+                        placeholder="Lien d'une vidéo Youtube..."
+                        onChangeText={(e) => setVideoLink(e)}
+                        value={videoLink}
+                        autoCapitalize="none"
+                        placeholderTextColor="#fbfff792"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}
                     >
-                        <TouchableOpacity style={[styles.btn, category === "press" && { backgroundColor: "transparent" }]} onPress={() => setCategory("press")}>
-                            <Text style={[styles.categoryText2, category !== "press" && { color: "#0c0000" }]}>Presse</Text>
+                    </TextInput>
+
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Catégorie :</Text>
+                    </View>
+
+                    <View style={styles.row3}>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "advices" && { backgroundColor: "transparent" }]} onPress={() => setCategory("advices")}>
+                                <Text style={[styles.categoryText2, category !== "advices" && { color: "#0c0000" }]}>Conseils</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "press" && { backgroundColor: "transparent" }]} onPress={() => setCategory("press")}>
+                                <Text style={[styles.categoryText2, category !== "press" && { color: "#0c0000" }]}>Presse</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "home" && { backgroundColor: "transparent" }]} onPress={() => setCategory("home")}>
+                                <Text style={[styles.categoryText2, category !== "home" && { color: "#0c0000" }]}>Accueil</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une image sur internet :</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.smallInput, { marginBottom: RPW(2), marginTop: RPW(2) }]}
+                        placeholder="Lien internet de l'image"
+                        onChangeText={(e) => {
+                            setPictureUri(e)
+                            if (e.length > 0) {
+                                setPictureUri2("")
+                                setPictureExtension("")
+                                setPictureMimeType("")
+                            }
+                        }}
+                        placeholderTextColor="#fbfff792"
+                        value={pictureUri}
+                        autoCapitalize="none"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
+                    </TextInput>
+
+                    <Text style={styles.inputTitle}>ou</Text>
+
+                    <TouchableOpacity style={styles.btn4} onPress={() => setModalVisible(true)} >
+                        <Text style={styles.btn3Text}>Image du téléphone</Text>
+                    </TouchableOpacity>
+
+
+                    <View style={[styles.inputTitleUnderline, { marginBottom: RPW(3) }]}>
+                        <Text style={styles.inputTitle}>Réglage du ratio de l'image :</Text>
+                    </View>
+
+                    <Text style={styles.categoryText1}>Ratio : {imgRatio.toFixed(2)}   (Instagram : 1,00 ; 16/9 : 0,55)</Text>
+
+
+                    <Slider
+                        style={styles.slider}
+                        value={imgRatio}
+                        minimumValue={0.2}
+                        maximumValue={1.5}
+                        minimumTrackTintColor="rgb(185, 0, 0)"
+                        maximumTrackTintColor="#0c0000"
+                        onValueChange={(e) => setImgRatio(e)}
+                    />
+
+
+                    <View style={[styles.imgContainer, { height: RPW(95) * imgRatio, }, resizing && { borderColor: "#b60050" }]} {...panResponder.panHandlers} >
+                        {image && image}
+                    </View>
+
+                    <View style={[styles.row, { marginBottom: 30 }]}>
+                        <View style={styles.btnContainer2} >
+                            <TouchableOpacity style={resizing ? styles.resizeBtn : styles.btn3} onPress={() => {
+                                resizingRef.current = !resizingRef.current
+
+                                resizing && setScrollable(true)
+                                setResizing(!resizing)
+                            }}>
+                                <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.btnContainer2}>
+                            <TouchableOpacity style={styles.btn3} onPress={() => {
+                                cancelResizingPress()
+                            }}>
+                                <Text style={styles.btn2Text}> Annuler recadrage</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <Text style={{ color: 'red', fontSize: 18, fontWeight: 600 }}>{error}</Text>
+
+
+                    <View style={[styles.row, { marginTop: 8 }]}>
+                        <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
+                            <Text style={styles.btnText}>Tester</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => setModal2Visible(true)}>
+                            <Text style={styles.btnText}>Publier</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => cancelPress()}>
+                            <Text style={styles.btnText}>Annuler</Text>
                         </TouchableOpacity>
                     </View>
-                    <View
-                        style={styles.btnContainer}
+
+
+
+
+
+                    <Modal
+                        visible={modalVisible}
+                        animationType="slide"
+                        style={styles.modal}
+                        backdropColor="rgba(0,0,0,0.9)"
+                        transparent={true}
+                        onRequestClose={() => setModalVisible(!modalVisible)}
                     >
-                        <TouchableOpacity style={[styles.btn, category === "home" && { backgroundColor: "transparent" }]} onPress={() => setCategory("home")}>
-                            <Text style={[styles.categoryText2, category !== "home" && { color: "#0c0000" }]}>Accueil</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-
-                <View style={styles.inputTitleUnderline}>
-                    <Text style={styles.inputTitle}>Lien d'une image sur internet :</Text>
-                </View>
-                <TextInput
-                    style={[styles.smallInput, { marginBottom: RPW(2), marginTop: RPW(2) }]}
-                    placeholder="Lien internet de l'image"
-                    onChangeText={(e) => {
-                        setPictureUri(e)
-                        if (e.length > 0) {
-                            setPictureUri2("")
-                            setPictureExtension("")
-                            setPictureMimeType("")
-                        }
-                    }}
-                    placeholderTextColor="#fbfff792"
-                    value={pictureUri}
-                    autoCapitalize="none"
-                    onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(8))}>
-                </TextInput>
-
-                <Text style={styles.inputTitle}>ou</Text>
-
-                <TouchableOpacity style={styles.btn4} onPress={() => setModalVisible(true)} >
-                    <Text style={styles.btn3Text}>Image du téléphone</Text>
-                </TouchableOpacity>
-
-
-                <View style={[styles.inputTitleUnderline, { marginBottom: RPW(3) }]}>
-                    <Text style={styles.inputTitle}>Réglage du ratio de l'image :</Text>
-                </View>
-
-                <Text style={styles.categoryText1}>Ratio : {imgRatio.toFixed(2)}   (Instagram : 1,00 ; 16/9 : 0,55)</Text>
-
-
-                <Slider
-                    style={styles.slider}
-                    value={imgRatio}
-                    minimumValue={0.2}
-                    maximumValue={1.5}
-                    minimumTrackTintColor="rgb(185, 0, 0)"
-                    maximumTrackTintColor="#0c0000"
-                    onValueChange={(e) => setImgRatio(e)}
-                />
-
-
-                <View style={[styles.imgContainer, { height: RPW(95) * imgRatio, }, resizing && { borderColor: "#b60050" }]} {...panResponder.panHandlers} >
-                    {image && image}
-                </View>
-
-                <View style={[styles.row, { marginBottom: 30 }]}>
-                    <View style={styles.btnContainer2} >
-                        <TouchableOpacity style={resizing ? styles.resizeBtn : styles.btn3} onPress={() => {
-                            resizingRef.current = !resizingRef.current
-
-                            resizing && setScrollable(true)
-                            setResizing(!resizing)
-                        }}>
-                            <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.btnContainer2}>
-                        <TouchableOpacity style={styles.btn3} onPress={() => {
-                            cancelResizingPress()
-                        }}>
-                            <Text style={styles.btn2Text}> Annuler recadrage</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <Text style={{ color: 'red', fontSize: 18, fontWeight: 600 }}>{error}</Text>
-
-
-                <View style={[styles.row, { marginTop: 8 }]}>
-                    <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
-                        <Text style={styles.btnText}>Tester</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn2} onPress={() => setModal2Visible(true)}>
-                        <Text style={styles.btnText}>Publier</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn2} onPress={() => cancelPress()}>
-                        <Text style={styles.btnText}>Annuler</Text>
-                    </TouchableOpacity>
-                </View>
-
-
-
-
-
-                <Modal
-                    visible={modalVisible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModalVisible(!modalVisible)}
-                >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Souhaitez vous compresser l'image ?</Text>
-                        <View style={styles.line}>
+                        <View style={styles.modalBody}>
+                            <Text style={styles.modalText}>Souhaitez vous compresser l'image ?</Text>
+                            <View style={styles.line}>
+                            </View>
+                            <View style={styles.btnContainer4}>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(true)}>
+                                    <Text style={styles.modalText2}>Oui</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(false)}>
+                                    <Text style={styles.modalText2}>Non</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={styles.btnContainer4}>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(true)}>
-                                <Text style={styles.modalText2}>Oui</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(false)}>
-                                <Text style={styles.modalText2}>Non</Text>
-                            </TouchableOpacity>
+                    </Modal>
+
+
+
+                    <Modal
+                        visible={modal2Visible}
+                        animationType="slide"
+                        style={styles.modal}
+                        backdropColor="rgba(0,0,0,0.9)"
+                        transparent={true}
+                        onRequestClose={() => setModal2Visible(false)}
+                    >
+                        <View style={styles.modalBody}>
+                            <Text style={styles.modalText}>Êtes vous sûr de vouloir publier l'article ?</Text>
+                            <View style={styles.line}>
+                            </View>
+                            <View style={styles.btnContainer4}>
+                                <Text style={styles.uploading}>{uploading}</Text>
+
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
+                                    <Text style={styles.modalText2}>Annuler</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => publishPress()}>
+                                    <Text style={styles.modalText2}>Publier</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-                </Modal>
-
-
-
-                <Modal
-                    visible={modal2Visible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModal2Visible(false)}
-                >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Êtes vous sûr de vouloir publier l'article ?</Text>
-                        <View style={styles.line}>
-                        </View>
-                        <View style={styles.btnContainer4}>
-                            <Text style={styles.uploading}>{uploading}</Text>
-
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
-                                <Text style={styles.modalText2}>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => publishPress()}>
-                                <Text style={styles.modalText2}>Publier</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
+                    </Modal>
 
 
 
 
-                {/* </ScrollView>
+                    {/* </ScrollView>
             </KeyboardAvoidingView> */}
 
-            </KeyboardAwareScrollView>
-            {Platform.OS === "ios" && <KeyboardToolbar doneText="Fermer" />}
-        </>
-    )
+                </KeyboardAwareScrollView>
+                {Platform.OS === "ios" && <KeyboardToolbar doneText="Fermer" />}
+            </>
+        )
+    }else{
+        return (
+            <>
+    
+                    <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={keyboardOffset}  >
+                    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingTop: RPH(2), paddingBottom: RPH(2) }} scrollEnabled={scrollable}
+                        keyboardShouldPersistTaps="handled">
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Titre de l'article :</Text>
+                    </View>
+                    <TextInput
+                        style={styles.smallInput}
+                        placeholder="Titre de l'article..."
+                        onChangeText={(e) => setTitle(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={title}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Sous-Catégorie de l'article :</Text>
+                    </View>
+                    <TextInput
+                        style={styles.smallInput}
+                        placeholder="Sous-Catégorie de l'article..."
+                        onChangeText={(e) => setSubCategory(e)}
+                        value={subCategory}
+                        placeholderTextColor="#fbfff792"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}
+                    >
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Chapeau de l'article :</Text>
+                    </View>
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.largeInput1}
+                        placeholder="Chapeau de l'article..."
+                        onChangeText={(e) => setText1(e)}
+                        value={text1}
+                        placeholderTextColor="#fbfff792"
+                        returnKeyType='next'
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(16))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Texte de l'article :</Text>
+                    </View>
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.largeInput2}
+                        placeholder="Texte de l'article..."
+                        onChangeText={(e) => setText2(e)}
+                        value={text2}
+                        placeholderTextColor="#fbfff792"
+                        returnKeyType='next'
+                        onFocus={() => setKeyboardOffset(RPW(5))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Auteur de l'article :</Text>
+                    </View>
+                    <TextInput style={styles.smallInput}
+                        placeholder="Auteur..."
+                        onChangeText={(e) => setAuthor(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={author}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien vers un autre média :</Text>
+                    </View>
+                    <TextInput style={styles.smallInput}
+                        placeholder="Lien vers un autre média..."
+                        autoCapitalize="none"
+                        onChangeText={(e) => setMediaLink(e)}
+                        placeholderTextColor="#fbfff792"
+                        value={mediaLink}
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Tags de l'article :</Text>
+                    </View>
+                    <TextInput multiline={true}
+                        textAlignVertical="top"
+                        style={styles.mediumInput}
+                        placeholder="Tags : sans '#', à séparer par une virgule et un espace..."
+                        onChangeText={(e) => setTags(e)}
+                        value={tags}
+                        placeholderTextColor="#fbfff792"
+                        submitBehavior="blurAndSubmit"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}>
+                    </TextInput>
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une vidéo Youtube :</Text>
+                    </View>
+                    <TextInput style={[styles.smallInput, { marginBottom: 30 }]}
+                        placeholder="Lien d'une vidéo Youtube..."
+                        onChangeText={(e) => setVideoLink(e)}
+                        value={videoLink}
+                        autoCapitalize="none"
+                        placeholderTextColor="#fbfff792"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}
+                    >
+                    </TextInput>
+    
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Catégorie :</Text>
+                    </View>
+    
+                    <View style={styles.row3}>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "advices" && { backgroundColor: "transparent" }]} onPress={() => setCategory("advices")}>
+                                <Text style={[styles.categoryText2, category !== "advices" && { color: "#0c0000" }]}>Conseils</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "press" && { backgroundColor: "transparent" }]} onPress={() => setCategory("press")}>
+                                <Text style={[styles.categoryText2, category !== "press" && { color: "#0c0000" }]}>Presse</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={styles.btnContainer}
+                        >
+                            <TouchableOpacity style={[styles.btn, category === "home" && { backgroundColor: "transparent" }]} onPress={() => setCategory("home")}>
+                                <Text style={[styles.categoryText2, category !== "home" && { color: "#0c0000" }]}>Accueil</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+    
+    
+                    <View style={styles.inputTitleUnderline}>
+                        <Text style={styles.inputTitle}>Lien d'une image sur internet :</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.smallInput, { marginBottom: RPW(2), marginTop: RPW(2) }]}
+                        placeholder="Lien internet de l'image"
+                        onChangeText={(e) => {
+                            setPictureUri(e)
+                            if (e.length > 0) {
+                                setPictureUri2("")
+                                setPictureExtension("")
+                                setPictureMimeType("")
+                            }
+                        }}
+                        placeholderTextColor="#fbfff792"
+                        value={pictureUri}
+                        autoCapitalize="none"
+                        onFocus={() => setKeyboardOffset(Platform.OS === 'ios' ? RPW(16) : RPW(32))}>
+                    </TextInput>
+    
+                    <Text style={styles.inputTitle}>ou</Text>
+    
+                    <TouchableOpacity style={styles.btn4} onPress={() => setModalVisible(true)} >
+                        <Text style={styles.btn3Text}>Image du téléphone</Text>
+                    </TouchableOpacity>
+    
+    
+                    <View style={[styles.inputTitleUnderline, { marginBottom: RPW(3) }]}>
+                        <Text style={styles.inputTitle}>Réglage du ratio de l'image :</Text>
+                    </View>
+    
+                    <Text style={styles.categoryText1}>Ratio : {imgRatio.toFixed(2)}   (Instagram : 1,00 ; 16/9 : 0,55)</Text>
+    
+    
+                    <Slider
+                        style={styles.slider}
+                        value={imgRatio}
+                        minimumValue={0.2}
+                        maximumValue={1.5}
+                        minimumTrackTintColor="rgb(185, 0, 0)"
+                        maximumTrackTintColor="#0c0000"
+                        onValueChange={(e) => setImgRatio(e)}
+                    />
+    
+    
+                    <View style={[styles.imgContainer, { height: RPW(95) * imgRatio, }, resizing && { borderColor: "#b60050" }]} {...panResponder.panHandlers} >
+                        {image && image}
+                    </View>
+    
+                    <View style={[styles.row, { marginBottom: 30 }]}>
+                        <View style={styles.btnContainer2} >
+                            <TouchableOpacity style={resizing ? styles.resizeBtn : styles.btn3} onPress={() => {
+                                resizingRef.current = !resizingRef.current
+    
+                                resizing && setScrollable(true)
+                                setResizing(!resizing)
+                            }}>
+                                <Text style={[styles.categoryText2, !resizing && { color: "#0c0000" }]}> {!resizing ? "Recadrer l'image" : "Arrêter de recadrer"}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.btnContainer2}>
+                            <TouchableOpacity style={styles.btn3} onPress={() => {
+                                cancelResizingPress()
+                            }}>
+                                <Text style={styles.btn2Text}> Annuler recadrage</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+    
+                    <Text style={{ color: 'red', fontSize: 18, fontWeight: 600 }}>{error}</Text>
+    
+    
+                    <View style={[styles.row, { marginTop: 8 }]}>
+                        <TouchableOpacity style={styles.btn2} onPress={() => testPress()}>
+                            <Text style={styles.btnText}>Tester</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => setModal2Visible(true)}>
+                            <Text style={styles.btnText}>Publier</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn2} onPress={() => cancelPress()}>
+                            <Text style={styles.btnText}>Annuler</Text>
+                        </TouchableOpacity>
+                    </View>
+    
+    
+    
+    
+    
+                    <Modal
+                        visible={modalVisible}
+                        animationType="slide"
+                        style={styles.modal}
+                        backdropColor="rgba(0,0,0,0.9)"
+                        transparent={true}
+                        onRequestClose={() => setModalVisible(!modalVisible)}
+                    >
+                        <View style={styles.modalBody}>
+                            <Text style={styles.modalText}>Souhaitez vous compresser l'image ?</Text>
+                            <View style={styles.line}>
+                            </View>
+                            <View style={styles.btnContainer4}>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(true)}>
+                                    <Text style={styles.modalText2}>Oui</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => getPhonePicture(false)}>
+                                    <Text style={styles.modalText2}>Non</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+    
+    
+    
+                    <Modal
+                        visible={modal2Visible}
+                        animationType="slide"
+                        style={styles.modal}
+                        backdropColor="rgba(0,0,0,0.9)"
+                        transparent={true}
+                        onRequestClose={() => setModal2Visible(false)}
+                    >
+                        <View style={styles.modalBody}>
+                            <Text style={styles.modalText}>Êtes vous sûr de vouloir publier l'article ?</Text>
+                            <View style={styles.line}>
+                            </View>
+                            <View style={styles.btnContainer4}>
+                                <Text style={styles.uploading}>{uploading}</Text>
+    
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
+                                    <Text style={styles.modalText2}>Annuler</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => publishPress()}>
+                                    <Text style={styles.modalText2}>Publier</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+    
+    
+                    </ScrollView>
+                </KeyboardAvoidingView>
+
+            </>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -1022,12 +1310,12 @@ const styles = StyleSheet.create({
         marginTop: -6,
         backgroundColor: "rgb(157, 0, 0)",
     },
-    uploading : {
-        position : "absolute",
-        color : "rgb(208, 0, 0)",
-        top : -RPW(8.5),
-        fontSize : RPW(4.8),
-        fontWeight : "600"
+    uploading: {
+        position: "absolute",
+        color: "rgb(208, 0, 0)",
+        top: -RPW(8.5),
+        fontSize: RPW(4.8),
+        fontWeight: "600"
     },
     btnContainer4: {
         flexDirection: "row",

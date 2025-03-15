@@ -5,7 +5,7 @@
     "scheme": "me-baudelin",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo-splash.png",
+    "icon": "./assets/logo-ios.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo-android2.png",
+        "foregroundImage": "./assets/logo-androidAndSplash.png",
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
@@ -37,7 +37,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/logo-splash.png",
+          "image": "./assets/logo-androidAndSplash.png",
           "backgroundColor": "#000000",
           "imageWidth": 300
         }
