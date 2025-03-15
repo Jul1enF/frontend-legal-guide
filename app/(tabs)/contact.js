@@ -139,7 +139,7 @@ export default function Contact() {
           keyboardShouldPersistTaps="handled"> */}
 
           <Text style={styles.subTitle}>Contact</Text>
-          <Text style={styles.title}>Infomations et rendez-vous</Text>
+          <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
 
           <View style={styles.line} >
           </View>
@@ -359,7 +359,7 @@ export default function Contact() {
             keyboardShouldPersistTaps="handled">
   
             <Text style={styles.subTitle}>Contact</Text>
-            <Text style={styles.title}>Infomations et rendez-vous</Text>
+            <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
   
             <View style={styles.line} >
             </View>

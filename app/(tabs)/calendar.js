@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { registerForPushNotificationsAsync } from "../../modules/registerForPushNotificationsAsync"
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from 'expo-router';
@@ -222,10 +222,12 @@ export default function Calendar() {
                             markedDates={markers}
                         />
                         <AgendaList
-                            style={{ backgroundColor: "rgb(185, 0, 0)", width: RPW(100) }}
+                            style={{ backgroundColor: "rgb(185, 0, 0)", width: RPW(100)}}
                             contentContainerStyle={{ alignItems: "center" }}
                             sections={events}
                             renderItem={renderItem}
+
+                            viewOffset={Platform.OS === "android" ? -RPW(10) : 0}
 
                             // Encart du haut avec la date
                             sectionStyle={styles.sectionStyle}
@@ -301,8 +303,8 @@ const styles = StyleSheet.create({
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
         width: RPW(100),
-        height: RPW(8),
-        paddingTop: RPW(3),
+        height: RPW(10),
+        paddingTop: RPW(3.5),
         textAlign: "center",
         marginBottom: RPW(6),
         borderTopWidth: 0.5,
