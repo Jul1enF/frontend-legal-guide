@@ -108,7 +108,6 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
             }
         }
     }
-    //
 });
 
 
