@@ -44,8 +44,8 @@ const startBackgroundLocation = async () => {
     console.log('STARTING BG LOCATION')
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        accuracy: Location.Accuracy.Balanced,
-        deferredUpdatesInterval: 61000,
+        accuracy: Location.Accuracy.Highest,
+        // deferredUpdatesInterval: 61000,
     });
 };
 

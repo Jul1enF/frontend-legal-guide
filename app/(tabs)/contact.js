@@ -111,7 +111,8 @@ export default function Contact() {
 
   // Affichage conditionnel de la map en fonction de ios ou android
 
-  const marker = { coordinates: { latitude: 48.866550, longitude: 2.351357 }, title: "Alexis Baudelin Avocat\n80 rue Réaumur\n75002 Paris", tintColor: "black" }
+  // const marker = { coordinates: { latitude: 48.866550, longitude: 2.351357 }, title: "Alexis Baudelin Avocat\n80 rue Réaumur\n75002 Paris", tintColor: "black" }
+  const marker = { coordinates: { latitude: 48.866550, longitude: 2.351357 }, title: "Alexis Baudelin Avocat", tintColor: "black" }
 
  const appleMaps = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
 
