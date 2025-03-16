@@ -44,7 +44,7 @@ const startBackgroundLocation = async () => {
     console.log('STARTING BG LOCATION')
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        accuracy: Location.Accuracy.Highest,
+        accuracy: Location.Accuracy.Balanced,
         deferredUpdatesInterval: 61000,
     });
 };
@@ -117,6 +117,66 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         }
     }
 });
+
+
+// TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+//     if (error) {
+//         console.log("TASK MANAGER ERROR", error)
+//         return;
+//     }
+//     if (data) {
+//         AsyncStorage.setItem("lastBgLocationDate", new Date().toISOString()).then(() => {
+//             const { locations } = data;
+//             console.log("BACKGROUND LOCATION :", locations)
+
+//             const i = locations.length - 1
+//             const lastLocation = locations[i]
+
+//             AsyncStorage.getItem("fetch-timestamp").then((lastFetchTimestamp) => {
+//                 console.log("LAST FETCH TIME STAMP", lastFetchTimestamp)
+
+//                 if (lastFetchTimestamp) {
+//                     console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
+//                 }
+
+//                 if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 61000) {
+//                     console.log("TOO SOON TO FETCH")
+//                     return
+//                 }
+
+//                 AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString()).then(() => {
+
+//                     const lat = lastLocation.coords.latitude
+//                     const long = lastLocation.coords.longitude
+//                     const user_location = [lat, long]
+
+//                     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
+
+//                     AsyncStorage.getItem("emergency-id").then((_id) => {
+//                         console.log("STORAGE ID", _id)
+
+//                         if (_id) {
+//                             fetch(`${url}/emergencies/update-location`, {
+//                                 method: 'PUT',
+//                                 headers: { 'Content-Type': 'application/json' },
+//                                 body: JSON.stringify({ _id, user_location })
+//                             })
+//                                 .then((response) => response.json())
+//                                 .then((fetchData) => {
+//                                     console.log("FETCH DATA", fetchData)
+//                                     if (!fetchData.result && fetchData.error === "No more emergency in data base") {
+//                                         stopLocation()
+//                                     }
+//                                 })
+//                         }
+
+//                     })
+
+//                 })
+//             })
+//         })
+//     }
+// });
 
 
 

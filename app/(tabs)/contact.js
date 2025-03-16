@@ -113,13 +113,17 @@ export default function Contact() {
 
   const marker = { coordinates: { latitude: 48.866550, longitude: 2.351357 }, title: "Alexis Baudelin Avocat\n80 rue Réaumur\n75002 Paris", tintColor: "black" }
 
-  let map = ""
+ const appleMaps = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
+
+ const googleMaps =  <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
+
+ const [mapToDisplay, setMapToDisplay]=useState("")
 
   const setExpoMap = () => {
     if (Platform.OS === 'ios') {
-      map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
-    } else if (Platform.OS === 'android') {
-      map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+      setMapToDisplay("apple")
+      } else if (Platform.OS === 'android') {
+      setMapToDisplay("google")
     }
   }
 
@@ -180,7 +184,8 @@ export default function Contact() {
             </Text>
           </View>
 
-          {map}
+          {mapToDisplay === "google" && googleMaps}
+          {mapToDisplay === "apple" && appleMaps}
 
 
 
@@ -393,14 +398,15 @@ export default function Contact() {
               </Text>
             </View>
   
-            <View style={[styles.row, map ? { marginBottom: RPW(4) } : {marginBottom : RPW(10)}]}>
+            <View style={[styles.row, mapToDisplay ? { marginBottom: RPW(4) } : {marginBottom : RPW(10)}]}>
               <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
               <Text style={styles.firmContact}>
                 01.42.74.72.26
               </Text>
             </View>
             
-            {map}
+            {mapToDisplay === "google" && googleMaps}
+            {mapToDisplay === "apple" && appleMaps}
   
   
   
