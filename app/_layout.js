@@ -4,11 +4,15 @@ import { useEffect, useState, useRef } from "react";
 import * as Notifications from 'expo-notifications';
 
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import user from '../reducers/user'
 import testArticle from '../reducers/testArticle'
 import articles from '../reducers/articles'
 import emergencies from "../reducers/emergencies";
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persistStore, persistReducer } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -17,11 +21,24 @@ SplashScreen.preventAutoHideAsync();
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
 
+const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+}
+
+const reducers = combineReducers({ user, testArticle, articles, emergencies })
+
 const store = configureStore({
-    reducer: { user, testArticle, articles, emergencies },
+    reducer: persistReducer(persistConfig, reducers),
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false })
+        getDefaultMiddleware({ serializableCheck: false }),
 })
+
+const persistor = persistStore(store)
+
+
+
+
 
 export default function RootLayout() {
 
@@ -89,17 +106,19 @@ export default function RootLayout() {
 
     return (
         <Provider store={store}>
-            <KeyboardProvider>
-                <Stack >
-                    <Stack.Screen name="home" options={{
-                        headerShown: false,
-                        title: "Home",
-                    }} />
-                    <Stack.Screen name="(tabs)" options={{
-                        headerShown: false,
-                    }} />
-                </Stack>
-            </KeyboardProvider>
+            <PersistGate persistor={persistor}>
+                <KeyboardProvider>
+                    <Stack >
+                        <Stack.Screen name="home" options={{
+                            headerShown: false,
+                            title: "Home",
+                        }} />
+                        <Stack.Screen name="(tabs)" options={{
+                            headerShown: false,
+                        }} />
+                    </Stack>
+                </KeyboardProvider>
+            </PersistGate>
         </Provider>
     )
 }
