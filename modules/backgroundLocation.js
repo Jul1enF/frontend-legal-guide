@@ -45,7 +45,7 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
-        deferredUpdatesInterval: 61000,
+        deferredUpdatesInterval: 60000,
     });
 };
 
@@ -139,7 +139,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
                     console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
                 }
 
-                if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 61000) {
+                if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 45000) {
                     console.log("TOO SOON TO FETCH")
                     return
                 }

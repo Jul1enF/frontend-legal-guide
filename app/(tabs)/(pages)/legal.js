@@ -50,9 +50,9 @@ export default function Legal() {
                 ARTICLE 2 : Mentions légales
             </Text>
             <Text style={styles.text}>
-                L'application {appName} est édité par la ALEXIS BAUDELIN, entreprise individuelle, dont le siège social est situé au 80 rue Réaumur, 75002 Paris.
+                L'application {appName} est édité par ALEXIS BAUDELIN, entreprise individuelle, dont le siège social est situé au 80 rue Réaumur, 75002 Paris.
             </Text><Text style={styles.text}>
-                L'entreprise est représentée par Maitre Alexis Baudelin.
+                L'entreprise est représentée par Maitre Alexis Baudelin, avocat au barreau de Paris.
             </Text>
 
 
@@ -64,14 +64,14 @@ export default function Legal() {
             </Text><Text style={styles.text}>
                 L’Utilisateur de l'application {appName} a accès aux services suivants sans création de compte :
             </Text><Text style={styles.text2}>
-                - Consulter des articles sur des conseils légaux et des revues de presse sur l'application {appName}.
+                - Consulter des articles de conseils juridiques et de revues de presse sur l'application {appName}.
             </Text><Text style={styles.text}>
                 - Effectuer une recherche pour trouver l'un de ces articles.
             </Text><Text style={styles.text}>
                 - Faire une demande de contact en urgence ou via un formulaire.
             </Text>
             <Text style={styles.text}>
-                - Consulter l'agenda des évènements de ALexis Baudelin.
+                - Consulter l'agenda des évènements publics de Maître Alexis Baudelin.
             </Text>
             <Text style={styles.text}>
                 La création d’un Compte se fait au moyen d’un email, d’un mot de passe, du nom de l'Utilisateur, du prénom de l'Utilisateur.
@@ -99,7 +99,7 @@ export default function Legal() {
             </Text><Text style={styles.text}>
                 L’Utilisateur assume l’entière responsabilité de l’utilisation qu’il fait des informations et contenus présents sur l'application {appName}.
             </Text><Text style={styles.text}>
-                Tout usage du service par l'Utilisateur ayant directement ou indirectement pour conséquence des dommages doit faire l'objet d'une indemnisation au profit du site.
+Tout usage du service par l'Utilisateur ayant directement ou indirectement pour conséquence des dommages peut voir sa responsabilité engagée et astreint à une indemnisation au profit de l'Éditeur.
             </Text>
 
 
@@ -109,9 +109,9 @@ export default function Legal() {
             <Text style={styles.text}>
                 Tout dysfonctionnement du serveur ou du réseau ne peut engager la responsabilité de l’Éditeur.
             </Text><Text style={styles.text}>
-                De même, la responsabilité du site ne peut être engagée en cas de force majeure ou du fait imprévisible et insurmontable d'un tiers.
+                De même, la responsabilité de l'Éditeur ne peut être engagée pour un dysfonctionnement de l'application {appName} en cas de force majeure ou du fait imprévisible et insurmontable d'un tiers.
             </Text><Text style={styles.text}>
-                L'application {appName} s'engage à mettre en œuvre tous les moyens nécessaires pour garantir la sécurité et la confidentialité des données. Toutefois, il n’apporte pas une garantie de sécurité totale.
+                L'Editeur de l'application {appName} s'engage à mettre en œuvre tous les moyens nécessaires pour garantir la sécurité et la confidentialité des données. Toutefois, il n’apporte pas une garantie de sécurité totale et ne saurait garantir l'application {appName} comme un canal de mise en relation parfaitement sécurisé entre un avocat et son client. L'Éditeur conseille donc à l'Utilisateur de ne pas communiquer d'informations confidentielles via l'application {appName}.
             </Text><Text style={styles.text}>
                 L’Éditeur se réserve la faculté d’une non-garantie de la fiabilité des sources, bien que les informations diffusées sur le site soient réputées fiables.
             </Text>
@@ -123,7 +123,7 @@ export default function Legal() {
             <Text style={styles.text}>
                 Les contenus de l'application {appName} (logos, textes, éléments graphiques, vidéos, etc.) sont protégés par le droit d’auteur, en vertu du Code de la propriété intellectuelle.
             </Text><Text style={styles.text}>
-                L’Utilisateur devra obtenir l’autorisation de l’éditeur du site avant toute reproduction, copie ou publication de ces différents contenus.
+                L’Utilisateur devra obtenir l’autorisation de l’Éditeur du site avant toute reproduction, copie ou publication de ces différents contenus.
             </Text><Text style={styles.text}>
                 Ces derniers peuvent être utilisés par les utilisateurs à des fins privées ; tout usage commercial est interdit.
             </Text>
@@ -164,7 +164,7 @@ export default function Legal() {
             </Text>
             <Text style={styles.text}>
                 Le présent contrat dépend de la législation française.
-                En cas de litige non résolu à l’amiable entre l’Utilisateur et l’Éditeur, les tribunaux de Nice sont compétents pour régler le contentieux.
+                En cas de litige non résolu à l’amiable entre l’Utilisateur et l’Éditeur, le tribunal judiciaire de Paris est compétent pour régler le contentieux.
             </Text>
 
         </ScrollView>

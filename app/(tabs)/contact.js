@@ -115,17 +115,19 @@ export default function Contact() {
 
   let map = ""
 
-  if (Platform.OS === "ios"){
+  if (Platform.OS === "ios") {
     map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
-  }else if (Platform.OS == "android"){
-    map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
+  } else if (Platform.OS == "android") {
+    map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} properties={{isMyLocationEnabled : true,}}/>
   }
 
- const [reloadPage, setReloadPage]=useState(0)
+  // Hack pour que googlemaps ne disparaisse pas en changeant de page et en revenant sur celle ci. Force un reload.
+  const [displayGoogleMap, setDisplayGoogleMap] = useState(false)
 
   useFocusEffect(useCallback(() => {
-    setReloadPage(reloadPage => reloadPage + 1)
-}, []))
+    setDisplayGoogleMap(false)
+    setTimeout(() => setDisplayGoogleMap(true), 100)
+  }, []))
 
 
 
@@ -356,60 +358,60 @@ export default function Contact() {
       </>
 
     );
-  }else {
+  } else {
     return (
       <>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
           <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled">
-  
+
             <Text style={styles.subTitle}>Contact</Text>
             <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
-  
+
             <View style={styles.line} >
             </View>
-  
-  
-  
+
+
+
             <View style={styles.underlineContainer}>
               <Text style={styles.sectionTitle}>
                 Alexis Baudelin Avocat :
               </Text>
             </View>
-  
+
             <View style={styles.row}>
               <MaterialIcons name="location-on" size={RPW(5)} style={styles.icon} />
               <Text style={styles.firmContact}>
                 80 rue Réaumur 75002 Paris
               </Text>
             </View>
-  
+
             <View style={styles.row}>
               <Entypo name="old-phone" size={RPW(5)} style={styles.icon} />
               <Text style={styles.firmContact}>
                 01.80.49.11.38
               </Text>
             </View>
-  
-            <View style={[styles.row, map ? { marginBottom: RPW(4) } : {marginBottom : RPW(10)}]}>
+
+            <View style={[styles.row, map ? { marginBottom: RPW(4) } : { marginBottom: RPW(10) }]}>
               <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
               <Text style={styles.firmContact}>
                 01.42.74.72.26
               </Text>
             </View>
-            
-            {map}
-  
-  
-  
+
+            {displayGoogleMap && map}
+
+
+
             <View style={[styles.underlineContainer]}>
               <Text style={styles.sectionTitle}>
                 Prendre rendez-vous :
               </Text>
             </View>
-  
-  
+
+
             <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?source=profile&targetid=47510')}>
               <FontAwesome name="handshake-o" size={RPW(5)} style={styles.appointmentIcon} />
               <Text style={styles.appointmentText}>
@@ -417,7 +419,7 @@ export default function Contact() {
               </Text>
               <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
             </TouchableOpacity>
-  
+
             <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?source=profile&targetid=47510')}>
               <FontAwesome name="video-camera" size={RPW(5)} style={styles.appointmentIcon} />
               <Text style={styles.appointmentText}>
@@ -425,7 +427,7 @@ export default function Contact() {
               </Text>
               <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
             </TouchableOpacity>
-  
+
             <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?source=profile&targetid=47510')}>
               <MaterialIcons name="phone-iphone" size={RPW(6)} style={styles.appointmentIcon} />
               <Text style={styles.appointmentText}>
@@ -433,7 +435,7 @@ export default function Contact() {
               </Text>
               <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
             </TouchableOpacity>
-  
+
             <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?source=profile&targetid=47510')}>
               <MaterialCommunityIcons name="chat" size={RPW(5)} style={styles.appointmentIcon} />
               <Text style={styles.appointmentText}>
@@ -441,7 +443,7 @@ export default function Contact() {
               </Text>
               <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
             </TouchableOpacity>
-  
+
             <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-juridique/forms.php?source=profile&targetid=47510')}>
               <AntDesign name="form" size={RPW(5)} style={styles.appointmentIcon} />
               <Text style={styles.appointmentText}>
@@ -449,15 +451,15 @@ export default function Contact() {
               </Text>
               <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
             </TouchableOpacity>
-  
-  
-  
+
+
+
             <View style={styles.underlineContainer}>
               <Text style={styles.sectionTitle}>
                 Formulaire de contact :
               </Text>
             </View>
-  
+
             <Text style={styles.inputTitle}>
               Votre nom et prénom
             </Text>
@@ -470,7 +472,7 @@ export default function Contact() {
               placeholder='Nom et prénom...'
               placeholderTextColor="#fbfff790">
             </TextInput>
-  
+
             <Text style={styles.inputTitle}>
               Votre email
             </Text>
@@ -485,7 +487,7 @@ export default function Contact() {
               keyboardType='email-address'
               autoCapitalize='none'>
             </TextInput>
-  
+
             <Text style={styles.inputTitle}>
               Votre numéro de téléphone
             </Text>
@@ -499,7 +501,7 @@ export default function Contact() {
               placeholderTextColor="#fbfff790"
               autoCapitalize='none'>
             </TextInput>
-  
+
             <Text style={styles.inputTitle}>
               Sujet
             </Text>
@@ -512,7 +514,7 @@ export default function Contact() {
               placeholder='Sujet...'
               placeholderTextColor="#fbfff790">
             </TextInput>
-  
+
             <Text style={styles.inputTitle}>
               Votre message
             </Text>
@@ -528,7 +530,7 @@ export default function Contact() {
               placeholderTextColor="#fbfff792"
               returnKeyType='next'>
             </TextInput>
-  
+
             <TouchableOpacity style={styles.sendBtn} onPress={() => firstSendPress()}>
               <Text style={[styles.error, error === "Message envoyé !" && { color: "green" }]}>
                 {error}
@@ -537,13 +539,13 @@ export default function Contact() {
                 Envoyer
               </Text>
             </TouchableOpacity>
-  
-  
-  
+
+
+
             <Link href="/legal" style={styles.cgu}>C.G.U</Link>
-  
-  
-  
+
+
+
             <Modal
               visible={modalVisible}
               animationType="slide"
@@ -565,14 +567,14 @@ export default function Contact() {
                 </View>
               </View>
             </Modal>
-  
-  
+
+
           </ScrollView>
         </KeyboardAvoidingView>
 
-  
+
       </>
-  
+
     )
   }
 }
