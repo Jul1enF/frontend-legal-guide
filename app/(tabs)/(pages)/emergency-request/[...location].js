@@ -129,8 +129,29 @@ export default function EmergencyRequest() {
         }
     }
 
+    const [id, setId] = useState("")
+    const [timeStamp, setTimeStamp]=useState("")
+    const [bgDate, setBgDate]=useState("")
+
+    const getStorageItems = async ()=>{
+        const storageId = await AsyncStorage.getItem("emergency-id")
+        if (storageId){
+            setId(storageId)
+        }
+        const lastFetchTimestamp = await AsyncStorage.getItem("fetch-timestamp")
+        if (lastFetchTimestamp){
+            setTimeStamp(lastFetchTimestamp)
+        }
+
+        const lastBgDate = await AsyncStorage.getItem("lastBgLocationDate")
+        if (lastBgDate){
+            setBgDate(lastBgDate)
+        }
+    }
+
     useFocusEffect(useCallback(() => {
         checkEmergency()
+        getStorageItems()
     }, [emergency]))
 
 
@@ -558,6 +579,9 @@ export default function EmergencyRequest() {
 
 
             <Header />
+            <Text>ID : {id}</Text>
+            <Text>TIMESTAMP :{timeStamp}</Text>
+            <Text>LAST BG LOCATION :{bgDate}</Text>
 
             {emergency._id && <PendingRequest />}
 

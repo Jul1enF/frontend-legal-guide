@@ -68,6 +68,8 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         return;
     }
     if (data) {
+        await AsyncStorage.setItem("lastBgLocationDate", new Date().toISOString())
+
         const { locations } = data;
         console.log("BACKGROUND LOCATION :", locations)
 
@@ -75,6 +77,12 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         const lastLocation = locations[i]
 
         const lastFetchTimestamp = await AsyncStorage.getItem("fetch-timestamp")
+
+        console.log("LAST FETCH TIME STAMP", lastFetchTimestamp)
+
+        if(lastFetchTimestamp){
+            console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
+        }
 
         if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 61000){
             console.log("TOO SOON TO FETCH")

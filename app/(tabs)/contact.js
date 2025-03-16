@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Platform, TextInput, Modal, Keyboard } from 'react-native';
 import { router, Link } from 'expo-router';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
 
 import { AppleMaps, GoogleMaps } from 'expo-maps';
 
@@ -114,12 +115,18 @@ export default function Contact() {
 
   let map = ""
 
-  if (Platform.OS === 'ios') {
-    map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
-  } else if (Platform.OS === 'android') {
-    map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+  const setExpoMap = () => {
+    if (Platform.OS === 'ios') {
+      map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+    } else if (Platform.OS === 'android') {
+      map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />;
+    }
   }
 
+
+  useFocusEffect(useCallback(() => {
+    setExpoMap()
+}, []))
 
 
 
