@@ -129,8 +129,47 @@ export default function EmergencyRequest() {
         }
     }
 
+    const [id, setId] = useState("")
+    const [timeStamp, setTimeStamp]=useState("")
+    const [bgDate, setBgDate]=useState("")
+    const [bgId, setBgId]=useState("")
+    const [bgUrl, setBgUrl]=useState("")
+    const [timeDifference, setTimeDifference]=useState("")
+
+    const getStorageItems = async ()=>{
+        const storageId = await AsyncStorage.getItem("emergency-id")
+        if (storageId){
+            setId(storageId)
+        }
+        const lastFetchTimestamp = await AsyncStorage.getItem("fetch-timestamp")
+        if (lastFetchTimestamp){
+            setTimeStamp(lastFetchTimestamp)
+        }
+
+        const lastBgDate = await AsyncStorage.getItem("lastBgLocationDate")
+        if (lastBgDate){
+            setBgDate(lastBgDate)
+        }
+
+        const storageBgId = await AsyncStorage.getItem("id-from-bg")
+        if (storageBgId){
+            setBgId(storageBgId)
+        }
+
+        const storageUrl = await AsyncStorage.getItem("fetch-url")
+        if (storageUrl){
+            setBgUrl(storageUrl)
+        }
+
+        const storageDifference = await AsyncStorage.getItem("time-difference")
+        if (storageDifference){
+            setTimeDifference(storageDifference)
+        }
+    }
+
 
     useFocusEffect(useCallback(() => {
+        getStorageItems()
         checkEmergency()
     }, [emergency]))
 
@@ -559,6 +598,12 @@ export default function EmergencyRequest() {
 
 
             <Header />
+            <Text>ID : {id}</Text>
+            <Text>TIMESTAMP :{timeStamp}</Text>
+            <Text>LAST BG LOCATION :{bgDate}</Text>
+            <Text>BACKGROUND ID : {bgId}</Text>
+            <Text>BACKGROUND URL : {bgUrl}</Text>
+            <Text>TIME DIFFERENCE : {timeDifference}</Text>
 
             {emergency._id && <PendingRequest />}
 

@@ -46,11 +46,6 @@ export default function ArticlesList(props) {
     const previousSubcategory2Ref = useRef(null)
 
 
-    console.log("Chosen subcat 1", chosenSubcategory)
-    console.log("Subcat list 1", subcategoriesList)
-    console.log("Chosen subcat 2", chosenSubcategory2)
-    console.log("Subcat list 2", subcategoriesList2)
-
 
     // useRefpour scroller jusqu'à un article qui vient d'être modifié en retour d'un post
 
