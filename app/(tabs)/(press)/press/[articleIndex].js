@@ -7,7 +7,6 @@ import ArticlesList from '../../../../components/ArticlesList';
 
 export default function Press() {
   const {articleIndex} = useLocalSearchParams()
-  console.log("ARTICLE INDEX", articleIndex)
 
   const index = articleIndex ? articleIndex : "none"
 

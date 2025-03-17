@@ -252,17 +252,17 @@ export default function FullArticle(props) {
 
     // Source de l'image à réquérir différement si elle est en ligne, sur l'appareil ou si le portable est offline
 
-    const [imageLoadError, setImageLoadError]=useState(false)
+    const [imageLoadError, setImageLoadError] = useState(false)
     const backupImage = (!isOnline && imageLoadError) ? true : false
 
     let image
     if (requires[article.img_link] === undefined) {
         if (!isOnline && imageLoadError) {
             image = <Image
-            style={[styles.image, { width: RPW(100) }]}
-            source={ props.category === "advices" ? require('../assets/backup-advices1.jpg') : require('../assets/backup-press1.jpg')}
-        />
-        }else{
+                style={[styles.image, { width: RPW(100) }]}
+                source={props.category === "advices" ? require('../assets/backup-advices1.jpg') : require('../assets/backup-press1.jpg')}
+            />
+        } else {
             image = <Image
                 style={[styles.image, {
                     width: RPW(100 * article.img_zoom),
@@ -270,8 +270,8 @@ export default function FullArticle(props) {
                     marginLeft: RPW(article.img_margin_left * 1)
                 }]}
                 source={{ uri: article.img_link }}
-                onError={({ nativeEvent: {error} }) => setImageLoadError(true)}
-                onLoad={() => {setImageLoadError(false)}}
+                onError={({ nativeEvent: { error } }) => setImageLoadError(true)}
+                onLoad={() => { setImageLoadError(false) }}
             />
         }
     } else {
@@ -290,14 +290,23 @@ export default function FullArticle(props) {
 
     if (!article) { return <View></View> }
 
-    
+
 
 
     return (
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
             <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => category !== "searches" ? router.back(`/${category}/none`) : router.back(`/${category}/${props.searchedText}`)}>
+                <TouchableOpacity style={styles.headerSection} onPress={() => {
+                    if (category === "searches") {
+                        router.back(`/${category}/${props.searchedText}`)
+                    } else if (category === "bookmarks") {
+                        router.back(`/${category}`)
+                    } else {
+                        router.back(`/${category}/none`)
+                    }
+                }
+                }>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>{props.categoryName}</Text>
                 </TouchableOpacity>

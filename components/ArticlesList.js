@@ -41,8 +41,15 @@ export default function ArticlesList(props) {
 
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
 
+    // Ref pour garder en mémoire les sous catégories choisies en cas de rafraichissement de la page
+    const previousSubcategory1Ref = useRef(null)
+    const previousSubcategory2Ref = useRef(null)
 
 
+    console.log("Chosen subcat 1", chosenSubcategory)
+    console.log("Subcat list 1", subcategoriesList)
+    console.log("Chosen subcat 2", chosenSubcategory2)
+    console.log("Subcat list 2", subcategoriesList2)
 
 
     // useRefpour scroller jusqu'à un article qui vient d'être modifié en retour d'un post
@@ -68,11 +75,33 @@ export default function ArticlesList(props) {
         }
     }
 
+   
+    // useEffect Bookmarks pour potentiellement afficher directement les sous catégories et revenir à une catégorie précédente
     useEffect(() => {
         if (allConcernedArticles) {
-            isThereOnlyOneCategoryBookmarked() && subcategoryPress(isThereOnlyOneCategoryBookmarked())
+            if (isThereOnlyOneCategoryBookmarked()){
+                subcategoryPress(isThereOnlyOneCategoryBookmarked())
+            }
+            else if (props.category === "bookmarks"){
+                // Pour revenir aux sous catégories précédemment choisies, si toujours présentes
+                if (previousSubcategory1Ref.current && subcategoriesList.some(e=> e.name === previousSubcategory1Ref.current)){
+
+                    subcategoryPress(previousSubcategory1Ref.current)
+                }
+            }
         }
     }, [allConcernedArticles])
+
+    //useEffect Bookmarks pour potentiellement revenir à une sous catégorie précédente
+
+    useEffect(()=>{
+        if (props.category === "bookmarks" && subcategoriesList2){
+            if (previousSubcategory2Ref.current && subcategoriesList2.some(e=> e.name === previousSubcategory2Ref.current)){
+
+                subcategoryPress2(previousSubcategory2Ref.current)
+            }
+        }
+    },[subcategoriesList2])
 
 
 
@@ -329,17 +358,10 @@ export default function ArticlesList(props) {
         }
     }, [testArticle, props.searchedText])
 
-    // useEffect pour bookmarks
+    // useEffect pour bookmarks pour charger les articles
+    
     useEffect(() => {
         if (props.category === "bookmarks") {
-            // Reset de la méthode de recherche quand le composant est monté à nouveau
-            searchMethodRef.current = "occurence"
-
-            horizontalFlatlist0Ref.current && horizontalFlatlist0Ref.current.scrollToOffset({
-                offset: 0,
-                animated: true,
-            })
-
             loadArticles()
         }
     }, [user])
@@ -361,6 +383,7 @@ export default function ArticlesList(props) {
 
     const subcategoryPress = (subcategory, index) => {
         setChosenSubcategory(subcategory)
+        previousSubcategory1Ref.current = subcategory
 
         index && horizontalFlatlistRef.current.scrollToIndex({
             animated: true,
@@ -371,6 +394,7 @@ export default function ArticlesList(props) {
         if (subcategory === firstSubCategory) {
             setArticlesToDisplay(allConcernedArticles)
             setSubcategoriesList2("")
+            previousSubcategory2Ref.current = null
         }
         else {
             // Articles advices et press
@@ -423,13 +447,14 @@ export default function ArticlesList(props) {
     // Fonction appelée en cas de click sur une sous catégorie de la deuxième liste (celle de bookmarks)
 
     const subcategoryPress2 = (subcategory, index) => {
-        horizontalFlatlist2Ref.current.scrollToIndex({
+        index && horizontalFlatlist2Ref.current.scrollToIndex({
             animated: true,
             index,
             viewOffset: RPW(5)
         })
 
         setChosenSubcategory2(subcategory)
+        previousSubcategory2Ref.current = subcategory
 
         if (subcategory === subcategoriesList2[0].name) {
 
@@ -484,7 +509,10 @@ export default function ArticlesList(props) {
             router.push(`/${props.category}-article/testArticleId`)
         } else if (props.category === "searches") {
             router.push(`/${props.category}-article/${_id}/${props.searchedText}`)
-        } else {
+        } else if (props.category == "bookmarks"){
+            router.push(`/${props.category}-article/${_id}`)
+        }
+        else {
             router.push(`/${props.category}-article/${_id}/${index}`)
         }
     }

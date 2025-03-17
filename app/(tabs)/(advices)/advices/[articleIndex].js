@@ -7,7 +7,6 @@ import ArticlesList from '../../../../components/ArticlesList';
 
 export default function Advices() {
   const {articleIndex} = useLocalSearchParams()
-    console.log("ARTICLE INDEX", articleIndex)
   
     const index = articleIndex ? articleIndex : "none"
 
