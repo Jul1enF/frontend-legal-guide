@@ -87,9 +87,9 @@ export default function FullArticle(props) {
         if (!user.jwtToken) { return }
         user.bookmarks.includes(_id) ? setIsBookmarked(true) : setIsBookmarked(false)
 
-        if (_id === "testArticleId" && testArticle.length === 0) { router.back(`/${category}`) }
+        if (_id === "testArticleId" && testArticle.length === 0) { router.back(`/${category}/none`) }
 
-        if (testArticle.length > 0 && testArticle[0].category === category && _id !== "testArticleId") { router.back(`/${category}`) }
+        if (testArticle.length > 0 && testArticle[0].category === category && _id !== "testArticleId") { router.back(`/${category}/none`) }
     }, [user, testArticle]))
 
 
@@ -147,7 +147,6 @@ export default function FullArticle(props) {
         }
     }
 
-
     // Fonction appelée en cliquant sur modifier
 
     const modifyPress = () => {
@@ -169,6 +168,8 @@ export default function FullArticle(props) {
             author: article.author,
             tags: article.tags,
             media_link: article.media_link,
+            // Index de l'article pour revenir scroller jusqu'à lui dans la liste après une modif et un post de celle ci
+            index: props.articlesListIndex,
             // test : true => Un article déjà posté n'a pas un _id "testArticleId" mais peut être mis en test. C'est donc cet indicateur qui sert à savoir ensuite si l'on affiche la page détaillée d'un article en test ou en BDD
             test: true,
         }))
@@ -296,7 +297,7 @@ export default function FullArticle(props) {
         <View style={styles.body}>
             <StatusBar translucent={true} barStyle="light" />
             <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => category !== "searches" ? router.back(`/${category}`) : router.back(`/${category}/${props.searchedText}`)}>
+                <TouchableOpacity style={styles.headerSection} onPress={() => category !== "searches" ? router.back(`/${category}/none`) : router.back(`/${category}/${props.searchedText}`)}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>{props.categoryName}</Text>
                 </TouchableOpacity>

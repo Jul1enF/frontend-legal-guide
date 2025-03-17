@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, StatusBar, Image } from 'react-native'
 import { registerForPushNotificationsAsync } from "../modules/registerForPushNotificationsAsync"
-import { useCallback, useState, useEffect, useRef } from 'react'
+import { useCallback, useState, useEffect, useRef, useLayoutEffect } from 'react'
 
 import { RPW, RPH } from "../modules/dimensions"
 
@@ -44,6 +44,10 @@ export default function ArticlesList(props) {
 
 
 
+
+    // useRefpour scroller jusqu'à un article qui vient d'être modifié en retour d'un post
+
+    const verticalFlatlistRef = useRef(null)
 
 
 
@@ -475,13 +479,13 @@ export default function ArticlesList(props) {
 
     // Fonction appelée en cliquant sur un article
 
-    const articlePress = (_id, test) => {
+    const articlePress = (_id, test, index) => {
         if (test) {
             router.push(`/${props.category}-article/testArticleId`)
         } else if (props.category === "searches") {
             router.push(`/${props.category}-article/${_id}/${props.searchedText}`)
         } else {
-            router.push(`/${props.category}-article/${_id}`)
+            router.push(`/${props.category}-article/${_id}/${index}`)
         }
     }
 
@@ -640,14 +644,29 @@ export default function ArticlesList(props) {
             <FlatList
                 data={articlesToDisplay}
                 refreshControl={refreshComponent}
+                ref={verticalFlatlistRef}
+                onScrollToIndexFailed={(event)=>{
+                    verticalFlatlistRef.current.scrollToIndex({ animated :false, index : 0})
+                }}
+                initialNumToRender={(props.index && props.index !== "none" && testArticle.length == 0) ? Number(props.index)+5 : 10}
+                onLayout={()=>{
+                    if (props.index && props.index !== "none" && testArticle.length == 0){
+                        setTimeout(()=>{
+                            verticalFlatlistRef.current.scrollToIndex({
+                                animated: true,
+                                index : Number(props.index),
+                            })
+                        }, 1000)
+                    }
+                }}
                 ListHeaderComponent={headerVerticalFlatlist}
                 keyExtractor={(item, index) => item.test ? index : item._id}
                 renderItem={({ item, index }) => {
                     if ((index === 0 || Number.isInteger((index) / 3)) && props.category !== "searches") {
-                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><TopArticle {...item} chosenSubcategory={chosenSubcategory} index={index} /></TouchableOpacity>
+                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test, index)} ><TopArticle {...item} index={index} /></TouchableOpacity>
                     }
                     else {
-                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test)} ><Article {...item} /></TouchableOpacity>
+                        return <TouchableOpacity onPress={() => articlePress(item._id, item.test, index)} ><Article {...item} /></TouchableOpacity>
                     }
                 }}
                 contentContainerStyle={{ alignItems: 'center' }}

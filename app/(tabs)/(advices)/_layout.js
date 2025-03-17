@@ -6,10 +6,10 @@ export default function RootLayout() {
             headerShown: false,
 
         }}>
-            <Stack.Screen name="advices" options={{
+            <Stack.Screen name="advices/[articleIndex]" options={{
                 title: "Conseils",
             }} />
-            <Stack.Screen name="advices-article/[_id]" options={{
+            <Stack.Screen name="advices-article/[...infos]" options={{
                 title: "Conseil",
             }} />
         </Stack>
