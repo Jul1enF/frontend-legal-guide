@@ -113,11 +113,12 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         if (_id) {
             await AsyncStorage.setItem("id-from-bg", _id)
 
-            const response = await fetch(`${url}/emergencies/update-location`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ _id, user_location })
-            })
+            // const response = await fetch(`${url}/emergencies/update-location`, {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ _id, user_location })
+            // })
+             const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${_id}`)
 
             const fetchData = await response.json()
 
