@@ -45,9 +45,8 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
-        deferredUpdatesInterval: 2000,
-        deferredUpdatesDistance : 0,
-
+        deferredUpdatesInterval: 61000,
+        deferredUpdatesDistance: 0.1,
     });
 };
 
@@ -71,7 +70,6 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         return;
     }
     if (data) {
-        await AsyncStorage.setItem("lastBgLocationDate", new Date().toISOString())
 
         const { locations } = data;
         console.log("BACKGROUND LOCATION :", locations)
@@ -81,124 +79,36 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
         const lastFetchTimestamp = await AsyncStorage.getItem("fetch-timestamp")
 
-        console.log("LAST FETCH TIME STAMP", lastFetchTimestamp)
-
-        if(lastFetchTimestamp){
+        if (lastFetchTimestamp) {
             console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
         }
 
-        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 1500){
+        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 45000) {
             console.log("TOO SOON TO FETCH")
             return
         }
 
-        const timeDifference = lastFetchTimestamp ? (lastLocation.timestamp - Number(lastFetchTimestamp)).toString() : "none"
-
-        await AsyncStorage.setItem("time-difference", timeDifference)
-
-        await AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString())
-
         const lat = lastLocation.coords.latitude
         const long = lastLocation.coords.longitude
-        const user_location = [lat, long]
 
         const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-
-        await AsyncStorage.setItem("fetch-url", url)
 
         const _id = await AsyncStorage.getItem("emergency-id")
 
         console.log("STORAGE ID", _id)
 
         if (_id) {
-            await AsyncStorage.setItem("id-from-bg", _id)
-
-            // const response = await fetch(`${url}/emergencies/update-location`, {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ _id, user_location })
-            // })
-             const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${_id}`)
+            const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${_id}`)
 
             const fetchData = await response.json()
 
             console.log("FETCH DATA", fetchData)
             if (!fetchData.result && fetchData.error === "No more emergency in data base") {
-                stopLocation()
+                await stopLocation()
             }
         }
     }
 });
-
-
-
-
-
-
-// TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
-//     if (error) {
-//         console.log("TASK MANAGER ERROR", error)
-//         return;
-//     }
-//     if (data) {
-//         AsyncStorage.setItem("lastBgLocationDate", new Date().toISOString()).then(() => {
-//             const { locations } = data;
-//             console.log("BACKGROUND LOCATION :", locations)
-
-//             const i = locations.length - 1
-//             const lastLocation = locations[i]
-
-//             AsyncStorage.getItem("fetch-timestamp").then((lastFetchTimestamp) => {
-//                 console.log("LAST FETCH TIME STAMP", lastFetchTimestamp)
-
-//                 if (lastFetchTimestamp) {
-//                     console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
-//                 }
-
-//                 if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 1500) {
-//                     console.log("TOO SOON TO FETCH")
-//                     return
-//                 }
-
-//                 AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString()).then(() => {
-
-//                     const lat = lastLocation.coords.latitude
-//                     const long = lastLocation.coords.longitude
-//                     const user_location = [lat, long]
-
-//                     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-
-//                     AsyncStorage.getItem("emergency-id").then((_id) => {
-//                         console.log("STORAGE ID", _id)
-
-
-//                         if (_id) {
-
-//                             AsyncStorage.setItem("id-from-bg", _id).then(()=>{
-//                                 fetch(`${url}/emergencies/update-location`, {
-//                                     method: 'PUT',
-//                                     headers: { 'Content-Type': 'application/json' },
-//                                     body: JSON.stringify({ _id, user_location })
-//                                 })
-//                                     .then((response) => response.json())
-//                                     .then((fetchData) => {
-//                                         console.log("FETCH DATA", fetchData)
-//                                         if (!fetchData.result && fetchData.error === "No more emergency in data base") {
-//                                             stopLocation()
-//                                         }
-//                                     })
-//                             })
-
-//                         }
-
-//                     })
-
-//                 })
-//             })
-//         })
-//     }
-// });
-
 
 
 

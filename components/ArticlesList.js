@@ -679,7 +679,7 @@ export default function ArticlesList(props) {
                                 animated: true,
                                 index : Number(props.index),
                             })
-                        }, 1000)
+                        }, 1500)
                     }
                 }}
                 ListHeaderComponent={headerVerticalFlatlist}
