@@ -84,7 +84,7 @@ export default function EmergencyRequest() {
         const subscription = AppState.addEventListener('change', (state) => {
             if (state === 'active') {
                 checkEmergency()
-                
+
                 Location.getBackgroundPermissionsAsync().then((res) => {
                     if (res.status === 'granted') {
                         console.log("PERMISSION GRANTED")

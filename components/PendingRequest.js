@@ -121,6 +121,15 @@ export default function PendingRequest() {
     }
 
 
+    // Texte d'avertissement si l'utilisateur a voulu se localiser mais n'a pas activé la localisation en mode "toujours"
+
+    let warning = ""
+
+    if (!emergency.backgroundLocation && emergency.userLocationPermission){
+        warning = <Text style={{color : "rgb(221, 1, 1)", fontSize : RPW(4.5), fontWeight : "600", textAlign : "center", position : "absolute", top : RPH(47)}}>Pour activer la localisation en continu, passez l'autorisation de localisation à <Text style={{fontSize : RPW(4.9), fontWeight : "800"}}>"toujours"</Text> dans les réglages de l'app sur le téléphone.</Text>
+    }
+
+
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
             <Text style={styles.title}>Demande de contact urgent</Text>
@@ -133,11 +142,14 @@ export default function PendingRequest() {
                 </Text>
             </TouchableOpacity>
 
+
             <TouchableOpacity style={styles.btn2} onPress={() => setModal2Visible(true)}>
                 <Text style={styles.btnSentence}>
                     Annuler la demande
                 </Text>
             </TouchableOpacity>
+
+            {warning}
 
             <Modal
                 visible={modal2Visible}

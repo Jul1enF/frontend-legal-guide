@@ -88,6 +88,8 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
             return
         }
 
+        await AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString())
+
         const lat = lastLocation.coords.latitude
         const long = lastLocation.coords.longitude
 
