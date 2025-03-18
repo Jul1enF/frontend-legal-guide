@@ -75,6 +75,21 @@ export default function EmergencyRequest() {
 
 
 
+    // UseEffect et useRef pour scroller en haut de la page si une urgence a été déclenchée
+
+    const scrollRef = useRef(null)
+
+    useEffect(()=>{
+        if (emergency._id && scrollRef.current){
+            scrollRef.current.scrollTo({
+                y: 0,
+                animated: false,
+              })
+        }
+    },[emergency])
+
+
+
 
 
     // UseEffect et AppState Listener pour lancer background location en retour de permission attribuée hors écran de l'app
@@ -83,6 +98,7 @@ export default function EmergencyRequest() {
     useEffect(() => {
         const subscription = AppState.addEventListener('change', (state) => {
             if (state === 'active') {
+                // Check que l'urgence n'a pas été supprimée en retour de background
                 checkEmergency()
 
                 Location.getBackgroundPermissionsAsync().then((res) => {
@@ -374,349 +390,353 @@ export default function EmergencyRequest() {
 
 
 
-    if (Platform.OS == "ios"){
+    if (Platform.OS == "ios") {
 
-    return (<>
+        return (<>
 
-        <KeyboardAwareScrollView
-            style={{ flex: 1, backgroundColor: "#fffcfc" }}
-            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
-            bottomOffset={Platform.OS === 'ios' ? RPW(12) : RPW(6)}
-            stickyHeaderIndices={[0]}
-            keyboardShouldPersistTaps="handled"
-        >
+            <KeyboardAwareScrollView
+                style={{ flex: 1, backgroundColor: "#fffcfc" }}
+                contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
+                bottomOffset={Platform.OS === 'ios' ? RPW(12) : RPW(6)}
+                stickyHeaderIndices={[0]}
+                ref={scrollRef}
+                keyboardShouldPersistTaps="handled"
+            >
 
-            {/* <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
+                {/* <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body}
+            keyboardVerticalOffset={RPH(14)}  >
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
+            ref={scrollRef}
                 keyboardShouldPersistTaps="handled"
                 stickyHeaderIndices={[0]}> */}
 
 
-            <Header />
+                <Header />
 
-            {emergency._id && <PendingRequest />}
+                {emergency._id && <PendingRequest />}
 
-            {!emergency._id &&
-                <>
-                    <Text style={styles.title}>Demande de contact urgent</Text>
-                    <View style={styles.titleLine}></View>
-
-
-                    {!user.jwtToken && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setFirstname(e)
-                                setError('')
-                            }}
-                            value={firstname}
-                            placeholder='Votre prénom'
-                            placeholderTextColor="#fbfff790">
-                        </TextInput>
-                    </View>}
-
-                    {!user.jwtToken && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setName(e)
-                                setError('')
-                            }}
-                            value={name}
-                            placeholder='Votre nom'
-                            placeholderTextColor="#fbfff790">
-                        </TextInput>
-                    </View>}
+                {!emergency._id &&
+                    <>
+                        <Text style={styles.title}>Demande de contact urgent</Text>
+                        <View style={styles.titleLine}></View>
 
 
-                    {!user.phone && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setPhone(e)
-                                setError('')
-                            }}
-                            value={phone}
-                            placeholder="Votre numéro de téléphone"
-                            placeholderTextColor="#fbfff790"
+                        {!user.jwtToken && <View style={styles.inputContainer} >
+                            <TextInput style={styles.input}
+                                onChangeText={(e) => {
+                                    setFirstname(e)
+                                    setError('')
+                                }}
+                                value={firstname}
+                                placeholder='Votre prénom'
+                                placeholderTextColor="#fbfff790">
+                            </TextInput>
+                        </View>}
+
+                        {!user.jwtToken && <View style={styles.inputContainer} >
+                            <TextInput style={styles.input}
+                                onChangeText={(e) => {
+                                    setName(e)
+                                    setError('')
+                                }}
+                                value={name}
+                                placeholder='Votre nom'
+                                placeholderTextColor="#fbfff790">
+                            </TextInput>
+                        </View>}
+
+
+                        {!user.phone && <View style={styles.inputContainer} >
+                            <TextInput style={styles.input}
+                                onChangeText={(e) => {
+                                    setPhone(e)
+                                    setError('')
+                                }}
+                                value={phone}
+                                placeholder="Votre numéro de téléphone"
+                                placeholderTextColor="#fbfff790"
+                            >
+                            </TextInput>
+                        </View>}
+
+                        <TouchableOpacity style={styles.btn2} onPress={() => chooseMedia()}>
+                            <Text style={styles.btnSentence2}>Ajouter une photo / vidéo</Text>
+                        </TouchableOpacity>
+
+                        {uploading && <Text style={styles.error}>Veuillez patienter, média en cours de chargement...</Text>}
+
+
+                        {(mediaType === 'image' && mediaLink) && <View style={styles.imgContainer}>
+                            <Image source={{ uri: mediaLink }} style={styles.image}></Image>
+                        </View>}
+
+                        {mediaType === "video" &&
+                            <View style={styles.videoContainer}>
+                                <VideoView style={styles.video} player={player} />
+                                {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
+                                    player.play()
+                                    setVideoWasLaunched(true)
+                                }} />}
+                            </View>
+                        }
+
+                        {mediaLink && <TouchableOpacity style={styles.btn2} onPress={() => {
+                            setMediaLink('')
+                            setMediaType('')
+                            setMediaMimeType('')
+                            setMediaExtension('')
+                        }}>
+                            <Text style={styles.btnSentence2}>Enlever le média</Text>
+                        </TouchableOpacity>}
+
+
+                        <View style={styles.underlineContainer}>
+                            <Text style={styles.reasonText}>
+                                Motif de votre de demande :
+                            </Text>
+                        </View>
+
+                        <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
+                            <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#0c0000" }]}>Incident avec la police</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
+                            <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#0c0000" }]}>Procédure urgente</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
+                            <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#0c0000" }]}>Autre urgence</Text>
+                        </TouchableOpacity>
+
+
+                        <Text style={styles.error}>{error}</Text>
+
+
+                        <View style={styles.row}>
+
+                            <TouchableOpacity style={styles.btn} onPress={() => cancelPress()}>
+                                <Text style={styles.btnSentence}>
+                                    Annuler
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.btn} onPress={() => validationPress()}>
+                                <Text style={styles.btnSentence}>
+                                    Envoyer
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        <Modal
+                            visible={modal1Visible}
+                            animationType="slide"
+                            style={styles.modal}
+                            backdropColor="rgba(0,0,0,0.9)"
+                            transparent={true}
+                            onRequestClose={() => setModal1Visible(!modal1Visible)}
                         >
-                        </TextInput>
-                    </View>}
-
-                    <TouchableOpacity style={styles.btn2} onPress={() => chooseMedia()}>
-                        <Text style={styles.btnSentence2}>Ajouter une photo / vidéo</Text>
-                    </TouchableOpacity>
-
-                    {uploading && <Text style={styles.error}>Veuillez patienter, média en cours de chargement...</Text>}
-
-
-                    {(mediaType === 'image' && mediaLink) && <View style={styles.imgContainer}>
-                        <Image source={{ uri: mediaLink }} style={styles.image}></Image>
-                    </View>}
-
-                    {mediaType === "video" &&
-                        <View style={styles.videoContainer}>
-                            <VideoView style={styles.video} player={player} />
-                            {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
-                                player.play()
-                                setVideoWasLaunched(true)
-                            }} />}
-                        </View>
-                    }
-
-                    {mediaLink && <TouchableOpacity style={styles.btn2} onPress={() => {
-                        setMediaLink('')
-                        setMediaType('')
-                        setMediaMimeType('')
-                        setMediaExtension('')
-                    }}>
-                        <Text style={styles.btnSentence2}>Enlever le média</Text>
-                    </TouchableOpacity>}
-
-
-                    <View style={styles.underlineContainer}>
-                        <Text style={styles.reasonText}>
-                            Motif de votre de demande :
-                        </Text>
-                    </View>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#0c0000" }]}>Incident avec la police</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#0c0000" }]}>Procédure urgente</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#0c0000" }]}>Autre urgence</Text>
-                    </TouchableOpacity>
-
-
-                    <Text style={styles.error}>{error}</Text>
-
-
-                    <View style={styles.row}>
-
-                        <TouchableOpacity style={styles.btn} onPress={() => cancelPress()}>
-                            <Text style={styles.btnSentence}>
-                                Annuler
-                            </Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.btn} onPress={() => validationPress()}>
-                            <Text style={styles.btnSentence}>
-                                Envoyer
-                            </Text>
-                        </TouchableOpacity>
-
-                    </View>
-
-
-                    <Modal
-                        visible={modal1Visible}
-                        animationType="slide"
-                        style={styles.modal}
-                        backdropColor="rgba(0,0,0,0.9)"
-                        transparent={true}
-                        onRequestClose={() => setModal1Visible(!modal1Visible)}
-                    >
-                        <View style={styles.modalBody}>
-                            <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
-                            <View style={styles.line}>
+                            <View style={styles.modalBody}>
+                                <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
+                                <View style={styles.line}>
+                                </View>
+                                <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
+                                    {error2}
+                                </Text>
+                                <View style={styles.btnContainer}>
+                                    <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
+                                        <Text style={styles.modalText2}>Oui</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(false)}>
+                                        <Text style={styles.modalText2}>Non</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
+                                        <Text style={styles.modalText2}>Annuler</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
-                                {error2}
-                            </Text>
-                            <View style={styles.btnContainer}>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
-                                    <Text style={styles.modalText2}>Oui</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(false)}>
-                                    <Text style={styles.modalText2}>Non</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
-                                    <Text style={styles.modalText2}>Annuler</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                </>
-            }
+                        </Modal>
+                    </>
+                }
 
 
 
-            {/* </ScrollView>
+                {/* </ScrollView>
         </KeyboardAvoidingView> */}
 
-        </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
 
-    </>
-    )
-} else {
-    return (<>
+        </>
+        )
+    } else {
+        return (<>
 
             <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
-            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
-                keyboardShouldPersistTaps="handled"
-                stickyHeaderIndices={[0]}>
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
+                    ref={scrollRef}
+                    keyboardShouldPersistTaps="handled"
+                    stickyHeaderIndices={[0]}>
 
 
-            <Header />
+                    <Header />
 
-            {emergency._id && <PendingRequest />}
+                    {emergency._id && <PendingRequest />}
 
-            {!emergency._id &&
-                <>
-                    <Text style={styles.title}>Demande de contact urgent</Text>
-                    <View style={styles.titleLine}></View>
-
-
-                    {!user.jwtToken && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setFirstname(e)
-                                setError('')
-                            }}
-                            value={firstname}
-                            placeholder='Votre prénom'
-                            placeholderTextColor="#fbfff790">
-                        </TextInput>
-                    </View>}
-
-                    {!user.jwtToken && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setName(e)
-                                setError('')
-                            }}
-                            value={name}
-                            placeholder='Votre nom'
-                            placeholderTextColor="#fbfff790">
-                        </TextInput>
-                    </View>}
+                    {!emergency._id &&
+                        <>
+                            <Text style={styles.title}>Demande de contact urgent</Text>
+                            <View style={styles.titleLine}></View>
 
 
-                    {!user.phone && <View style={styles.inputContainer} >
-                        <TextInput style={styles.input}
-                            onChangeText={(e) => {
-                                setPhone(e)
-                                setError('')
-                            }}
-                            value={phone}
-                            placeholder="Votre numéro de téléphone"
-                            placeholderTextColor="#fbfff790"
-                        >
-                        </TextInput>
-                    </View>}
+                            {!user.jwtToken && <View style={styles.inputContainer} >
+                                <TextInput style={styles.input}
+                                    onChangeText={(e) => {
+                                        setFirstname(e)
+                                        setError('')
+                                    }}
+                                    value={firstname}
+                                    placeholder='Votre prénom'
+                                    placeholderTextColor="#fbfff790">
+                                </TextInput>
+                            </View>}
 
-                    <TouchableOpacity style={styles.btn2} onPress={() => chooseMedia()}>
-                        <Text style={styles.btnSentence2}>Ajouter une photo / vidéo</Text>
-                    </TouchableOpacity>
+                            {!user.jwtToken && <View style={styles.inputContainer} >
+                                <TextInput style={styles.input}
+                                    onChangeText={(e) => {
+                                        setName(e)
+                                        setError('')
+                                    }}
+                                    value={name}
+                                    placeholder='Votre nom'
+                                    placeholderTextColor="#fbfff790">
+                                </TextInput>
+                            </View>}
 
-                    {uploading && <Text style={styles.error}>Veuillez patienter, média en cours de chargement...</Text>}
+
+                            {!user.phone && <View style={styles.inputContainer} >
+                                <TextInput style={styles.input}
+                                    onChangeText={(e) => {
+                                        setPhone(e)
+                                        setError('')
+                                    }}
+                                    value={phone}
+                                    placeholder="Votre numéro de téléphone"
+                                    placeholderTextColor="#fbfff790"
+                                >
+                                </TextInput>
+                            </View>}
+
+                            <TouchableOpacity style={styles.btn2} onPress={() => chooseMedia()}>
+                                <Text style={styles.btnSentence2}>Ajouter une photo / vidéo</Text>
+                            </TouchableOpacity>
+
+                            {uploading && <Text style={styles.error}>Veuillez patienter, média en cours de chargement...</Text>}
 
 
-                    {(mediaType === 'image' && mediaLink) && <View style={styles.imgContainer}>
-                        <Image source={{ uri: mediaLink }} style={styles.image}></Image>
-                    </View>}
+                            {(mediaType === 'image' && mediaLink) && <View style={styles.imgContainer}>
+                                <Image source={{ uri: mediaLink }} style={styles.image}></Image>
+                            </View>}
 
-                    {mediaType === "video" &&
-                        <View style={styles.videoContainer}>
-                            <VideoView style={styles.video} player={player} />
-                            {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
-                                player.play()
-                                setVideoWasLaunched(true)
-                            }} />}
-                        </View>
+                            {mediaType === "video" &&
+                                <View style={styles.videoContainer}>
+                                    <VideoView style={styles.video} player={player} />
+                                    {Platform.OS === "ios" && <FontAwesome5 name="play" size={RPW(16)} style={[styles.playIcon, videoWasLaunched && { display: 'none' }]} onPress={() => {
+                                        player.play()
+                                        setVideoWasLaunched(true)
+                                    }} />}
+                                </View>
+                            }
+
+                            {mediaLink && <TouchableOpacity style={styles.btn2} onPress={() => {
+                                setMediaLink('')
+                                setMediaType('')
+                                setMediaMimeType('')
+                                setMediaExtension('')
+                            }}>
+                                <Text style={styles.btnSentence2}>Enlever le média</Text>
+                            </TouchableOpacity>}
+
+
+                            <View style={styles.underlineContainer}>
+                                <Text style={styles.reasonText}>
+                                    Motif de votre de demande :
+                                </Text>
+                            </View>
+
+                            <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
+                                <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#0c0000" }]}>Incident avec la police</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
+                                <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#0c0000" }]}>Procédure urgente</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
+                                <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#0c0000" }]}>Autre urgence</Text>
+                            </TouchableOpacity>
+
+
+                            <Text style={styles.error}>{error}</Text>
+
+
+                            <View style={styles.row}>
+
+                                <TouchableOpacity style={styles.btn} onPress={() => cancelPress()}>
+                                    <Text style={styles.btnSentence}>
+                                        Annuler
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.btn} onPress={() => validationPress()}>
+                                    <Text style={styles.btnSentence}>
+                                        Envoyer
+                                    </Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+
+                            <Modal
+                                visible={modal1Visible}
+                                animationType="slide"
+                                style={styles.modal}
+                                backdropColor="rgba(0,0,0,0.9)"
+                                transparent={true}
+                                onRequestClose={() => setModal1Visible(!modal1Visible)}
+                            >
+                                <View style={styles.modalBody}>
+                                    <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
+                                    <View style={styles.line}>
+                                    </View>
+                                    <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
+                                        {error2}
+                                    </Text>
+                                    <View style={styles.btnContainer}>
+                                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
+                                            <Text style={styles.modalText2}>Oui</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(false)}>
+                                            <Text style={styles.modalText2}>Non</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
+                                            <Text style={styles.modalText2}>Annuler</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </Modal>
+                        </>
                     }
 
-                    {mediaLink && <TouchableOpacity style={styles.btn2} onPress={() => {
-                        setMediaLink('')
-                        setMediaType('')
-                        setMediaMimeType('')
-                        setMediaExtension('')
-                    }}>
-                        <Text style={styles.btnSentence2}>Enlever le média</Text>
-                    </TouchableOpacity>}
 
+                </ScrollView>
+            </KeyboardAvoidingView>
 
-                    <View style={styles.underlineContainer}>
-                        <Text style={styles.reasonText}>
-                            Motif de votre de demande :
-                        </Text>
-                    </View>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Incident avec la police" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Incident avec la police")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Incident avec la police" && { color: "#0c0000" }]}>Incident avec la police</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Procédure urgente" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Procédure urgente")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Procédure urgente" && { color: "#0c0000" }]}>Procédure urgente</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[styles.btn3, emergencyReason !== "Autre urgence" && { backgroundColor: "#fffcfc" }]} onPress={() => setEmergencyReason("Autre urgence")}>
-                        <Text style={[styles.btnSentence2, emergencyReason !== "Autre urgence" && { color: "#0c0000" }]}>Autre urgence</Text>
-                    </TouchableOpacity>
-
-
-                    <Text style={styles.error}>{error}</Text>
-
-
-                    <View style={styles.row}>
-
-                        <TouchableOpacity style={styles.btn} onPress={() => cancelPress()}>
-                            <Text style={styles.btnSentence}>
-                                Annuler
-                            </Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.btn} onPress={() => validationPress()}>
-                            <Text style={styles.btnSentence}>
-                                Envoyer
-                            </Text>
-                        </TouchableOpacity>
-
-                    </View>
-
-
-                    <Modal
-                        visible={modal1Visible}
-                        animationType="slide"
-                        style={styles.modal}
-                        backdropColor="rgba(0,0,0,0.9)"
-                        transparent={true}
-                        onRequestClose={() => setModal1Visible(!modal1Visible)}
-                    >
-                        <View style={styles.modalBody}>
-                            <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
-                            <View style={styles.line}>
-                            </View>
-                            <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
-                                {error2}
-                            </Text>
-                            <View style={styles.btnContainer}>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
-                                    <Text style={styles.modalText2}>Oui</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(false)}>
-                                    <Text style={styles.modalText2}>Non</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
-                                    <Text style={styles.modalText2}>Annuler</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                </>
-            }
-
-
-            </ScrollView>
-        </KeyboardAvoidingView>
-
-    </>
-    )
-}
+        </>
+        )
+    }
 }
 
 

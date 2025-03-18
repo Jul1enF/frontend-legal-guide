@@ -15,6 +15,7 @@
       "appleTeamId": "W83RJXR472"
     },
     "android": {
+      "permissions" : ["RECEIVE_BOOT_COMPLETED"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-androidAndSplash.png",
         "backgroundColor": "#000000"
