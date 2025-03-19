@@ -46,12 +46,13 @@ const startBackgroundLocation = async () => {
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
         //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
-        deferredUpdatesInterval: 5000,
-        deferredUpdatesDistance: 1,
+        // deferredUpdatesInterval: 61000,
+        // deferredUpdatesDistance: 1,
+        timeInterval: 1000,
+        distanceInterval: 1,
         foregroundService: {
             notificationTitle: "Background Location",
             notificationBody: "Location updates are running in the background",
-            notificationColor: "#ff0000",
             killServiceOnDestroy : false,
         },
     });
