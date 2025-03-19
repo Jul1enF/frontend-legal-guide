@@ -47,9 +47,8 @@ const startBackgroundLocation = async () => {
         accuracy: Location.Accuracy.Highest,
         deferredUpdatesInterval: 61000,
         deferredUpdatesDistance: 1,
-        foregroundService : {
-            killServiceOnDestroy : false,
-        } 
+        timeInterval : 61000,
+        
     });
 };
 

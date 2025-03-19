@@ -51,14 +51,10 @@ export default function PendingRequest() {
             dispatch(toggleUserLocationPermission(true))
 
             if (userCurrentLocation.length > 0){
-                const response = await fetch(`${url}/emergencies/update-location`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        _id : emergency._id, 
-                        user_location : userCurrentLocation,
-                    })
-                })
+                const lat = userCurrentLocation[0]
+                const long = userCurrentLocation[1]
+ 
+                const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${emergency._id}`)
     
                 const data = await response.json()
             }
