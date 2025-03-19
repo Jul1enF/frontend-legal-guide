@@ -45,10 +45,15 @@ const startBackgroundLocation = async () => {
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Highest,
-        deferredUpdatesInterval: 61000,
+        //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
+        deferredUpdatesInterval: 5000,
         deferredUpdatesDistance: 1,
-        timeInterval : 61000,
-        
+        foregroundService: {
+            notificationTitle: "Background Location",
+            notificationBody: "Location updates are running in the background",
+            notificationColor: "#ff0000",
+            killServiceOnDestroy : false,
+        },
     });
 };
 
@@ -85,10 +90,10 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
             console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
         }
 
-        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 45000) {
-            console.log("TOO SOON TO FETCH")
-            return
-        }
+        // if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 60000) {
+        //     console.log("TOO SOON TO FETCH")
+        //     return
+        // }
 
         await AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString())
 
