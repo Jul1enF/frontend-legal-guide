@@ -15,7 +15,6 @@
       "appleTeamId": "W83RJXR472"
     },
     "android": {
-      "permissions" : ["WAKE_LOCK"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-androidAndSplash.png",
         "backgroundColor": "#000000"

@@ -44,12 +44,10 @@ const startBackgroundLocation = async () => {
     console.log('STARTING BG LOCATION')
 
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        accuracy: Location.Accuracy.Highest,
+        accuracy: Location.Accuracy.BestForNavigation,
         //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
         // deferredUpdatesInterval: 61000,
         // deferredUpdatesDistance: 1,
-        timeInterval: 1000,
-        distanceInterval: 1,
         foregroundService: {
             notificationTitle: "Background Location",
             notificationBody: "Location updates are running in the background",
