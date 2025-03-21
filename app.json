@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.1",
       "appleTeamId": "W83RJXR472"
     },
     "android": {
@@ -24,7 +24,7 @@
       "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo-ios.png"
     },
     "plugins": [
       [
