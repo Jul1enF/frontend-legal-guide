@@ -50,12 +50,10 @@ const startBackgroundLocation = async () => {
             accuracy: Location.Accuracy.BestForNavigation,
             //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
             deferredUpdatesInterval: 121000,
-            deferredUpdatesDistance: 1,
         });
     }else{
         await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
-            //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
             deferredUpdatesInterval: 61000,
             deferredUpdatesDistance: 1,
         });
