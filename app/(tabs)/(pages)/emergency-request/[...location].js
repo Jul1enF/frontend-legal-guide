@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRequest, supressRequest, toggleBackgroundLocation, toggleUserLocationPermission } from '../../../../reducers/emergencies';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Feather from '@expo/vector-icons/Feather';
 
 import PendingRequest from '../../../../components/PendingRequest';
 import { uploadMedia } from '../../../../firebaseConfig';
@@ -390,6 +391,14 @@ export default function EmergencyRequest() {
     const player = useVideoPlayer(mediaLink);
 
 
+    // Alerte pour android pour inciter à désactiver les économiseurs de batterie
+
+    let batteryWarning
+
+    if (Platform.OS === "android"){
+        batteryWarning = <Text style={styles.batteryWarning}> <Feather name="alert-triangle" color="white" size={RPW(4.5)} style={{color : "black"}} />  Sur android, pour envoyer votre localisation en continu et pouvoir verouiller votre téléphone, rendez vous dans Réglages (de votre téléphone) {">"} Batterie {">"} Économiseur de batterie : Vérifiez que l'option batterie adaptative (tout en bas) et que l'économiseur sont désactivés. En cas de changement, quittez puis relancez Me Baudelin.</Text>
+    }
+
 
     if (Platform.OS == "ios") {
 
@@ -422,6 +431,7 @@ export default function EmergencyRequest() {
                         <Text style={styles.title}>Demande de contact urgent</Text>
                         <View style={styles.titleLine}></View>
 
+                        {batteryWarning}
 
                         {!user.jwtToken && <View style={styles.inputContainer} >
                             <TextInput style={styles.input}
@@ -590,6 +600,8 @@ export default function EmergencyRequest() {
                         <>
                             <Text style={styles.title}>Demande de contact urgent</Text>
                             <View style={styles.titleLine}></View>
+
+                            {batteryWarning}
 
 
                             {!user.jwtToken && <View style={styles.inputContainer} >
@@ -785,6 +797,15 @@ const styles = StyleSheet.create({
         marginLeft: RPW(1),
         borderRadius: 15,
         backgroundColor: "rgb(185, 0, 0)",
+    },
+    batteryWarning : {
+        fontFamily : "Barlow-Medium", 
+        fontSize : RPW(4.4),
+        lineHeight : RPW(5.7),
+        textAlign : "center", 
+        paddingLeft : RPW(3), 
+        paddingRight : RPW(3),
+        marginBottom : RPW(8),
     },
     inputContainer: {
         marginBottom: RPW(6),

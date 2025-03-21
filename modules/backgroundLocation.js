@@ -55,7 +55,12 @@ const startBackgroundLocation = async () => {
         await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
             deferredUpdatesInterval: 61000,
-            deferredUpdatesDistance: 1,
+            deferredUpdatesDistance: 0,
+            foregroundService: {
+                notificationTitle: "Me Baudelin - Localisation",
+                notificationBody: "Me Baudelin utilise votre localisation",
+                killServiceOnDestroy : false,
+            },
         });
     }
 };
