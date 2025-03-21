@@ -221,6 +221,16 @@ export default function EmergencyDetail() {
 
         locationContainer =
             <View style={{ width: RPW(92), alignItems: "flex-start" }}>
+                
+                <View style={styles.informationContainer}>
+                    <View style={styles.underlineContainer}>
+                        <Text style={styles.informationTitle}>
+                            OS du téléphone :</Text>
+                    </View>
+                    <Text style={styles.txtInfo} >{emergency.device_platform}</Text>
+                </View>
+
+
                 <View style={[styles.underlineContainer, { marginBottom: RPW(4) }]}>
                     <Text style={[styles.informationTitle, { letterSpacing: -RPW(0.2) }]}>
                         Dernière position connue - {lastLocationDate}  {lastLocationHour} :</Text>

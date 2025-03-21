@@ -324,6 +324,7 @@ export default function EmergencyRequest() {
                     media_type: mediaType,
                     emergency_reason: emergencyReason,
                     user_location,
+                    device_platform : Platform.OS,
                 })
             })
 

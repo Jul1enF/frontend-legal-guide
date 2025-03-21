@@ -1,8 +1,10 @@
 
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
+import { Platform } from 'react-native';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const LOCATION_TASK_NAME = 'background-location-task';
 
@@ -43,17 +45,21 @@ const startBackgroundLocation = async () => {
 
     console.log('STARTING BG LOCATION')
 
-    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        accuracy: Location.Accuracy.BestForNavigation,
-        //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
-        // deferredUpdatesInterval: 61000,
-        // deferredUpdatesDistance: 1,
-        foregroundService: {
-            notificationTitle: "Background Location",
-            notificationBody: "Location updates are running in the background",
-            killServiceOnDestroy : false,
-        },
-    });
+    if (Platform.OS === "ios"){
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+            accuracy: Location.Accuracy.BestForNavigation,
+            //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
+            deferredUpdatesInterval: 121000,
+            deferredUpdatesDistance: 1,
+        });
+    }else{
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+            accuracy: Location.Accuracy.BestForNavigation,
+            //only apply when the app is backgrounded and was implemented to save battery by being able to update locations in batches from the background.
+            deferredUpdatesInterval: 61000,
+            deferredUpdatesDistance: 1,
+        });
+    }
 };
 
 
@@ -85,14 +91,15 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
         const lastFetchTimestamp = await AsyncStorage.getItem("fetch-timestamp")
 
-        if (lastFetchTimestamp) {
-            console.log("TIME DIFFERENCE", lastLocation.timestamp - Number(lastFetchTimestamp))
+        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 120000 && Platform.OS === "ios") {
+            console.log("TOO SOON TO FETCH")
+            return
         }
 
-        // if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 60000) {
-        //     console.log("TOO SOON TO FETCH")
-        //     return
-        // }
+        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 60000 && Platform.OS === "android") {
+            console.log("TOO SOON TO FETCH")
+            return
+        }
 
         await AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString())
 
@@ -117,6 +124,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
         }
     }
 });
+
 
 
 

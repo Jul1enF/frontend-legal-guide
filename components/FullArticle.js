@@ -218,7 +218,7 @@ export default function FullArticle(props) {
             dispatch(deleteOneArticle(article._id))
             setModalVisible(false)
             deleteRef.current = true
-            router.push(`/${article.category}`)
+            router.push(`/${article.category}/${props.articlesListIndex}`)
         }
     }
 

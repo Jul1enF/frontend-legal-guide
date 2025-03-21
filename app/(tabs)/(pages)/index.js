@@ -183,7 +183,6 @@ export default function FullArticle() {
         else {
             dispatch(deleteOneArticle(article._id))
             setModalVisible(false)
-            router.push(`/${article.category}`)
         }
     }
 
