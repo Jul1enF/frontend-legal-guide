@@ -90,19 +90,9 @@ export default function FullArticle() {
 
 
 
-                if (data.result) {
+                if (data.result && data.articles && data.articles.length > 0) {
                     dispatch(fillWithArticles(data.articles))
                     downloadedArticles = data.articles
-                }
-                else if (data.err) {
-                    dispatch(logout())
-                    router.push('/')
-                    return
-                }
-                else {
-                    dispatch(logout())
-                    router.push('/')
-                    return
                 }
 
             }

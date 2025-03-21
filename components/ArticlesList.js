@@ -226,19 +226,9 @@ export default function ArticlesList(props) {
                 const data = await response.json()
 
 
-                if (data.result) {
+                if (data.result && data.articles && data.articles.length > 0) {
                     dispatch(fillWithArticles(data.articles))
                     downloadedArticles = data.articles
-                }
-                else if (data.err) {
-                    dispatch(logout())
-                    router.navigate('/')
-                    return
-                }
-                else {
-                    dispatch(logout())
-                    router.navigate('/')
-                    return
                 }
 
             }
