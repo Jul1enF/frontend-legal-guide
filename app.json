@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "appleTeamId": "W83RJXR472"
     },
     "android": {
