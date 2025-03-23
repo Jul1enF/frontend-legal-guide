@@ -54,13 +54,13 @@ const startBackgroundLocation = async () => {
     }else{
         await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.Highest,
-            deferredUpdatesInterval: 61000,
-            deferredUpdatesDistance: 0,
-            foregroundService: {
-                notificationTitle: "Me Baudelin - Localisation",
-                notificationBody: "Me Baudelin utilise votre localisation",
-                killServiceOnDestroy : false,
-            },
+            // deferredUpdatesInterval: 61000,
+            // deferredUpdatesDistance: 0,
+            // foregroundService: {
+            //     notificationTitle: "Me Baudelin - Localisation",
+            //     notificationBody: "Me Baudelin utilise votre localisation",
+            //     killServiceOnDestroy : false,
+            // },
         });
     }
 };
@@ -99,10 +99,10 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
             return
         }
 
-        if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 60000 && Platform.OS === "android") {
-            console.log("TOO SOON TO FETCH")
-            return
-        }
+        // if (lastFetchTimestamp && lastLocation.timestamp - Number(lastFetchTimestamp) < 60000 && Platform.OS === "android") {
+        //     console.log("TOO SOON TO FETCH")
+        //     return
+        // }
 
         await AsyncStorage.setItem("fetch-timestamp", lastLocation.timestamp.toString())
 
