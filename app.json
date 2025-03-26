@@ -27,6 +27,7 @@
       "favicon": "./assets/logo-ios.png"
     },
     "plugins": [
+      "./plugins/androidPhoneOnly.js",
       [
         "expo-video",
         {

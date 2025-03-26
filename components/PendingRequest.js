@@ -1,10 +1,11 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Platform } from 'react-native';
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { supressRequest, toggleBackgroundLocation, toggleUserLocationPermission } from '../reducers/emergencies';
 import { stopLocation, askLocationPermissions } from '../modules/backgroundLocation'
 import { RPH, RPW } from '../modules/dimensions'
+import Feather from '@expo/vector-icons/Feather';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -126,6 +127,16 @@ export default function PendingRequest() {
     }
 
 
+
+
+    // Android : Message d'avertissement sur la batterie adaptative
+    let batteryWarning
+
+    if (emergency.backgroundLocation && Platform.OS == "android"){
+        batteryWarning = <Text style={styles.batteryWarning}> <Feather name="alert-triangle" color="white" size={RPW(4.5)} style={{color : "black"}} />  Pour mieux vous localiser, l'option "Batterie adapative" et l'économiseur d'énergie de votre téléphone doivent être désactivés. En cas de changement, redémarrez votre portable, puis quittez et relancez Me Baudelin.</Text>
+    }
+
+
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
             <Text style={styles.title}>Demande de contact urgent</Text>
@@ -146,6 +157,8 @@ export default function PendingRequest() {
             </TouchableOpacity>
 
             {warning}
+
+            {batteryWarning}
 
             <Modal
                 visible={modal2Visible}
@@ -269,5 +282,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#0c0000",
         borderColor: "#0c0000",
         borderWidth: 2,
+    },
+    batteryWarning : {
+        fontFamily : "Barlow-Medium", 
+        fontSize : RPW(4.7),
+        lineHeight : RPW(5.7),
+        textAlign : "center", 
+        paddingLeft : RPW(1), 
+        paddingRight : RPW(1),
+        marginTop : RPW(12),
     },
 })

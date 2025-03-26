@@ -50,9 +50,9 @@
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <string>Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <string>Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>NSPhotoLibraryUsageDescription</key>
