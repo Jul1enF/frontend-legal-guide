@@ -186,11 +186,16 @@ export default function EmergencyRequest() {
 
 
 
-
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        setTimeout(() => setUploading(true), 1500)
+        if (Platform.OS === "ios"){
+            setTimeout(() => setUploading(true), 1500)
+        }
+
+        if (Platform.OS === "android"){
+            setUploading(true)
+        }
 
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'],
@@ -200,7 +205,9 @@ export default function EmergencyRequest() {
             videoQuality: ImagePicker.UIImagePickerControllerQualityType.Low
         });
 
+
         if (result.canceled) {
+            console.log("RESULT", result)
             setUploading(false)
             return
         }
@@ -544,7 +551,7 @@ export default function EmergencyRequest() {
                             onRequestClose={() => setModal1Visible(!modal1Visible)}
                         >
                             <View style={styles.modalBody}>
-                                <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
+                                <Text style={styles.modalText}>Envoyer également en arrière plan votre localisation en continu ?</Text>
                                 <View style={styles.line}>
                                 </View>
                                 <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
@@ -713,7 +720,7 @@ export default function EmergencyRequest() {
                                 onRequestClose={() => setModal1Visible(!modal1Visible)}
                             >
                                 <View style={styles.modalBody}>
-                                    <Text style={styles.modalText}>Envoyer également votre localisation en temps réel ?</Text>
+                                    <Text style={styles.modalText}>Envoyer également en arrière plan votre localisation en continu ?</Text>
                                     <View style={styles.line}>
                                     </View>
                                     <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
@@ -929,7 +936,7 @@ const styles = StyleSheet.create({
     error2: {
         color: "rgb(157, 0, 0)",
         position: "absolute",
-        top: RPW(34),
+        top: RPW(40),
         fontSize: RPW(4.3),
         fontWeight: "600",
         textAlign: "center",

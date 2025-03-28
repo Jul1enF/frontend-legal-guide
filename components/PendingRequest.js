@@ -37,12 +37,17 @@ export default function PendingRequest() {
 
     // Fonction déclenchant en cliquant sur le bouton de localisation
 
+    const locationRef = useRef(true)
+
     const locationPress = async () => {
         if (emergency.backgroundLocation) {
             stopLocation()
             dispatch(toggleBackgroundLocation(false))
             dispatch(toggleUserLocationPermission(false))
         } else {
+            if (!locationRef.current) { return }
+            locationRef.current = false
+
             const { userCurrentLocation, backgroundLocation } = await askLocationPermissions()
 
             console.log("PERMISSIONS DATA", userCurrentLocation, backgroundLocation)
@@ -54,10 +59,18 @@ export default function PendingRequest() {
             if (userCurrentLocation.length > 0){
                 const lat = userCurrentLocation[0]
                 const long = userCurrentLocation[1]
- 
-                const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${emergency._id}`)
+                
+                try {
+                    const response = await fetch(`${url}/emergencies/update-location/${lat}/${long}/${emergency._id}`)
     
-                const data = await response.json()
+                    const data = await response.json()
+                    locationRef.current = true
+                } catch (err){
+                    locationRef.current = true
+                }
+
+            }else {
+                locationRef.current = true
             }
         }
     }
@@ -127,13 +140,15 @@ export default function PendingRequest() {
     }
 
 
+  
+
 
 
     // Android : Message d'avertissement sur la batterie adaptative
     let batteryWarning
 
     if (emergency.backgroundLocation && Platform.OS == "android"){
-        batteryWarning = <Text style={styles.batteryWarning}> <Feather name="alert-triangle" color="white" size={RPW(4.5)} style={{color : "black"}} />  Pour mieux vous localiser, l'option "Batterie adapative" et l'économiseur d'énergie de votre téléphone doivent être désactivés. En cas de changement, redémarrez votre portable, puis quittez et relancez Me Baudelin.</Text>
+        batteryWarning = <Text style={styles.batteryWarning}> <Feather name="alert-triangle" color="white" size={RPW(4.8)} style={{color : "black"}} />  <Text style={{fontSize : RPW(5), fontFamily : "Barlow-SemiBold"}}>Localisation :</Text>  L'option « Batterie adaptative » de votre téléphone doit être désactivée. En cas de changement : Arrêtez la localisation, quittez l'app, puis redémarrez votre portable et relancez la localisation.</Text>
     }
 
 
