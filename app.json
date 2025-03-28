@@ -21,7 +21,10 @@
       },
       "package": "com.baudelin.mebaudelin",
       "versionCode": 2,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "blockedPermissions": [
+        "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
     },
     "web": {
       "favicon": "./assets/logo-ios.png"
