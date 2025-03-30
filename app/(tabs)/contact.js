@@ -118,7 +118,7 @@ export default function Contact() {
   if (Platform.OS === "ios") {
     map = <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
   } else if (Platform.OS == "android") {
-    map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} properties={{isMyLocationEnabled : true,}}/>
+    map = <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.866550, longitude: 2.351357 }, zoom: 15.5 }} markers={[marker]} uiSettings={{ myLocationButtonEnabled: false }} />
   }
 
   // Hack pour que googlemaps ne disparaisse pas en changeant de page et en revenant sur celle ci. Force un reload.
