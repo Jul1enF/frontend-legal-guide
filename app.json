@@ -20,7 +20,7 @@
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
-      "versionCode": 4,
+      "versionCode": 5,
       "googleServicesFile": "./google-services.json",
       "blockedPermissions": [
         "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
