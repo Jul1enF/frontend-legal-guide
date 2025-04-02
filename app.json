@@ -64,8 +64,7 @@
           "locationAlwaysPermission" :"Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
           "locationWhenInUsePermission" : "Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
           "isIosBackgroundLocationEnabled": true,
-          "isAndroidBackgroundLocationEnabled": false,
-          "isAndroidForegroundServiceEnabled" : true
+          "isAndroidBackgroundLocationEnabled": true
         }
       ],
       "expo-router",
