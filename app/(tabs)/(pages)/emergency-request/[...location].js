@@ -38,7 +38,15 @@ export default function EmergencyRequest() {
     if (location[0] === "index") {
         previousLocation = ''
     } else if (location.length > 1) {
-        previousLocation = location.join('/')
+
+        // Un "undefined" peut être inscrit dans le chemin d'arrivé si l'on vient des pages press et média sans indice de scroll
+        if (location.some(e => e === "undefined")) {
+            previousLocation = `${location[0]}/none`
+        }
+        else {
+            previousLocation = location.join('/')
+        }
+
     } else {
         previousLocation = location[0]
     }
@@ -79,14 +87,14 @@ export default function EmergencyRequest() {
 
     const scrollRef = useRef(null)
 
-    useEffect(()=>{
-        if (emergency._id && scrollRef.current){
+    useEffect(() => {
+        if (emergency._id && scrollRef.current) {
             scrollRef.current.scrollTo({
                 y: 0,
                 animated: false,
-              })
+            })
         }
-    },[emergency])
+    }, [emergency])
 
 
 
@@ -189,11 +197,11 @@ export default function EmergencyRequest() {
     // Fonction appelée en cliquant sur Choisir une image
 
     const chooseMedia = async () => {
-        if (Platform.OS === "ios"){
+        if (Platform.OS === "ios") {
             setTimeout(() => setUploading(true), 1500)
         }
 
-        if (Platform.OS === "android"){
+        if (Platform.OS === "android") {
             setUploading(true)
         }
 
@@ -331,7 +339,7 @@ export default function EmergencyRequest() {
                     media_type: mediaType,
                     emergency_reason: emergencyReason,
                     user_location,
-                    device_platform : Platform.OS,
+                    device_platform: Platform.OS,
                 })
             })
 

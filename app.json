@@ -53,16 +53,19 @@
             "deploymentTarget": "15.1"
           },
           "android": {
-          "usesCleartextTraffic": true
-        }
+            "usesCleartextTraffic": true,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
         }
       ],
       [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
-          "locationAlwaysPermission" :"Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
-          "locationWhenInUsePermission" : "Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
+          "locationAlwaysPermission": "Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
+          "locationWhenInUsePermission": "Me Baudelin utilisera votre localisation pour vous retrouver afin de venir vous rencontrer au plus vite aux coordonnées fournies. Vous pouvez supprimer à tout moment votre requête et toutes les données affiliées en cliquant sur le bouton pour l'annuler.",
           "isIosBackgroundLocationEnabled": true,
           "isAndroidBackgroundLocationEnabled": true
         }
