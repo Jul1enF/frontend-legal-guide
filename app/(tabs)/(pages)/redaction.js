@@ -1132,7 +1132,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(157, 0, 0)",
         color: "white",
         width: RPW(90),
-        height: 35,
+        height: 45,
         borderRadius: RPW(2.5),
         paddingLeft: RPW(2),
         fontSize: 19,

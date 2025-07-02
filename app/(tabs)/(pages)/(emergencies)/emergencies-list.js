@@ -91,6 +91,7 @@ export default function EmergenciesList() {
                 data={emergencies.emergenciesList}
                 refreshControl={refreshComponent}
                 ListHeaderComponent={HeaderFlatlist}
+                contentContainerStyle={{alignItems : "center"}}
                 keyExtractor={(item) => item._id}
                 renderItem={({item})=>
                     <TouchableOpacity onPress={()=> router.push(`emergency/${item._id}`)}>

@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 1,
-        paddingTop: RPH(5.5) - (statusHeight / 2),
+        paddingTop: RPH(5.5),
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         color: "#fffcfc",
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Regular",
-        lineHeight: RPW(4),
+        lineHeight: RPW(5),
         marginTop: RPW(1),
         marginBottom: RPW(1.5)
     },

@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     subTitle: {
         color: "rgb(185, 0, 0)",
         fontSize: RPW(8),
-        lineHeight: RPW(8),
+        lineHeight: RPW(9.2),
         fontWeight: "400",
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),

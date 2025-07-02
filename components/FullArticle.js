@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     subTitle: {
         color: "rgb(185, 0, 0)",
         fontSize: RPW(7.3),
-        lineHeight: RPW(7.5),
+        lineHeight: RPW(8.4),
         marginRight: RPW(3),
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(0.1),
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     title: {
         color: "#0c0000",
         fontSize: RPW(7.3),
-        lineHeight: RPW(7.5),
+        lineHeight: RPW(8.4),
         marginBottom: 15,
         fontFamily: "Barlow-Bold",
         letterSpacing: RPW(-0.05),

@@ -53,25 +53,21 @@ export default function RootLayout() {
     });
 
     const [notification, setNotification] = useState('');
-    const notificationListener = useRef('');
-    const responseListener = useRef('');
 
 
 
     useEffect(() => {
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        const notificationListener = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
         });
 
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
             console.log(response);
         });
 
         return () => {
-            notificationListener.current &&
-                Notifications.removeNotificationSubscription(notificationListener.current);
-            responseListener.current &&
-                Notifications.removeNotificationSubscription(responseListener.current);
+            notificationListener.remove();
+            responseListener.remove();
         };
     }, [])
 

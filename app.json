@@ -24,7 +24,8 @@
       "googleServicesFile": "./google-services.json",
       "blockedPermissions": [
         "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
-      ]
+      ],
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/logo-ios.png"

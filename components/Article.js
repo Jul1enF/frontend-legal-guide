@@ -152,7 +152,7 @@ export default function Article(props) {
     if (props.title.length >= 65 && props.title.length <= 91) {
         titleLineHeight = RPW(8.2)
     } else if (props.title.length > 91) {
-        titleLineHeight = RPW(6.5)
+        titleLineHeight = RPW(7)
     }
 
 
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     subTitle: {
         color: "rgb(185, 0, 0)",
         fontSize: RPW(4.2),
-        lineHeight: RPW(4.5),
+        lineHeight: RPW(5.2),
         fontWeight: "400",
         marginRight: RPW(3.5),
         fontFamily: "Barlow-SemiBold",

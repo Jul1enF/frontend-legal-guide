@@ -722,7 +722,7 @@ const styles = StyleSheet.create({
     title2: {
         color: "#0c0000",
         fontSize: RPW(7.6),
-        lineHeight: RPW(8),
+        lineHeight: RPW(9),
         fontWeight: "450",
         margin: RPW(4),
         marginTop: RPW(5),
