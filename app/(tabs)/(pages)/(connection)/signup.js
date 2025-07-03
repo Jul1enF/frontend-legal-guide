@@ -110,7 +110,7 @@ export default function Signup() {
             <View style={styles.header} >
                 <TouchableOpacity style={styles.headerSection} onPress={() => router.back(`/connection`)}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
-                    <Text style={styles.headerText}>Connection</Text>
+                    <Text style={styles.headerText}>Connexion</Text>
                 </TouchableOpacity>
             </View>
         )
