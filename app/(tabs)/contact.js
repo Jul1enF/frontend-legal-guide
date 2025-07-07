@@ -132,451 +132,232 @@ export default function Contact() {
 
 
 
-  if (Platform.OS === "ios") {
-    return (
-      <>
-        <KeyboardAwareScrollView
-          style={{ flex: 1, backgroundColor: "#fffcfc", }}
-          contentContainerStyle={styles.contentContainer}
-          bottomOffset={Platform.OS === 'ios' ? RPW(16) : RPW(8)}
-        >
+  return (
+    <>
+      <KeyboardAwareScrollView
+        style={{ flex: 1, backgroundColor: "#fffcfc", }}
+        contentContainerStyle={styles.contentContainer}
+        bottomOffset={Platform.OS === 'ios' ? RPW(16) : RPW(8)}
+      >
 
-          {/* <KeyboardAvoidingView
+        {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
         <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.contentContainer}
           keyboardShouldPersistTaps="handled"> */}
 
-          <Text style={styles.subTitle}>Contact</Text>
-          <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
+        <Text style={styles.subTitle}>Contact</Text>
+        <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
 
-          <View style={styles.line} >
-          </View>
-
-
-
-          <View style={styles.underlineContainer}>
-            <Text style={styles.sectionTitle}>
-              Alexis Baudelin Avocat :
-            </Text>
-          </View>
-
-          <View style={styles.row}>
-            <MaterialIcons name="location-on" size={RPW(5)} style={styles.icon} />
-            <Text style={styles.firmContact}>
-              80 rue Réaumur 75002 Paris
-            </Text>
-          </View>
-
-          <View style={styles.row}>
-            <Entypo name="old-phone" size={RPW(5)} style={styles.icon} />
-            <Text style={styles.firmContact}>
-              01.80.49.11.38
-            </Text>
-          </View>
-
-          <View style={[styles.row, map ? { marginBottom: RPW(4) } : { marginBottom: RPW(10) }]}>
-            <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
-            <Text style={styles.firmContact}>
-              01.42.74.72.26
-            </Text>
-          </View>
-
-          {map}
+        <View style={styles.line} >
+        </View>
 
 
 
-          <View style={[styles.underlineContainer]}>
-            <Text style={styles.sectionTitle}>
-              Prendre rendez-vous :
-            </Text>
-          </View>
-
-
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?source=profile&targetid=47510')}>
-            <FontAwesome name="handshake-o" size={RPW(5)} style={styles.appointmentIcon} />
-            <Text style={styles.appointmentText}>
-              Consultation en cabinet de 60 min pour 150€
-            </Text>
-            <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?source=profile&targetid=47510')}>
-            <FontAwesome name="video-camera" size={RPW(5)} style={styles.appointmentIcon} />
-            <Text style={styles.appointmentText}>
-              Consultation vidéo de 30 min pour 90€
-            </Text>
-            <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?source=profile&targetid=47510')}>
-            <MaterialIcons name="phone-iphone" size={RPW(6)} style={styles.appointmentIcon} />
-            <Text style={styles.appointmentText}>
-              Consultation téléphonique de 30 min pour 70€
-            </Text>
-            <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?source=profile&targetid=47510')}>
-            <MaterialCommunityIcons name="chat" size={RPW(5)} style={styles.appointmentIcon} />
-            <Text style={styles.appointmentText}>
-              Réponse à une question simple pour 50€
-            </Text>
-            <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-juridique/forms.php?source=profile&targetid=47510')}>
-            <AntDesign name="form" size={RPW(5)} style={styles.appointmentIcon} />
-            <Text style={styles.appointmentText}>
-              Consultation écrite détaillée pour 250€
-            </Text>
-            <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-
-
-          <View style={styles.underlineContainer}>
-            <Text style={styles.sectionTitle}>
-              Formulaire de contact :
-            </Text>
-          </View>
-
-          <Text style={styles.inputTitle}>
-            Votre nom et prénom
+        <View style={styles.underlineContainer}>
+          <Text style={styles.sectionTitle}>
+            Alexis Baudelin Avocat :
           </Text>
-          <TextInput style={styles.input}
-            onChangeText={(e) => {
-              setNames(e)
-              setError('')
-            }}
-            value={names}
-            placeholder='Nom et prénom...'
-            placeholderTextColor="#fbfff790">
-          </TextInput>
+        </View>
 
-          <Text style={styles.inputTitle}>
-            Votre email
+        <View style={styles.row}>
+          <MaterialIcons name="location-on" size={RPW(5)} style={styles.icon} />
+          <Text style={styles.firmContact}>
+            80 rue Réaumur 75002 Paris
           </Text>
-          <TextInput style={styles.input}
-            onChangeText={(e) => {
-              setEmail(e)
-              setError('')
-            }}
-            value={email}
-            placeholder='Email...'
-            placeholderTextColor="#fbfff790"
-            keyboardType='email-address'
-            autoCapitalize='none'>
-          </TextInput>
+        </View>
 
-          <Text style={styles.inputTitle}>
-            Votre numéro de téléphone
+        <View style={styles.row}>
+          <Entypo name="old-phone" size={RPW(5)} style={styles.icon} />
+          <Text style={styles.firmContact}>
+            01.80.49.11.38
           </Text>
-          <TextInput style={styles.input}
-            onChangeText={(e) => {
-              setPhone(e)
-              setError('')
-            }}
-            value={phone}
-            placeholder='Téléphone... (Facultatif)'
-            placeholderTextColor="#fbfff790"
-            autoCapitalize='none'>
-          </TextInput>
+        </View>
 
-          <Text style={styles.inputTitle}>
-            Sujet
+        <View style={[styles.row, map ? { marginBottom: RPW(4) } : { marginBottom: RPW(10) }]}>
+          <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
+          <Text style={styles.firmContact}>
+            01.42.74.72.26
           </Text>
-          <TextInput style={styles.input}
-            onChangeText={(e) => {
-              setSubject(e)
-              setError('')
-            }}
-            value={subject}
-            placeholder='Sujet...'
-            placeholderTextColor="#fbfff790">
-          </TextInput>
+        </View>
 
-          <Text style={styles.inputTitle}>
-            Votre message
+        {map}
+
+
+
+        <View style={[styles.underlineContainer]}>
+          <Text style={styles.sectionTitle}>
+            Prendre rendez-vous :
           </Text>
-          <TextInput multiline={true}
-            textAlignVertical="top"
-            style={styles.largeInput}
-            placeholder="Message..."
-            onChangeText={(e) => {
-              setError('')
-              setMessage(e)
-            }}
-            value={message}
-            placeholderTextColor="#fbfff792"
-            returnKeyType='next'>
-          </TextInput>
-
-          <TouchableOpacity style={styles.sendBtn} onPress={() => firstSendPress()}>
-            <Text style={[styles.error, error === "Message envoyé !" && { color: "green" }]}>
-              {error}
-            </Text>
-            <Text style={styles.btnText}>
-              Envoyer
-            </Text>
-          </TouchableOpacity>
+        </View>
 
 
+        <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?source=profile&targetid=47510')}>
+          <FontAwesome name="handshake-o" size={RPW(5)} style={styles.appointmentIcon} />
+          <Text style={styles.appointmentText}>
+            Consultation en cabinet de 60 min pour 150€
+          </Text>
+          <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
+        </TouchableOpacity>
 
-          <Link href="/legal" style={styles.cgu}>C.G.U</Link>
+        <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?source=profile&targetid=47510')}>
+          <FontAwesome name="video-camera" size={RPW(5)} style={styles.appointmentIcon} />
+          <Text style={styles.appointmentText}>
+            Consultation vidéo de 30 min pour 90€
+          </Text>
+          <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?source=profile&targetid=47510')}>
+          <MaterialIcons name="phone-iphone" size={RPW(6)} style={styles.appointmentIcon} />
+          <Text style={styles.appointmentText}>
+            Consultation téléphonique de 30 min pour 70€
+          </Text>
+          <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?source=profile&targetid=47510')}>
+          <MaterialCommunityIcons name="chat" size={RPW(5)} style={styles.appointmentIcon} />
+          <Text style={styles.appointmentText}>
+            Réponse à une question simple pour 50€
+          </Text>
+          <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-juridique/forms.php?source=profile&targetid=47510')}>
+          <AntDesign name="form" size={RPW(5)} style={styles.appointmentIcon} />
+          <Text style={styles.appointmentText}>
+            Consultation écrite détaillée pour 250€
+          </Text>
+          <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
+        </TouchableOpacity>
 
 
 
-          <Modal
-            visible={modalVisible}
-            animationType="slide"
-            style={styles.modal}
-            transparent={true}
-            onRequestClose={() => setModalVisible(!modalVisible)}
-          >
-            <View style={styles.modalBody}>
-              <Text style={styles.modalText}>Êtes vous sûr de vouloir envoyer votre demande ?</Text>
-              <View style={styles.line2}>
-              </View>
-              <View style={styles.btnContainer4}>
-                <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => setModalVisible(false)}>
-                  <Text style={styles.btnText}>Annuler</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => finalSendPress()}>
-                  <Text style={styles.btnText}>Envoyer</Text>
-                </TouchableOpacity>
-              </View>
+        <View style={styles.underlineContainer}>
+          <Text style={styles.sectionTitle}>
+            Formulaire de contact :
+          </Text>
+        </View>
+
+        <Text style={styles.inputTitle}>
+          Votre nom et prénom
+        </Text>
+        <TextInput style={styles.input}
+          onChangeText={(e) => {
+            setNames(e)
+            setError('')
+          }}
+          value={names}
+          placeholder='Nom et prénom...'
+          placeholderTextColor="#fbfff790">
+        </TextInput>
+
+        <Text style={styles.inputTitle}>
+          Votre email
+        </Text>
+        <TextInput style={styles.input}
+          onChangeText={(e) => {
+            setEmail(e)
+            setError('')
+          }}
+          value={email}
+          placeholder='Email...'
+          placeholderTextColor="#fbfff790"
+          keyboardType='email-address'
+          autoCapitalize='none'>
+        </TextInput>
+
+        <Text style={styles.inputTitle}>
+          Votre numéro de téléphone
+        </Text>
+        <TextInput style={styles.input}
+          onChangeText={(e) => {
+            setPhone(e)
+            setError('')
+          }}
+          value={phone}
+          placeholder='Téléphone... (Facultatif)'
+          placeholderTextColor="#fbfff790"
+          autoCapitalize='none'>
+        </TextInput>
+
+        <Text style={styles.inputTitle}>
+          Sujet
+        </Text>
+        <TextInput style={styles.input}
+          onChangeText={(e) => {
+            setSubject(e)
+            setError('')
+          }}
+          value={subject}
+          placeholder='Sujet...'
+          placeholderTextColor="#fbfff790">
+        </TextInput>
+
+        <Text style={styles.inputTitle}>
+          Votre message
+        </Text>
+        <TextInput multiline={true}
+          textAlignVertical="top"
+          style={styles.largeInput}
+          placeholder="Message..."
+          onChangeText={(e) => {
+            setError('')
+            setMessage(e)
+          }}
+          value={message}
+          placeholderTextColor="#fbfff792"
+          returnKeyType='next'>
+        </TextInput>
+
+        <TouchableOpacity style={styles.sendBtn} onPress={() => firstSendPress()}>
+          <Text style={[styles.error, error === "Message envoyé !" && { color: "green" }]}>
+            {error}
+          </Text>
+          <Text style={styles.btnText}>
+            Envoyer
+          </Text>
+        </TouchableOpacity>
+
+
+
+        <Link href="/legal" style={styles.cgu}>C.G.U</Link>
+
+
+
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          style={styles.modal}
+          transparent={true}
+          onRequestClose={() => setModalVisible(!modalVisible)}
+        >
+          <View style={styles.modalBody}>
+            <Text style={styles.modalText}>Êtes vous sûr de vouloir envoyer votre demande ?</Text>
+            <View style={styles.line2}>
             </View>
-          </Modal>
+            <View style={styles.btnContainer4}>
+              <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => setModalVisible(false)}>
+                <Text style={styles.btnText}>Annuler</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => finalSendPress()}>
+                <Text style={styles.btnText}>Envoyer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
 
-          {/* </ScrollView>
+        {/* </ScrollView>
       </KeyboardAvoidingView> */}
 
-        </KeyboardAwareScrollView>
-        {Platform.OS === "ios" && <KeyboardToolbar doneText="Fermer" />}
+      </KeyboardAwareScrollView>
+      {Platform.OS === "ios" && <KeyboardToolbar doneText="Fermer" />}
 
-      </>
+    </>
 
-    );
-  } else {
-    return (
-      <>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.contentContainer}
-            keyboardShouldPersistTaps="handled">
+  );
 
-            <Text style={styles.subTitle}>Contact</Text>
-            <Text style={styles.title}>Infomations, rendez-vous et formulaire de contact</Text>
-
-            <View style={styles.line} >
-            </View>
-
-
-
-            <View style={styles.underlineContainer}>
-              <Text style={styles.sectionTitle}>
-                Alexis Baudelin Avocat :
-              </Text>
-            </View>
-
-            <View style={styles.row}>
-              <MaterialIcons name="location-on" size={RPW(5)} style={styles.icon} />
-              <Text style={styles.firmContact}>
-                80 rue Réaumur 75002 Paris
-              </Text>
-            </View>
-
-            <View style={styles.row}>
-              <Entypo name="old-phone" size={RPW(5)} style={styles.icon} />
-              <Text style={styles.firmContact}>
-                01.80.49.11.38
-              </Text>
-            </View>
-
-            <View style={[styles.row, map ? { marginBottom: RPW(4) } : { marginBottom: RPW(10) }]}>
-              <MaterialCommunityIcons name="fax" size={RPW(5)} style={styles.icon} />
-              <Text style={styles.firmContact}>
-                01.42.74.72.26
-              </Text>
-            </View>
-
-            {displayGoogleMap && map}
-
-
-
-            <View style={[styles.underlineContainer]}>
-              <Text style={styles.sectionTitle}>
-                Prendre rendez-vous :
-              </Text>
-            </View>
-
-
-            <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-cabinet/forms.php?source=profile&targetid=47510')}>
-              <FontAwesome name="handshake-o" size={RPW(5)} style={styles.appointmentIcon} />
-              <Text style={styles.appointmentText}>
-                Consultation en cabinet de 60 min pour 150€
-              </Text>
-              <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-video/forms.php?source=profile&targetid=47510')}>
-              <FontAwesome name="video-camera" size={RPW(5)} style={styles.appointmentIcon} />
-              <Text style={styles.appointmentText}>
-                Consultation vidéo de 30 min pour 90€
-              </Text>
-              <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-telephonique/forms.php?source=profile&targetid=47510')}>
-              <MaterialIcons name="phone-iphone" size={RPW(6)} style={styles.appointmentIcon} />
-              <Text style={styles.appointmentText}>
-                Consultation téléphonique de 30 min pour 70€
-              </Text>
-              <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.appointmentBtn} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/question-simple/forms.php?source=profile&targetid=47510')}>
-              <MaterialCommunityIcons name="chat" size={RPW(5)} style={styles.appointmentIcon} />
-              <Text style={styles.appointmentText}>
-                Réponse à une question simple pour 50€
-              </Text>
-              <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={[styles.appointmentBtn, { marginBottom: RPW(10) }]} activeOpacity={0.1} onPress={() => router.push('https://consultation.avocat.fr/consultation-juridique/forms.php?source=profile&targetid=47510')}>
-              <AntDesign name="form" size={RPW(5)} style={styles.appointmentIcon} />
-              <Text style={styles.appointmentText}>
-                Consultation écrite détaillée pour 250€
-              </Text>
-              <Entypo name="arrow-with-circle-right" size={RPW(5)} style={styles.arrowIcon} />
-            </TouchableOpacity>
-
-
-
-            <View style={styles.underlineContainer}>
-              <Text style={styles.sectionTitle}>
-                Formulaire de contact :
-              </Text>
-            </View>
-
-            <Text style={styles.inputTitle}>
-              Votre nom et prénom
-            </Text>
-            <TextInput style={styles.input}
-              onChangeText={(e) => {
-                setNames(e)
-                setError('')
-              }}
-              value={names}
-              placeholder='Nom et prénom...'
-              placeholderTextColor="#fbfff790">
-            </TextInput>
-
-            <Text style={styles.inputTitle}>
-              Votre email
-            </Text>
-            <TextInput style={styles.input}
-              onChangeText={(e) => {
-                setEmail(e)
-                setError('')
-              }}
-              value={email}
-              placeholder='Email...'
-              placeholderTextColor="#fbfff790"
-              keyboardType='email-address'
-              autoCapitalize='none'>
-            </TextInput>
-
-            <Text style={styles.inputTitle}>
-              Votre numéro de téléphone
-            </Text>
-            <TextInput style={styles.input}
-              onChangeText={(e) => {
-                setPhone(e)
-                setError('')
-              }}
-              value={phone}
-              placeholder='Téléphone... (Facultatif)'
-              placeholderTextColor="#fbfff790"
-              autoCapitalize='none'>
-            </TextInput>
-
-            <Text style={styles.inputTitle}>
-              Sujet
-            </Text>
-            <TextInput style={styles.input}
-              onChangeText={(e) => {
-                setSubject(e)
-                setError('')
-              }}
-              value={subject}
-              placeholder='Sujet...'
-              placeholderTextColor="#fbfff790">
-            </TextInput>
-
-            <Text style={styles.inputTitle}>
-              Votre message
-            </Text>
-            <TextInput multiline={true}
-              textAlignVertical="top"
-              style={styles.largeInput}
-              placeholder="Message..."
-              onChangeText={(e) => {
-                setError('')
-                setMessage(e)
-              }}
-              value={message}
-              placeholderTextColor="#fbfff792"
-              returnKeyType='next'>
-            </TextInput>
-
-            <TouchableOpacity style={styles.sendBtn} onPress={() => firstSendPress()}>
-              <Text style={[styles.error, error === "Message envoyé !" && { color: "green" }]}>
-                {error}
-              </Text>
-              <Text style={styles.btnText}>
-                Envoyer
-              </Text>
-            </TouchableOpacity>
-
-
-
-            <Link href="/legal" style={styles.cgu}>C.G.U</Link>
-
-
-
-            <Modal
-              visible={modalVisible}
-              animationType="slide"
-              style={styles.modal}
-              transparent={true}
-              onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-              <View style={styles.modalBody}>
-                <Text style={styles.modalText}>Êtes vous sûr de vouloir envoyer votre demande ?</Text>
-                <View style={styles.line2}>
-                </View>
-                <View style={styles.btnContainer4}>
-                  <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => setModalVisible(false)}>
-                    <Text style={styles.btnText}>Annuler</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.modalBtn} activeOpacity={0.8} onPress={() => finalSendPress()}>
-                    <Text style={styles.btnText}>Envoyer</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-
-
-          </ScrollView>
-        </KeyboardAvoidingView>
-
-
-      </>
-
-    )
-  }
 }
 
 const styles = StyleSheet.create({

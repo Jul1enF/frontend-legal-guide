@@ -196,427 +196,220 @@ export default function Signup() {
 
 
 
-    if (Platform.OS == "ios") {
-        return (<>
+    return (<>
 
-            <KeyboardAwareScrollView
-                style={{ flex: 1, backgroundColor: "#fffcfc" }}
-                contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(12), paddingTop: RPW(10) }}
-                bottomOffset={Platform.OS === 'ios' ? RPW(8) : RPW(4)}
-            >
+        <KeyboardAwareScrollView
+            style={{ flex: 1, backgroundColor: "#fffcfc" }}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(12), paddingTop: RPW(10) }}
+            bottomOffset={Platform.OS === 'ios' ? RPW(8) : RPW(4)}
+        >
 
-                {/* <KeyboardAvoidingView
+            {/* <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPH(14)}  >
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2), paddingTop: RPW(10) }}
                 keyboardShouldPersistTaps="handled"> */}
 
 
 
-                <Text style={styles.title}>Mes informations</Text>
-                <View style={styles.titleLine}></View>
+            <Text style={styles.title}>Mes informations</Text>
+            <View style={styles.titleLine}></View>
 
 
-                <Text style={styles.text1}>
-                    Changer mon prénom :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setFirstname(e)
-                            setError('')
-                        }}
-                        value={firstname}
-                        placeholder='Prénom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
+            <Text style={styles.text1}>
+                Changer mon prénom :
+            </Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setFirstname(e)
+                        setError('')
+                    }}
+                    value={firstname}
+                    placeholder='Prénom'
+                    placeholderTextColor="#fbfff790">
+                </TextInput>
+            </View>
 
-                <Text style={styles.text1}>
-                    Changer mon nom :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setName(e)
-                            setError('')
-                        }}
-                        value={name}
-                        placeholder='Nom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
+            <Text style={styles.text1}>
+                Changer mon nom :
+            </Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setName(e)
+                        setError('')
+                    }}
+                    value={name}
+                    placeholder='Nom'
+                    placeholderTextColor="#fbfff790">
+                </TextInput>
+            </View>
 
-                <Text style={styles.text1}>
-                    Changer mon email :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setEmail(e)
-                            setError('')
-                        }}
-                        value={email}
-                        placeholder='Email'
-                        placeholderTextColor="#fbfff790"
-                        keyboardType='email-address'
-                        autoCapitalize='none'>
-                    </TextInput>
-                </View>
+            <Text style={styles.text1}>
+                Changer mon email :
+            </Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                        setError('')
+                    }}
+                    value={email}
+                    placeholder='Email'
+                    placeholderTextColor="#fbfff790"
+                    keyboardType='email-address'
+                    autoCapitalize='none'>
+                </TextInput>
+            </View>
 
-                <Text style={styles.text1}>
-                    Changer mon téléphone :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setPhone(e)
-                            setError('')
-                        }}
-                        value={phone}
-                        placeholder="Téléphone (facultatif)"
-                        placeholderTextColor="#fbfff790"
-                    >
-                    </TextInput>
-                </View>
-
-                <Text style={styles.text1}>
-                    Changer mon mot de passe :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setOldPassword(e)
-                            setError('')
-                        }}
-                        value={oldPassword}
-                        autoCapitalize='none'
-                        placeholder='Ancien mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!oldPasswordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={oldPasswordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setOldPasswordVisible(!oldPasswordVisible)}>
-                    </FontAwesome>
-                </View>
-
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword(e)
-                            setError('')
-                        }}
-                        value={password}
-                        autoCapitalize='none'
-                        placeholder='Nouveau mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!passwordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
-                    </FontAwesome>
-                </View>
-
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword2(e)
-                            setError('')
-                        }}
-                        value={password2}
-                        autoCapitalize='none'
-                        placeholder='Confirmation du mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!password2Visible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={password2Visible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPassword2Visible(!password2Visible)}>
-                    </FontAwesome>
-                </View>
-
-
-
-                <Text style={[styles.error, error == "Modifications enregistrées !" && { color: "green" }]}>{error}</Text>
-
-
-                <View style={styles.row}>
-
-                    <TouchableOpacity style={styles.btn} onPress={() => firstRegisterPress()}>
-                        <Text style={styles.btnSentence}>
-                            Enregistrer
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.btn} onPress={() => setModal2Visible(true)}>
-                        <Text style={styles.btnSentence}>
-                            Me désinscrire
-                        </Text>
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <Modal
-                    visible={modal1Visible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModal1Visible(!modal1Visible)}
+            <Text style={styles.text1}>
+                Changer mon téléphone :
+            </Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.input}
+                    onChangeText={(e) => {
+                        setPhone(e)
+                        setError('')
+                    }}
+                    value={phone}
+                    placeholder="Téléphone (facultatif)"
+                    placeholderTextColor="#fbfff790"
                 >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Êtes vous sûr de vouloir enregistrer ces informations ?</Text>
-                        <View style={styles.line}>
-                        </View>
-                        <View style={styles.btnContainer4}>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
-                                <Text style={styles.modalText2}>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => finalRegisterPress()}>
-                                <Text style={styles.modalText2}>Enregistrer</Text>
-                            </TouchableOpacity>
-                        </View>
+                </TextInput>
+            </View>
+
+            <Text style={styles.text1}>
+                Changer mon mot de passe :
+            </Text>
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setOldPassword(e)
+                        setError('')
+                    }}
+                    value={oldPassword}
+                    autoCapitalize='none'
+                    placeholder='Ancien mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!oldPasswordVisible}>
+                </TextInput>
+                <FontAwesome
+                    name={oldPasswordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setOldPasswordVisible(!oldPasswordVisible)}>
+                </FontAwesome>
+            </View>
+
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setPassword(e)
+                        setError('')
+                    }}
+                    value={password}
+                    autoCapitalize='none'
+                    placeholder='Nouveau mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!passwordVisible}>
+                </TextInput>
+                <FontAwesome
+                    name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
+                </FontAwesome>
+            </View>
+
+            <View style={styles.inputContainer} >
+                <TextInput style={styles.password}
+                    onChangeText={(e) => {
+                        setPassword2(e)
+                        setError('')
+                    }}
+                    value={password2}
+                    autoCapitalize='none'
+                    placeholder='Confirmation du mot de passe'
+                    placeholderTextColor="#fbfff790"
+                    secureTextEntry={!password2Visible}>
+                </TextInput>
+                <FontAwesome
+                    name={password2Visible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPassword2Visible(!password2Visible)}>
+                </FontAwesome>
+            </View>
+
+
+
+            <Text style={[styles.error, error == "Modifications enregistrées !" && { color: "green" }]}>{error}</Text>
+
+
+            <View style={styles.row}>
+
+                <TouchableOpacity style={styles.btn} onPress={() => firstRegisterPress()}>
+                    <Text style={styles.btnSentence}>
+                        Enregistrer
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btn} onPress={() => setModal2Visible(true)}>
+                    <Text style={styles.btnSentence}>
+                        Me désinscrire
+                    </Text>
+                </TouchableOpacity>
+
+            </View>
+
+
+            <Modal
+                visible={modal1Visible}
+                animationType="slide"
+                style={styles.modal}
+                backdropColor="rgba(0,0,0,0.9)"
+                transparent={true}
+                onRequestClose={() => setModal1Visible(!modal1Visible)}
+            >
+                <View style={styles.modalBody}>
+                    <Text style={styles.modalText}>Êtes vous sûr de vouloir enregistrer ces informations ?</Text>
+                    <View style={styles.line}>
                     </View>
-                </Modal>
-
-
-                <Modal
-                    visible={modal2Visible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModal2Visible(!modal2Visible)}
-                >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer votre compte ?</Text>
-                        <View style={styles.line}>
-                        </View>
-                        <View style={styles.btnContainer4}>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
-                                <Text style={styles.modalText2}>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => unsuscribePress()}>
-                                <Text style={styles.modalText2}>Confirmer</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={styles.btnContainer4}>
+                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
+                            <Text style={styles.modalText2}>Annuler</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => finalRegisterPress()}>
+                            <Text style={styles.modalText2}>Enregistrer</Text>
+                        </TouchableOpacity>
                     </View>
-                </Modal>
+                </View>
+            </Modal>
 
 
-                {/* </ScrollView>
+            <Modal
+                visible={modal2Visible}
+                animationType="slide"
+                style={styles.modal}
+                backdropColor="rgba(0,0,0,0.9)"
+                transparent={true}
+                onRequestClose={() => setModal2Visible(!modal2Visible)}
+            >
+                <View style={styles.modalBody}>
+                    <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer votre compte ?</Text>
+                    <View style={styles.line}>
+                    </View>
+                    <View style={styles.btnContainer4}>
+                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
+                            <Text style={styles.modalText2}>Annuler</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => unsuscribePress()}>
+                            <Text style={styles.modalText2}>Confirmer</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+
+            {/* </ScrollView>
         </KeyboardAvoidingView> */}
 
-            </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
 
-        </>
-        )
-    }else{
-        return (<>
-    
-                <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body} keyboardVerticalOffset={RPW(30)}  >
-                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(2), paddingTop: RPW(10) }}
-                    keyboardShouldPersistTaps="handled">
-    
-    
-    
-                <Text style={styles.title}>Mes informations</Text>
-                <View style={styles.titleLine}></View>
-    
-    
-                <Text style={styles.text1}>
-                    Changer mon prénom :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setFirstname(e)
-                            setError('')
-                        }}
-                        value={firstname}
-                        placeholder='Prénom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
-    
-                <Text style={styles.text1}>
-                    Changer mon nom :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setName(e)
-                            setError('')
-                        }}
-                        value={name}
-                        placeholder='Nom'
-                        placeholderTextColor="#fbfff790">
-                    </TextInput>
-                </View>
-    
-                <Text style={styles.text1}>
-                    Changer mon email :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setEmail(e)
-                            setError('')
-                        }}
-                        value={email}
-                        placeholder='Email'
-                        placeholderTextColor="#fbfff790"
-                        keyboardType='email-address'
-                        autoCapitalize='none'>
-                    </TextInput>
-                </View>
-    
-                <Text style={styles.text1}>
-                    Changer mon téléphone :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.input}
-                        onChangeText={(e) => {
-                            setPhone(e)
-                            setError('')
-                        }}
-                        value={phone}
-                        placeholder="Téléphone (facultatif)"
-                        placeholderTextColor="#fbfff790"
-                    >
-                    </TextInput>
-                </View>
-    
-                <Text style={styles.text1}>
-                    Changer mon mot de passe :
-                </Text>
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setOldPassword(e)
-                            setError('')
-                        }}
-                        value={oldPassword}
-                        autoCapitalize='none'
-                        placeholder='Ancien mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!oldPasswordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={oldPasswordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setOldPasswordVisible(!oldPasswordVisible)}>
-                    </FontAwesome>
-                </View>
-    
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword(e)
-                            setError('')
-                        }}
-                        value={password}
-                        autoCapitalize='none'
-                        placeholder='Nouveau mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!passwordVisible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={passwordVisible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPasswordVisible(!passwordVisible)}>
-                    </FontAwesome>
-                </View>
-    
-                <View style={styles.inputContainer} >
-                    <TextInput style={styles.password}
-                        onChangeText={(e) => {
-                            setPassword2(e)
-                            setError('')
-                        }}
-                        value={password2}
-                        autoCapitalize='none'
-                        placeholder='Confirmation du mot de passe'
-                        placeholderTextColor="#fbfff790"
-                        secureTextEntry={!password2Visible}>
-                    </TextInput>
-                    <FontAwesome
-                        name={password2Visible ? "eye-slash" : "eye"} color="rgba(255,255,255,0.4)" size={RPH(3.8)} onPress={() => setPassword2Visible(!password2Visible)}>
-                    </FontAwesome>
-                </View>
-    
-    
-    
-                <Text style={[styles.error, error == "Modifications enregistrées !" && { color: "green" }]}>{error}</Text>
-    
-    
-                <View style={styles.row}>
-    
-                    <TouchableOpacity style={styles.btn} onPress={() => firstRegisterPress()}>
-                        <Text style={styles.btnSentence}>
-                            Enregistrer
-                        </Text>
-                    </TouchableOpacity>
-    
-                    <TouchableOpacity style={styles.btn} onPress={() => setModal2Visible(true)}>
-                        <Text style={styles.btnSentence}>
-                            Me désinscrire
-                        </Text>
-                    </TouchableOpacity>
-    
-                </View>
-    
-    
-                <Modal
-                    visible={modal1Visible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModal1Visible(!modal1Visible)}
-                >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Êtes vous sûr de vouloir enregistrer ces informations ?</Text>
-                        <View style={styles.line}>
-                        </View>
-                        <View style={styles.btnContainer4}>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
-                                <Text style={styles.modalText2}>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => finalRegisterPress()}>
-                                <Text style={styles.modalText2}>Enregistrer</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-    
-    
-                <Modal
-                    visible={modal2Visible}
-                    animationType="slide"
-                    style={styles.modal}
-                    backdropColor="rgba(0,0,0,0.9)"
-                    transparent={true}
-                    onRequestClose={() => setModal2Visible(!modal2Visible)}
-                >
-                    <View style={styles.modalBody}>
-                        <Text style={styles.modalText}>Êtes vous sûr de vouloir supprimer votre compte ?</Text>
-                        <View style={styles.line}>
-                        </View>
-                        <View style={styles.btnContainer4}>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal2Visible(false)}>
-                                <Text style={styles.modalText2}>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => unsuscribePress()}>
-                                <Text style={styles.modalText2}>Confirmer</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
-    
-    
-                </ScrollView>
-            </KeyboardAvoidingView>
-    
-        </>
-        )
-    }
+    </>
+    )
+
 }
 
 const styles = StyleSheet.create({
@@ -652,7 +445,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: RPW(10.5),
-        width : "100%",
+        width: "100%",
         paddingLeft: RPW(4),
         color: "white",
         fontSize: RPW(5)
