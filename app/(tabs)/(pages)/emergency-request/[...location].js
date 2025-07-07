@@ -37,10 +37,10 @@ export default function EmergencyRequest() {
 
     if (location[0] === "index") {
         previousLocation = ''
-    } else if (location.length > 1) {
+    } else if (location.length >= 1) {
 
         // Un "undefined" peut être inscrit dans le chemin d'arrivé si l'on vient des pages press et média sans indice de scroll
-        if (location.some(e => e === "undefined")) {
+        if (location.some(e => e === "undefined" || e === "press" || e === "advices")) {
             previousLocation = `${location[0]}/none`
         }
         else {
@@ -50,6 +50,8 @@ export default function EmergencyRequest() {
     } else {
         previousLocation = location[0]
     }
+    console.log("location :", location)
+    console.log("previous Location :", previousLocation)
 
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
     const user = useSelector((state) => state.user.value)
