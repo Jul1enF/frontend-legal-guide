@@ -3,7 +3,7 @@
     "name": "Me Baudelin",
     "slug": "me-baudelin",
     "scheme": "me-baudelin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/logo-ios.png",
     "userInterfaceStyle": "light",
@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.baudelin.mebaudelin",
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.4",
       "appleTeamId": "W83RJXR472"
     },
     "android": {
@@ -20,7 +20,7 @@
         "backgroundColor": "#000000"
       },
       "package": "com.baudelin.mebaudelin",
-      "versionCode": 6,
+      "versionCode": 7,
       "googleServicesFile": "./google-services.json",
       "blockedPermissions": [
         "FOREGROUND_SERVICE_MEDIA_PLAYBACK"

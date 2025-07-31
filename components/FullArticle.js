@@ -87,9 +87,9 @@ export default function FullArticle(props) {
         if (!user.jwtToken) { return }
         user.bookmarks.includes(_id) ? setIsBookmarked(true) : setIsBookmarked(false)
 
-        if (_id === "testArticleId" && testArticle.length === 0) { router.back(`/${category}/none`) }
+        if (_id === "testArticleId" && testArticle.length === 0) { router.push(`/${category}/none`) }
 
-        if (testArticle.length > 0 && testArticle[0].category === category && _id !== "testArticleId") { router.back(`/${category}/none`) }
+        if (testArticle.length > 0 && testArticle[0].category === category && _id !== "testArticleId") { router.push(`/${category}/none`) }
     }, [user, testArticle]))
 
 
@@ -141,7 +141,7 @@ export default function FullArticle(props) {
                 setIsBookmarked(false)
                 dispatch(removeBookmark(_id))
                 if (props.category === "bookmarks") {
-                    router.back("/bookmarks")
+                    router.push("/bookmarks")
                 }
             }
         }
@@ -299,11 +299,11 @@ export default function FullArticle(props) {
             <View style={styles.header} >
                 <TouchableOpacity style={styles.headerSection} onPress={() => {
                     if (category === "searches") {
-                        router.back(`/${category}/${props.searchedText}`)
+                        router.push(`/${category}/${props.searchedText}`)
                     } else if (category === "bookmarks") {
-                        router.back(`/${category}`)
+                        router.push(`/${category}`)
                     } else {
-                        router.back(`/${category}/none`)
+                        router.push(`/${category}/none`)
                     }
                 }
                 }>

@@ -10,11 +10,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../reducers/user";
 import { router, usePathname } from "expo-router";
 import { RPH, RPW } from "../modules/dimensions"
+import { redirectToStores } from "../modules/redirectToStores"
 
 
 const statusHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0
 
-export default function Header() {
+export default function Header(props) {
 
     const [menuVisible, setMenuVisible] = useState(false)
     const user = useSelector((state) => state.user.value)
@@ -22,22 +23,12 @@ export default function Header() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
 
 
-    // useEffect et variables pour ajuster la taille de la modal si l'on est sur une page avec un second header
-    const [articlePage, setArticlePage] = useState(false)
+    // Fonction pour envoyer l'adresse actuelle à emergency request
+    
     const pathName = usePathname()
 
-    const pagePath = pathName === '/' ? "index" : pathName
-
-
-    useEffect(() => {
-        if (pathName.includes('-article')) {
-            setArticlePage(true)
-        }
-        else {
-            setArticlePage(false)
-        }
-    }, [pathName])
-
+    const pagePath = pathName === '/' ? "index" : pathName.substring(1, pathName.length)
+    console.log("PAGE PATH :", pagePath)
 
 
     // États pour l'affichage et l'enregistrement de la recherche
@@ -174,6 +165,30 @@ export default function Header() {
                     }
                 </View>
             </Modal>
+
+            {/* Modal to block the app if she is obsolete */}
+            <Modal
+                isVisible={props.appObsolete}
+                style={styles.modal}
+                backdropColor="transparent"
+                animationIn="slideInLeft"
+                animationOut="slideOutLeft"
+            >
+                <View style={{ width: "100%", height: RPH(77.6), top: RPH(12.9) - statusHeight, backgroundColor: "#fffcfc", paddingTop: RPW(10) }}>
+                    <Text style={styles.obsoloteAppTitle}>
+                        Version de l'application obsolète
+                    </Text>
+                    <Text style={styles.obsoleteAppText}>
+                        Mettez à jour votre application pour continuer à utiliser Me Baudelin !
+                    </Text>
+                    <TouchableOpacity onPress={()=> redirectToStores()}>
+                         <Text style={[styles.obsoleteAppText, {textDecorationLine : "underline"}]}>
+                        Mettre à jour
+                    </Text>
+                    </TouchableOpacity>
+                </View>
+
+            </Modal>
         </View>
     )
 }
@@ -244,7 +259,7 @@ const styles = StyleSheet.create({
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
-        zIndex : 10,
+        zIndex: 10,
         top: RPH(12.9) - statusHeight,
     },
     linkContainer: {
@@ -260,22 +275,22 @@ const styles = StyleSheet.create({
         letterSpacing: RPW(0.1),
         fontFamily: "Barlow-Light",
     },
-    searchContainer : {
+    searchContainer: {
         height: RPH(13),
-        width : "100%",
+        width: "100%",
         paddingLeft: RPW(3),
         paddingRight: RPW(3),
-        justifyContent : "center",
+        justifyContent: "center",
     },
     inputAndIconContainer: {
-        height :RPH(8),
+        height: RPH(8),
         backgroundColor: "rgb(250, 248, 248)",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        borderRadius : RPW(3),
-        paddingLeft : RPW(5),
-        paddingRight : RPW(3)
+        borderRadius: RPW(3),
+        paddingLeft: RPW(5),
+        paddingRight: RPW(3)
     },
     search: {
         color: "#0c0000",
@@ -288,5 +303,23 @@ const styles = StyleSheet.create({
         color: "rgba(63, 63, 63, 0.44)",
         marginRight: RPW(3),
         marginTop: RPH(0.2)
+    },
+    obsoloteAppTitle: {
+         color: "#0c0000",
+        fontSize: RPW(6),
+        marginBottom: 25,
+        marginLeft: RPW(0),
+        fontFamily: "Barlow-Bold",
+        letterSpacing: RPW(0.1),
+        textAlign: "center",
+    },
+    obsoleteAppText: {
+       color: "#0c0000",
+        fontSize: RPW(5.5),
+        lineHeight: RPW(5.5),
+        marginBottom: 20,
+        fontFamily: "Barlow-Medium",
+        letterSpacing: RPW(-0.0),
+        textAlign: "center",
     },
 })

@@ -77,7 +77,7 @@ export default function EmergencyDetail() {
         else {
             dispatch(addEmergencies(data.emergencies))
             if (!data.emergencies || !data.emergencies.some(e => e._id === _id)) {
-                router.back('/emergencies-list')
+                router.push('/emergencies-list')
             }
         }
     }
@@ -121,7 +121,7 @@ export default function EmergencyDetail() {
                 setError("")
                 deleteRef.current = true
                 dispatch(suppressAnEmergency(emergency._id))
-                router.back('/emergencies-list')
+                router.push('/emergencies-list')
             }, 1000)
         } else {
             setError("Problème d'enregistrement de votre demande. Quittez l'appli et reconnectez vous.")
@@ -264,7 +264,7 @@ export default function EmergencyDetail() {
         <View style={styles.body}>
 
             <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => router.back(`/emergencies-list`)}>
+                <TouchableOpacity style={styles.headerSection} onPress={() => router.push(`/emergencies-list`)}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>Liste des demandes</Text>
                 </TouchableOpacity>

@@ -1,14 +1,40 @@
 import { Tabs } from "expo-router";
-import { Platform } from "react-native";
+import { Platform, AppState } from "react-native";
+import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import { RPH, RPW } from "../../modules/dimensions"
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Fontisto from '@expo/vector-icons/Fontisto';
+import { checkIfAppIsObsoleteAsync } from '../../modules/checkIfAppIsObsoleteAsync'
 
 
 export default function TabsLayout() {
+
+  // Check if the app should mandatory update when oppening it
+    const [appObsolete, setAppObsolete] = useState(false)
+  
+    const updateAppVersionStatus = async () => {
+      const isAppObsolete = await checkIfAppIsObsoleteAsync()
+      setAppObsolete(isAppObsolete)
+    }
+  
+    useEffect(() => {
+      updateAppVersionStatus()
+       
+      const subscription = AppState.addEventListener("change", (state) => {
+        if (state === "active") {
+            updateAppVersionStatus()
+        }
+      });
+  
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+
+
   return (
     <Tabs
       screenOptions={({ route }) => ({
@@ -41,7 +67,7 @@ export default function TabsLayout() {
         tabBarHideOnKeyboard : Platform.OS === 'ios' ? true : false,
         // Expo Go / KeyboardAvoidingView
         // tabBarHideOnKeyboard: Platform.OS === 'android' ? true : false,
-        header: (props) => <Header {...props} />,
+        header: (props) => <Header {...props} appObsolete={appObsolete}/>,
       })}
     >
       <Tabs.Screen name="(advices)" options={{

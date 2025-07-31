@@ -31,7 +31,7 @@ export default function EmergencyRequest() {
 
 
     const router = useRouter()
-
+    
     const { location } = useLocalSearchParams()
     let previousLocation
 
@@ -170,7 +170,7 @@ export default function EmergencyRequest() {
     const Header = () => {
         return (
             <View style={styles.header} >
-                <TouchableOpacity style={styles.headerSection} onPress={() => previousLocation ? router.push(`/${previousLocation}`) : router.back('/')}>
+                <TouchableOpacity style={styles.headerSection} onPress={() => previousLocation ? router.push(`/${previousLocation}`) : router.push('/')}>
                     <FontAwesome5 name="chevron-left" color="white" size={RPW(4.2)} style={styles.icon} />
                     <Text style={styles.headerText}>Retour</Text>
                 </TouchableOpacity>
@@ -416,9 +416,9 @@ export default function EmergencyRequest() {
 
         <KeyboardAwareScrollView
             style={{ flex: 1, backgroundColor: "#fffcfc" }}
-            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5) }}
-            bottomOffset={Platform.OS === 'ios' ? RPW(12) : RPW(6)}
-            stickyHeaderIndices={[0]}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5), paddingTop : RPW(6) }}
+            bottomOffset={Platform.OS === 'ios' ? RPW(12) : RPW(4)}
+            // stickyHeaderIndices={[0]}
             ref={scrollRef}
             keyboardShouldPersistTaps="handled"
         >
@@ -432,7 +432,7 @@ export default function EmergencyRequest() {
                 stickyHeaderIndices={[0]}> */}
 
 
-            <Header />
+            {/* <Header /> */}
 
             {emergency._id && <PendingRequest />}
 
