@@ -7,41 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A0CF9270A6E4608944D3DAE /* BarlowCondensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27A727B468D64B8A8425FB10 /* BarlowCondensed-ExtraLight.ttf */; };
-		0D44955BBFFF5502AF5A50AB /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580E4CAC354950E72EE8AD4 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		31BA234C96DA4CE788E45F28 /* BarlowCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0387428370D1451B902E044C /* BarlowCondensed-SemiBold.ttf */; };
+		1F52AA03DB5019D64084B2B2 /* libPods-MeBaudelin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFC0E06808BB5A82B04CBF08 /* libPods-MeBaudelin.a */; };
+		2CD97FCFFC264EBC81146F0B /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 311C73E9B94F48DFA5D9962F /* BarlowCondensed-Bold.ttf */; };
+		3BE0A23F44334342B0BAAF82 /* BarlowCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47A4A6F2B5D949648809E494 /* BarlowCondensed-Regular.ttf */; };
+		3E133E9E384AFAD33D3B02E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 16B644A44578BCC56EAC26F4 /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		6DD3366453314151A7F158B3 /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7081C42642D4A55B83E0F46 /* BarlowCondensed-Bold.ttf */; };
-		825FEEF0E71B41E1B2F1D89F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C2EEE76B1EABAF0AF56F861E /* PrivacyInfo.xcprivacy */; };
-		B043861FDC4F85D47D6DCA7D /* libPods-MeBaudelin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C487EE37738A6A5D94944F /* libPods-MeBaudelin.a */; };
+		4150E43EE6C545F183AB891C /* BarlowCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED085E726C0B48A4AB8F4E40 /* BarlowCondensed-Medium.ttf */; };
+		4F0904AE417B430599BE9279 /* BarlowCondensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72E216297FDA4B768B49E796 /* BarlowCondensed-ExtraLight.ttf */; };
+		763428C4CAA3495082B9C814 /* BarlowCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37DBE94A191F4ED3B25BA7E0 /* BarlowCondensed-Light.ttf */; };
+		B43A4F7C5FBA4A14938C3A3C /* BarlowCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 304F1A7CDF0544C2930C4846 /* BarlowCondensed-SemiBold.ttf */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		CEDA6C1FED2348D894875CA9 /* BarlowCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE95B90FEC29441F917EAFB4 /* BarlowCondensed-Light.ttf */; };
-		EB157C1AD56D47FEA69395B7 /* BarlowCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C31CC404DAEB443FB8499C72 /* BarlowCondensed-Regular.ttf */; };
-		EB2A4907CD294D169A984A91 /* BarlowCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9F9FA0D35834C2A9923E9D1 /* BarlowCondensed-Medium.ttf */; };
+		E8E9960049EA5FBFDDD35A7A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8D57723A4D08B9FF770E86 /* ExpoModulesProvider.swift */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0387428370D1451B902E044C /* BarlowCondensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-SemiBold.ttf"; path = "../assets/fonts/BarlowCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MeBaudelin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeBaudelin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MeBaudelin/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MeBaudelin/Info.plist; sourceTree = "<group>"; };
-		22C487EE37738A6A5D94944F /* libPods-MeBaudelin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MeBaudelin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		276C88F6918BEB5E5B2F5E8C /* Pods-MeBaudelin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeBaudelin.release.xcconfig"; path = "Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin.release.xcconfig"; sourceTree = "<group>"; };
-		27A727B468D64B8A8425FB10 /* BarlowCondensed-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-ExtraLight.ttf"; path = "../assets/fonts/BarlowCondensed-ExtraLight.ttf"; sourceTree = "<group>"; };
-		59C0C43394A2495A4E92F8E7 /* Pods-MeBaudelin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeBaudelin.debug.xcconfig"; path = "Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin.debug.xcconfig"; sourceTree = "<group>"; };
+		16B644A44578BCC56EAC26F4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MeBaudelin/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		304F1A7CDF0544C2930C4846 /* BarlowCondensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-SemiBold.ttf"; path = "../assets/fonts/BarlowCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		311C73E9B94F48DFA5D9962F /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Bold.ttf"; path = "../assets/fonts/BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		37DBE94A191F4ED3B25BA7E0 /* BarlowCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Light.ttf"; path = "../assets/fonts/BarlowCondensed-Light.ttf"; sourceTree = "<group>"; };
+		47A4A6F2B5D949648809E494 /* BarlowCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Regular.ttf"; path = "../assets/fonts/BarlowCondensed-Regular.ttf"; sourceTree = "<group>"; };
+		4E42A8298DE0317F76E28846 /* Pods-MeBaudelin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeBaudelin.release.xcconfig"; path = "Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin.release.xcconfig"; sourceTree = "<group>"; };
+		6388FCDAC4026051074C5E5E /* Pods-MeBaudelin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeBaudelin.debug.xcconfig"; path = "Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin.debug.xcconfig"; sourceTree = "<group>"; };
+		72E216297FDA4B768B49E796 /* BarlowCondensed-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-ExtraLight.ttf"; path = "../assets/fonts/BarlowCondensed-ExtraLight.ttf"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = MeBaudelin/SplashScreen.storyboard; sourceTree = "<group>"; };
-		B7081C42642D4A55B83E0F46 /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Bold.ttf"; path = "../assets/fonts/BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		AFC0E06808BB5A82B04CBF08 /* libPods-MeBaudelin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MeBaudelin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C2EEE76B1EABAF0AF56F861E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MeBaudelin/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		C31CC404DAEB443FB8499C72 /* BarlowCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Regular.ttf"; path = "../assets/fonts/BarlowCondensed-Regular.ttf"; sourceTree = "<group>"; };
-		E580E4CAC354950E72EE8AD4 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MeBaudelin/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		DE8D57723A4D08B9FF770E86 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MeBaudelin/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		ED085E726C0B48A4AB8F4E40 /* BarlowCondensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Medium.ttf"; path = "../assets/fonts/BarlowCondensed-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EE95B90FEC29441F917EAFB4 /* BarlowCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Light.ttf"; path = "../assets/fonts/BarlowCondensed-Light.ttf"; sourceTree = "<group>"; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = MeBaudelin/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* MeBaudelin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MeBaudelin-Bridging-Header.h"; path = "MeBaudelin/MeBaudelin-Bridging-Header.h"; sourceTree = "<group>"; };
-		F9F9FA0D35834C2A9923E9D1 /* BarlowCondensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "BarlowCondensed-Medium.ttf"; path = "../assets/fonts/BarlowCondensed-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B043861FDC4F85D47D6DCA7D /* libPods-MeBaudelin.a in Frameworks */,
+				1F52AA03DB5019D64084B2B2 /* libPods-MeBaudelin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,48 +65,40 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				C2EEE76B1EABAF0AF56F861E /* PrivacyInfo.xcprivacy */,
+				16B644A44578BCC56EAC26F4 /* PrivacyInfo.xcprivacy */,
 			);
 			name = MeBaudelin;
-			sourceTree = "<group>";
-		};
-		2CCDFFAEBDAE418D9FE3F4CD /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B7081C42642D4A55B83E0F46 /* BarlowCondensed-Bold.ttf */,
-				27A727B468D64B8A8425FB10 /* BarlowCondensed-ExtraLight.ttf */,
-				EE95B90FEC29441F917EAFB4 /* BarlowCondensed-Light.ttf */,
-				F9F9FA0D35834C2A9923E9D1 /* BarlowCondensed-Medium.ttf */,
-				C31CC404DAEB443FB8499C72 /* BarlowCondensed-Regular.ttf */,
-				0387428370D1451B902E044C /* BarlowCondensed-SemiBold.ttf */,
-			);
-			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				22C487EE37738A6A5D94944F /* libPods-MeBaudelin.a */,
+				AFC0E06808BB5A82B04CBF08 /* libPods-MeBaudelin.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		32E8D3D709B2A1AF733E774C /* ExpoModulesProviders */ = {
+		311AB1A7482C9B128ECFEACF /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				71F87FCF58F0F516A62B401D /* MeBaudelin */,
+				CA1AAE7A324CCE91640A71F5 /* MeBaudelin */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		71F87FCF58F0F516A62B401D /* MeBaudelin */ = {
+		5D6D4EB0ABEA48269764E0C4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E580E4CAC354950E72EE8AD4 /* ExpoModulesProvider.swift */,
+				311C73E9B94F48DFA5D9962F /* BarlowCondensed-Bold.ttf */,
+				72E216297FDA4B768B49E796 /* BarlowCondensed-ExtraLight.ttf */,
+				37DBE94A191F4ED3B25BA7E0 /* BarlowCondensed-Light.ttf */,
+				ED085E726C0B48A4AB8F4E40 /* BarlowCondensed-Medium.ttf */,
+				47A4A6F2B5D949648809E494 /* BarlowCondensed-Regular.ttf */,
+				304F1A7CDF0544C2930C4846 /* BarlowCondensed-SemiBold.ttf */,
 			);
-			name = MeBaudelin;
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -123,9 +115,9 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				2CCDFFAEBDAE418D9FE3F4CD /* Resources */,
-				DB7169D8A0A5EEFBA5A2C574 /* Pods */,
-				32E8D3D709B2A1AF733E774C /* ExpoModulesProviders */,
+				5D6D4EB0ABEA48269764E0C4 /* Resources */,
+				B2F67C05F031E023EB0B2A83 /* Pods */,
+				311AB1A7482C9B128ECFEACF /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -140,6 +132,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B2F67C05F031E023EB0B2A83 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6388FCDAC4026051074C5E5E /* Pods-MeBaudelin.debug.xcconfig */,
+				4E42A8298DE0317F76E28846 /* Pods-MeBaudelin.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,14 +151,12 @@
 			path = MeBaudelin/Supporting;
 			sourceTree = "<group>";
 		};
-		DB7169D8A0A5EEFBA5A2C574 /* Pods */ = {
+		CA1AAE7A324CCE91640A71F5 /* MeBaudelin */ = {
 			isa = PBXGroup;
 			children = (
-				59C0C43394A2495A4E92F8E7 /* Pods-MeBaudelin.debug.xcconfig */,
-				276C88F6918BEB5E5B2F5E8C /* Pods-MeBaudelin.release.xcconfig */,
+				DE8D57723A4D08B9FF770E86 /* ExpoModulesProvider.swift */,
 			);
-			name = Pods;
-			path = Pods;
+			name = MeBaudelin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,13 +167,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MeBaudelin" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				115BE95C3A29FFAB09D04785 /* [Expo] Configure project */,
+				738DF5AE2D5EE7F528F8AE73 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				A3AE3948BACAAF9A8536B6F4 /* [CP] Embed Pods Frameworks */,
+				3C9E53B1CFE17838F7B15E8B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -223,13 +223,13 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				6DD3366453314151A7F158B3 /* BarlowCondensed-Bold.ttf in Resources */,
-				0A0CF9270A6E4608944D3DAE /* BarlowCondensed-ExtraLight.ttf in Resources */,
-				CEDA6C1FED2348D894875CA9 /* BarlowCondensed-Light.ttf in Resources */,
-				EB2A4907CD294D169A984A91 /* BarlowCondensed-Medium.ttf in Resources */,
-				EB157C1AD56D47FEA69395B7 /* BarlowCondensed-Regular.ttf in Resources */,
-				31BA234C96DA4CE788E45F28 /* BarlowCondensed-SemiBold.ttf in Resources */,
-				825FEEF0E71B41E1B2F1D89F /* PrivacyInfo.xcprivacy in Resources */,
+				2CD97FCFFC264EBC81146F0B /* BarlowCondensed-Bold.ttf in Resources */,
+				4F0904AE417B430599BE9279 /* BarlowCondensed-ExtraLight.ttf in Resources */,
+				763428C4CAA3495082B9C814 /* BarlowCondensed-Light.ttf in Resources */,
+				4150E43EE6C545F183AB891C /* BarlowCondensed-Medium.ttf in Resources */,
+				3BE0A23F44334342B0BAAF82 /* BarlowCondensed-Regular.ttf in Resources */,
+				B43A4F7C5FBA4A14938C3A3C /* BarlowCondensed-SemiBold.ttf in Resources */,
+				3E133E9E384AFAD33D3B02E7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +273,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		115BE95C3A29FFAB09D04785 /* [Expo] Configure project */ = {
+		3C9E53B1CFE17838F7B15E8B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		738DF5AE2D5EE7F528F8AE73 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -340,24 +358,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A3AE3948BACAAF9A8536B6F4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MeBaudelin/Pods-MeBaudelin-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -366,7 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				0D44955BBFFF5502AF5A50AB /* ExpoModulesProvider.swift in Sources */,
+				E8E9960049EA5FBFDDD35A7A /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,7 +375,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59C0C43394A2495A4E92F8E7 /* Pods-MeBaudelin.debug.xcconfig */;
+			baseConfigurationReference = 6388FCDAC4026051074C5E5E /* Pods-MeBaudelin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -412,7 +412,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 276C88F6918BEB5E5B2F5E8C /* Pods-MeBaudelin.release.xcconfig */;
+			baseConfigurationReference = 4E42A8298DE0317F76E28846 /* Pods-MeBaudelin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
