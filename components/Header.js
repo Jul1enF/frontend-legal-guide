@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, StatusBar } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
@@ -24,7 +24,7 @@ export default function Header(props) {
 
 
     // Fonction pour envoyer l'adresse actuelle à emergency request
-    
+
     const pathName = usePathname()
 
     const pagePath = pathName === '/' ? "index" : pathName.substring(1, pathName.length)
@@ -79,8 +79,12 @@ export default function Header(props) {
 
 
 
+    const tabBarHeight = RPH(9.5)
+    const tabbarPaddingBottom = Platform.OS === "ios" ? useSafeAreaInsets().bottom / 2 : useSafeAreaInsets().bottom
+    const fullTabBarHeight = tabBarHeight + tabbarPaddingBottom
+    const lateralMenuHeight = RPH(100) - RPH(13) - fullTabBarHeight
 
-
+    
 
     return (
         <View style={styles.body}>
@@ -113,7 +117,7 @@ export default function Header(props) {
                 onBackButtonPress={() => setMenuVisible(!menuVisible)}
                 onBackdropPress={() => setMenuVisible(!menuVisible)}
             >
-                <View style={styles.modalBody}>
+                <View style={[styles.modalBody, {height : lateralMenuHeight}]}>
 
                     <View style={styles.searchContainer}>
                         <View style={styles.inputAndIconContainer}>
@@ -174,17 +178,17 @@ export default function Header(props) {
                 animationIn="slideInLeft"
                 animationOut="slideOutLeft"
             >
-                <View style={{ width: "100%", height: RPH(77.6), top: RPH(12.9) - statusHeight, backgroundColor: "#fffcfc", paddingTop: RPW(10) }}>
+                <View style={{ width: "100%", height: lateralMenuHeight, top: RPH(12.9) - statusHeight, backgroundColor: "#fffcfc", paddingTop: RPW(10) }}>
                     <Text style={styles.obsoloteAppTitle}>
                         Version de l'application obsolète
                     </Text>
                     <Text style={styles.obsoleteAppText}>
                         Mettez à jour votre application pour continuer à utiliser Me Baudelin !
                     </Text>
-                    <TouchableOpacity onPress={()=> redirectToStores()}>
-                         <Text style={[styles.obsoleteAppText, {textDecorationLine : "underline"}]}>
-                        Mettre à jour
-                    </Text>
+                    <TouchableOpacity onPress={() => redirectToStores()}>
+                        <Text style={[styles.obsoleteAppText, { textDecorationLine: "underline" }]}>
+                            Mettre à jour
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -255,7 +259,7 @@ const styles = StyleSheet.create({
         margin: 0,
     },
     modalBody: {
-        height: RPH(77.6),
+        // height: RPH(77.6),
         width: RPW(80),
         backgroundColor: "#e3e3e3",
         position: "absolute",
@@ -305,7 +309,7 @@ const styles = StyleSheet.create({
         marginTop: RPH(0.2)
     },
     obsoloteAppTitle: {
-         color: "#0c0000",
+        color: "#0c0000",
         fontSize: RPW(6),
         marginBottom: 25,
         marginLeft: RPW(0),
@@ -314,7 +318,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     obsoleteAppText: {
-       color: "#0c0000",
+        color: "#0c0000",
         fontSize: RPW(5.5),
         lineHeight: RPW(5.5),
         marginBottom: 20,
