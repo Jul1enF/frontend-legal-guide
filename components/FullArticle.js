@@ -299,11 +299,11 @@ export default function FullArticle(props) {
             <View style={styles.header} >
                 <TouchableOpacity style={styles.headerSection} onPress={() => {
                     if (category === "searches") {
-                        router.push(`/${category}/${props.searchedText}`)
+                        router.back(`/${category}/${props.searchedText}`)
                     } else if (category === "bookmarks") {
-                        router.push(`/${category}`)
+                        router.back(`/${category}`)
                     } else {
-                        router.push(`/${category}/none`)
+                        router.back(`/${category}/none`)
                     }
                 }
                 }>

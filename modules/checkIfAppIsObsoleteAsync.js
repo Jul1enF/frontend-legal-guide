@@ -25,13 +25,12 @@ const isRunningVersionObsolete = (runningVersion, minimumVersion) => {
 
 const checkIfAppIsObsoleteAsync = async () => {
     try {
-        console.log("fetch app version")
         const response = await fetch(`${url}/users/getAppMinimumVersion`)
         const data = await response.json()
 
         const appRunningVersion = Application.nativeApplicationVersion
         const { appMinimumVersion } = data
-        console.log("APP RUNNING VERSION :", appRunningVersion)
+
         return isRunningVersionObsolete(appRunningVersion, appMinimumVersion)
 
     } catch (err) {

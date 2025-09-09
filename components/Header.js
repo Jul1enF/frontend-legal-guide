@@ -28,7 +28,6 @@ export default function Header(props) {
     const pathName = usePathname()
 
     const pagePath = pathName === '/' ? "index" : pathName.substring(1, pathName.length)
-    console.log("PAGE PATH :", pagePath)
 
 
     // États pour l'affichage et l'enregistrement de la recherche
