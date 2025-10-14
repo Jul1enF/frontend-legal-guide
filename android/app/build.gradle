@@ -4,6 +4,14 @@ apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
+// Patch for 16kb compliance
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module('com.github.banketree:AndroidLame-kotlin'))
+                .using(module('com.github.kaushik-naik:TAndroidLame:a485052f28'))
+    }
+}
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -92,7 +100,7 @@ android {
         applicationId 'com.baudelin.mebaudelin'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
+        versionCode 10
         versionName "1.0.2"
     }
     signingConfigs {
