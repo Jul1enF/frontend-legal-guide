@@ -31,7 +31,7 @@ export default function EmergencyRequest() {
 
 
     const router = useRouter()
-    
+
     const { location } = useLocalSearchParams()
     let previousLocation
 
@@ -416,7 +416,7 @@ export default function EmergencyRequest() {
 
         <KeyboardAwareScrollView
             style={{ flex: 1, backgroundColor: "#fffcfc" }}
-            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5), paddingTop : RPW(6) }}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: RPH(5), paddingTop: RPW(6) }}
             bottomOffset={Platform.OS === 'ios' ? RPW(12) : RPW(4)}
             // stickyHeaderIndices={[0]}
             ref={scrollRef}
@@ -559,7 +559,7 @@ export default function EmergencyRequest() {
                         onRequestClose={() => setModal1Visible(!modal1Visible)}
                     >
                         <View style={styles.modalBody}>
-                            <Text style={styles.modalText}>Envoyer également en arrière plan votre localisation en continu ?</Text>
+                            <Text style={styles.modalText}>Cette application collecte votre localisation en continu (application fermée ou non utilisée) afin d'envoyer votre position à votre avocat</Text>
                             <View style={styles.line}>
                             </View>
                             <Text style={[styles.error2, error2 == "Demande envoyée !" && { color: "green" }]}>
@@ -567,10 +567,10 @@ export default function EmergencyRequest() {
                             </Text>
                             <View style={styles.btnContainer}>
                                 <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(true)}>
-                                    <Text style={styles.modalText2}>Oui</Text>
+                                    <Text style={styles.modalText2}>Autoriser</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => sendPress(false)}>
-                                    <Text style={styles.modalText2}>Non</Text>
+                                    <Text style={styles.modalText2}>Refuser</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.btnTouchable} activeOpacity={0.8} onPress={() => setModal1Visible(false)}>
                                     <Text style={styles.modalText2}>Annuler</Text>
@@ -746,19 +746,20 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: RPW(4.5),
         fontWeight: "600",
-        marginTop: RPH(1)
+        marginTop: RPH(1),
+        textAlign: "center",
     },
     modal: {
         alignItems: "center"
     },
     modalBody: {
-        height: RPW(66),
+        height: RPW(86),
         width: RPW(96),
         borderRadius: 10,
         paddingTop: RPW(5),
         paddingBottom: RPW(7),
-        paddingLeft: RPW(2),
-        paddingRight: RPW(2),
+        paddingLeft: RPW(1),
+        paddingRight: RPW(1),
         backgroundColor: "#dfdfdf",
         position: "absolute",
         bottom: RPH(14),
@@ -768,16 +769,17 @@ const styles = StyleSheet.create({
     },
     modalText: {
         color: "#0c0000",
-        fontSize: RPW(5.6),
+        fontSize: RPW(5.1),
         fontWeight: "600",
         textAlign: "center",
         paddingLeft: RPW(5),
         paddingRight: RPW(5),
-        lineHeight: RPW(9)
+        lineHeight: RPW(7.8)
     },
     error2: {
         color: "rgb(157, 0, 0)",
         position: "absolute",
+        textAlign: "center",
         top: RPW(40),
         fontSize: RPW(4.3),
         fontWeight: "600",
@@ -796,7 +798,7 @@ const styles = StyleSheet.create({
         width: "100%"
     },
     btnTouchable: {
-        width: RPW(25),
+        width: RPW(27),
         height: RPW(11),
         borderRadius: 10,
         alignItems: "center",
@@ -805,7 +807,7 @@ const styles = StyleSheet.create({
     },
     modalText2: {
         color: "white",
-        fontSize: RPW(5),
+        fontSize: RPW(4.9),
         fontWeight: "700",
     },
 })
