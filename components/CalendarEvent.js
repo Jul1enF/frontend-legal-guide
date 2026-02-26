@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from "react-native"
 import { RPH, RPW } from "../modules/dimensions"
 import moment from 'moment/min/moment-with-locales'
 
-export default function CalendarEvent(props) {
-    const {item} = props.item
+export default function CalendarEvent({item}) {
+    if (!item) return <></>
 
     let schedules
     if (item.periodEvent && item.startingDay && item.startingTime){
