@@ -21,8 +21,8 @@ moment.locale('fr')
 
 export default function Calendar() {
     const url = process.env.EXPO_PUBLIC_BACK_ADDRESS
-    const [events, setEvents] = useState(null)
-    const [markers, setMarkers] = useState("")
+    const [events, setEvents] = useState([])
+    const [markers, setMarkers] = useState(null)
     const [error, setError] = useState('')
 
     const user = useSelector((state) => state.user.value)
@@ -39,7 +39,7 @@ export default function Calendar() {
         const state = await NetInfo.fetch()
         // Si utilisateur pas inscrit ou pas connecté à internet ou pas admin
         if (!user.jwtToken || !state.isConnected || !user.is_admin) { return }
-        
+
         const pushTokenInfos = await registerForPushNotificationsAsync(user.push_token, user.jwtToken)
 
         if (!pushTokenInfos) {
@@ -76,7 +76,11 @@ export default function Calendar() {
             setTimeout(() => setError(""), 4000)
             return
         } else {
-            setEvents(data.events)
+            // AgendaList n'aime pas n'avoir aucun évènement. Évènement vide s'il n'y en a pas dans le back.
+            const safeSections = data.events.length
+                ? data.events
+                : [{ title: moment().format('YYYY-MM-DD'), data: [] }]
+            setEvents(safeSections)
             setMarkers(data.markers)
         }
     }
@@ -110,13 +114,9 @@ export default function Calendar() {
 
 
     // Définition du rendu des items de la liste de l'agenda
-    const renderItem = useCallback((item) => {
-        return <CalendarEvent item={item} key={item.item.id} />;
+    const renderItem = useCallback(({ item }) => {
+        return <CalendarEvent item={item} />;
     }, []);
-
-
-    // L'agenda n'apparait qu'à moitié ouvert. Passage d'un mois à un autre pour bien le fermer.
-    const [selectedDate, setSelectedDate] = useState(moment(new Date()).subtract(1, 'month').format('YYYY-MM-DD'))
 
 
     return (
@@ -134,15 +134,11 @@ export default function Calendar() {
 
                 {markers &&
                     <CalendarProvider
-                        date={selectedDate}
+                        date={moment().format('YYYY-MM-DD')}
                         showTodayButton={false}
                     >
                         <ExpandableCalendar
-                            onLayout={() => {
-                                setTimeout(() => {
-                                    setSelectedDate(moment(new Date()).format('YYYY-MM-DD'))
-                                }, 500)
-                            }}
+                            style={{ width: '100%' }}
                             theme={{
                                 "stylesheet.calendar.header": {
                                     monthText: {
@@ -222,7 +218,7 @@ export default function Calendar() {
                             markedDates={markers}
                         />
                         <AgendaList
-                            style={{ backgroundColor: "rgb(185, 0, 0)", width: RPW(100)}}
+                            style={{ backgroundColor: "rgb(185, 0, 0)", width: RPW(100) }}
                             contentContainerStyle={{ alignItems: "center" }}
                             sections={events}
                             renderItem={renderItem}
@@ -232,7 +228,7 @@ export default function Calendar() {
                             // Encart du haut avec la date
                             sectionStyle={styles.sectionStyle}
                             dayFormatter={formatDate}
-                            scrollToNextEvent={true}
+                            scrollToNextEvent={!!events.length}
                             // Préparer l'affichage de pleins d'éléments pour pas de bug en scrollant loin
                             windowSize={401}
 

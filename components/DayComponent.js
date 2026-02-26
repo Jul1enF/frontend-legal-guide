@@ -12,10 +12,10 @@ export default function DayComponent(props) {
     //     console.log("PROPS", props)
     // }
 
-    const [selectedBg, setSelectedBg] = useState('fff')
+    const [selectedBg, setSelectedBg] = useState('transparent')
     const [textColor, setTextColor] = useState('black')
     const [textWeight, setTextWeight] = useState("300")
-    const [dotColor, setDotColor] = useState('fff')
+    const [dotColor, setDotColor] = useState('transparent')
     const [dotWidth, setDotWidth] = useState(5)
 
  
@@ -24,8 +24,8 @@ export default function DayComponent(props) {
         // Style conditionnel selectedContainer
         if (state === "selected") {
             setSelectedBg('black')
-        } else if (selectedBg !== 'fff') {
-            setSelectedBg('fff')
+        } else if (selectedBg !== 'transparent') {
+            setSelectedBg('transparent')
         }
 
         // Style conditionnel dayText
@@ -42,8 +42,8 @@ export default function DayComponent(props) {
         // Style conditionnel couleur dot
         if (marking?.marked) {
             state === "disabled" ? setDotColor("rgba(148, 148, 148, 0.7)") : setDotColor("rgb(185, 0, 0)")
-        } else if (dotColor !== 'fff') {
-            setDotColor('fff')
+        } else if (dotColor !== 'transparent') {
+            setDotColor('transparent')
         }
 
           // Style conditionnel largeur dot
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         width: 38,
         height: 32,
         alignSelf: 'center',
-        backgroundColor: 'fff',
+        backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -117,10 +117,11 @@ const styles = StyleSheet.create({
         bottom: 6,
         width: 30,
         height: 28,
-        borderRadius: 40,
+        borderRadius: 14,
         paddingBottom: 4,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        overflow : "hidden",
     },
     dayText: {
         fontSize: 16,
